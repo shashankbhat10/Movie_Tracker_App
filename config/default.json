@@ -1,0 +1,5 @@
+{
+  "moviedbBaseURI": "https://api.themoviedb.org/3/",
+  "moviedbAPIKey": "?api_key=e6c17253017e432ac8ebc67dd2493a32",
+  "jwtSecret": "secretJWTtoken"
+}
