@@ -89,7 +89,12 @@ router.get('/:id', async (req, res) => {
       tagline: detailsRes.data.tagline,
       budget: detailsRes.data.budget,
       revenue: detailsRes.data.revenue,
+      runtime: detailsRes.data.runtime,
     };
+    let genres = detailsRes.data.genres.map((genre) => {
+      return genre.name;
+    });
+    details['genres'] = genres;
 
     images = {
       poster: imagesRes.data.posters[0].file_path,

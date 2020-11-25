@@ -62,7 +62,13 @@ body{
   border: 2px solid black;
 }
 
-.movie-header {
+.movie-header{
+  width: 100%;
+  background-color: cornflowerblue;
+  margin-top: 0;
+}
+
+.movie-header-main {
   width: 85%;
   max-width: 1000px;
   margin-left: auto;
@@ -73,8 +79,10 @@ body{
 .poster-image {
   width: 100%;
   height: auto;
+  margin-top: auto;
+  margin-bottom: auto;
   @media only screen and (max-width: 420px) {
-    width: 75%;
+    width: 85%;
     padding: 0;
     flex-direction: column;
     margin-left: auto;
@@ -83,7 +91,7 @@ body{
 }
 
 .poster-spinner {
-  margin-top: auto;
+  margin-top: 100px;
 }
 
 .movie-detail {
@@ -96,6 +104,37 @@ body{
   }
 }
 
-/* .flex-child:first-child {
-  margin-right: 20px;
-} */
+.optional-details>:nth-child(n)::before{
+  content: "•";
+  padding-right: 2px;
+  // display: list-item;
+  // /* This has to be "list-item"                                               */
+  // list-style-type: disc;
+  // /* See https://developer.mozilla.org/en-US/docs/Web/CSS/list-style-type     */
+  // list-style-position: inside;
+  // /* See https://developer.mozilla.org/en-US/docs/Web/CSS/list-style-position */
+}
+
+.movie-cast-body {
+  width: 90%;
+  overflow-x: auto;
+}
+
+.card {
+  margin-right: 2px;
+  margin-left: 2px
+}
+
+.cast-card {
+  width: 90%;
+  min-width: 120px;
+  max-width: 140px;
+  border: 1px solid black;
+  border-radius: 3%;
+  overflow: hidden;
+}
+
+.profile-image {
+  width: 100%;
+  height: auto;
+}

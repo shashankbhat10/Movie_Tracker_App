@@ -1,14 +1,13 @@
 import axios from 'axios';
-import { GET_MOVIE } from './types';
+import { MOVIE_LOADED } from './types';
 
 // Get all details for individual movie
 export const getMovieById = (movieId) => async (dispatch) => {
   try {
     const movieDetails = await axios.get(`/api/movies/${movieId}`);
     console.log(movieDetails.data);
-    console.log('THASDAS');
     dispatch({
-      type: GET_MOVIE,
+      type: MOVIE_LOADED,
       payload: movieDetails.data,
     });
   } catch (err) {

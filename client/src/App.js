@@ -16,7 +16,7 @@ function App() {
         <Navbar />
         <Route exact path="/" component={Dashboard} />
         <Switch>
-          <Route exact path="/Movie/:id" component={Movie} />
+          <Route exact path="/movie/:id" component={Movie} />
         </Switch>
       </Router>
     </Provider>
