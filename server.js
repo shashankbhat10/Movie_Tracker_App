@@ -15,6 +15,7 @@ const PORT = process.env.PORT || 8080;
 // Routes
 app.use('/api/movies', require('./routes/movies'));
 app.use('/api/profile', require('./routes/profile'));
+app.use('/api/search', require('./routes/search'));
 
 app.get('/', (req, res) => {
   res.send('Hello World');

@@ -1,9 +1,16 @@
-import React, { Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import React, { Fragment, useState } from 'react';
+import { Link, Redirect, withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faUser } from '@fortawesome/free-solid-svg-icons';
 
-const Navbar = () => {
+const Navbar = ({ history }) => {
+  const [searchText, updateSearchText] = useState('');
+
+  const submitSearch = (e) => {
+    e.preventDefault();
+    history.push({ pathname: '/search', search: `?query=${searchText}` });
+  };
+
   return (
     <Fragment>
       <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
@@ -24,12 +31,17 @@ const Navbar = () => {
 
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav ml-auto">
-            <form className="form-inline my-2 my-sm-0 d-none d-sm-block">
+            <form
+              className="form-inline my-2 my-sm-0 d-none d-sm-block"
+              onSubmit={(e) => submitSearch(e)}
+            >
               <input
                 className="form-control mr-sm-2"
                 type="search"
                 placeholder="Search"
                 aria-label="Search"
+                value={searchText}
+                onChange={(e) => updateSearchText(e.target.value)}
               />
               <button
                 className="btn btn-outline-success my-2 my-sm-0"
@@ -80,4 +92,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default withRouter(Navbar);

@@ -5,6 +5,7 @@ import Poster from './Poster';
 import MovieDetails from './MovieDetails';
 import Spinner from '../Utility/Spinner';
 import MovieCast from './MovieCast';
+import MovieAdditionalDetails from './MovieAdditionalDetails';
 
 const Movie = ({
   getMovieById,
@@ -13,6 +14,7 @@ const Movie = ({
   backdrop_path,
   movie_details,
   cast,
+  trailer,
   loading,
 }) => {
   useEffect(() => {
@@ -39,8 +41,15 @@ const Movie = ({
             </div>
           </div>
           <div>
+            <MovieAdditionalDetails details={movie_details} trailer={trailer} />
+          </div>
+          <div>
             <MovieCast cast={cast.cast} />
           </div>
+          <div>Where to Watch?</div>
+          <div>Review</div>
+          <div>Media</div>
+          <div>Similar Movies</div>
         </div>
       )}
     </Fragment>
@@ -53,6 +62,7 @@ const mapStateToProps = (state) => ({
   movie_details: state.movie.details,
   cast: state.movie.cast,
   loading: state.movie.loading,
+  trailer: state.movie.trailer,
 });
 
 export default connect(mapStateToProps, { getMovieById })(Movie);

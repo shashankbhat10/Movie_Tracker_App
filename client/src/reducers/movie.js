@@ -1,4 +1,9 @@
-import { MOVIE_LOADED, CLEAR_MOVIE } from '../actions/types';
+import {
+  MOVIE_LOADED,
+  CLEAR_MOVIE,
+  LOAD_TRAILER,
+  UNLOAD_TRAILER,
+} from '../actions/types';
 
 const initialState = {
   details: {},
@@ -6,7 +11,9 @@ const initialState = {
   cast: {},
   reviews: {},
   watchlinks: {},
+  trailer: {},
   loading: true,
+  loadTrailer: false,
 };
 
 export default function (state = initialState, action) {
@@ -20,6 +27,7 @@ export default function (state = initialState, action) {
         cast: payload.cast,
         reviews: payload.reviews !== null ? payload.reviews : null,
         watchlinks: payload.watchlinks !== null ? payload.watchlinks : null,
+        trailer: payload.trailer,
         loading: false,
       };
     case CLEAR_MOVIE:
@@ -31,8 +39,13 @@ export default function (state = initialState, action) {
         cast: {},
         reviews: {},
         watchlinks: {},
+        trailer: {},
         loading: false,
       };
+    case LOAD_TRAILER:
+      return { ...state, loadTrailer: true };
+    case UNLOAD_TRAILER:
+      return { ...state, loadTrailer: false };
     default:
       return { ...state };
   }

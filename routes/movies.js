@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 const config = require('config');
+const { body } = require('express-validator');
 const moviedbBaseURI = config.get('moviedbBaseURI');
 const moviedbAPIKey = config.get('moviedbAPIKey');
 
@@ -60,25 +61,28 @@ router.get('/trending', (req, res, next) => {
 // @route   GET /:id
 // @desc    Get all details of individual movie
 // @Access  Private
-router.get('/:id', async (req, res) => {
+router.get('/movie/:id', async (req, res) => {
   let details = {};
   let images = {};
   let cast = {};
   let reviews = {};
   let watchlinks = {};
+  let trailer = {};
   try {
     const detailsURL = `${moviedbBaseURI}movie/${req.params.id}${moviedbAPIKey}`;
     const castURL = `${moviedbBaseURI}movie/${req.params.id}/credits${moviedbAPIKey}`;
     const imagesURL = `${moviedbBaseURI}movie/${req.params.id}/images${moviedbAPIKey}&languages=en`;
     const reviewsURL = `${moviedbBaseURI}movie/${req.params.id}/reviews${moviedbAPIKey}`;
     const watchlinksURL = `${moviedbBaseURI}movie/${req.params.id}/watch/providers${moviedbAPIKey}`;
-
+    const trailerURL = `${moviedbBaseURI}movie/${req.params.id}/videos${moviedbAPIKey}`;
     // get details
     const detailsRes = await axios.get(detailsURL);
     const castsRes = await axios.get(castURL);
     const imagesRes = await axios.get(imagesURL);
     const reviewsRes = await axios.get(reviewsURL);
     const watchlinksRes = await axios.get(watchlinksURL);
+    const trailerRes = await axios.get(trailerURL);
+    // Need to add media and videos
 
     // build required objects
     details = {
@@ -118,12 +122,17 @@ router.get('/:id', async (req, res) => {
 
     watchlinks = watchlinksRes.data.results['IN'];
 
+    trailer = trailerRes.data.results.filter((trailer) => {
+      return trailer.type === 'Trailer';
+    })[0];
+
     const response = {
       details: details,
       cast: cast,
       images: images,
       reviews: reviews,
       watchlinks: watchlinks,
+      trailer: trailer,
     };
 
     res.json(response);

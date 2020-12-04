@@ -43,12 +43,12 @@ const MovieDetails = ({
             </span>
             <span>Director</span>
           </div>
-          <div className="d-flex flex-sm-column">
+          {/* <div className="d-flex flex-sm-column">
             <span className="mb-sm-0 pad-xs">
               <strong>{screenplay.name}</strong>
             </span>
             <span>Screenplay</span>
-          </div>
+          </div> */}
           <div className="d-flex flex-sm-column">
             <span className="mb-sm-0 pad-xs">
               <strong>{producer.name}</strong>
