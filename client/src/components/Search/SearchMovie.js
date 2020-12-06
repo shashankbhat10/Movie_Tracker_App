@@ -2,13 +2,24 @@ import React, { useEffect, useState } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { searchText } from '../../actions/search';
+import { searchText, updateSearchFilter } from '../../actions/search';
 import Spinner from '../Utility/Spinner';
 import SearchFilter from './SearchFilter';
 import SearchResults from './SearchResults';
 
-const Search = ({ searchText, location, searchedResults, loading }) => {
-  const [resultType, updateResultType] = useState('movie');
+const Search = ({
+  searchText,
+  location,
+  searchedResults,
+  loading,
+  currentFilter,
+  updateSearchFilter,
+}) => {
+  // const [resultType, updateResultType] = useState('movie');
+
+  const updateFilter = (filterType) => {
+    updateSearchFilter(filterType);
+  };
 
   useEffect(() => {
     searchText(location.search);
@@ -21,12 +32,12 @@ const Search = ({ searchText, location, searchedResults, loading }) => {
       ) : (
         <div className="d-md-flex py-3 px-3">
           <SearchFilter
-            resultType={resultType}
-            updateResultType={updateResultType}
+            resultType={currentFilter}
+            updateFilter={updateFilter}
             searchedResults={searchedResults}
           />
           <SearchResults
-            resultType={resultType}
+            // resultType={currentFilter}
             searchedResults={searchedResults}
             queryString={location.search}
           />
@@ -39,9 +50,10 @@ const Search = ({ searchText, location, searchedResults, loading }) => {
 const mapStateToProps = (state) => ({
   searchedResults: state.search,
   loading: state.search.loading,
+  currentFilter: state.search.currentFilter,
 });
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, { searchText })
+  connect(mapStateToProps, { searchText, updateSearchFilter })
 )(Search);

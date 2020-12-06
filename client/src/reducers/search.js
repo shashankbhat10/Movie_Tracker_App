@@ -1,7 +1,9 @@
 import {
+  LOADING_MORE,
   LOADING_SEARCH,
   NEXT_PAGE_LOADED,
   SEARCH_FINISHED,
+  UPDATE_FILTER,
 } from '../actions/types';
 
 const initialState = {
@@ -10,7 +12,8 @@ const initialState = {
   people: {},
   company: {},
   loading: true,
-  page: 1,
+  loading_more: false,
+  currentFilter: 'movie',
 };
 
 export default function (state = initialState, action) {
@@ -35,27 +38,113 @@ export default function (state = initialState, action) {
             ? payload.company
             : null,
         loading: false,
-        page: 1,
       };
     case LOADING_SEARCH:
       return { ...state, loading: true };
     case NEXT_PAGE_LOADED:
-      console.log(payload.resultType);
-      switch (payload.resultType) {
+      let set = new Set();
+      let result;
+      switch (state.currentFilter) {
         case 'movie':
-          const updatedMovies = state.movies.data.concat(
-            payload.searchResult.results
-          );
+          result = [...state.movies.data];
+
+          result.forEach((item) => {
+            if (!set.has(item.id)) {
+              set.add(item.id);
+            }
+          });
+          payload.results.forEach((item) => {
+            if (!set.has(item.id)) {
+              set.add(item.id);
+              result.push(item);
+            }
+          });
           return {
             ...state,
-            movies: { ...state.movies, data: updatedMovies },
-            loading: false,
-            page: payload.pageNumber,
+            movies: {
+              ...state.movies,
+              data: result,
+              currentPage: payload.page,
+            },
+            loading_more: false,
+          };
+        case 'tv':
+          result = [...state.tv.data];
+
+          result.forEach((item) => {
+            if (!set.has(item.id)) {
+              set.add(item.id);
+            }
+          });
+          payload.results.forEach((item) => {
+            if (!set.has(item.id)) {
+              set.add(item.id);
+              result.push(item);
+            }
+          });
+          return {
+            ...state,
+            tv: {
+              ...state.tv,
+              data: result,
+              currentPage: payload.page,
+            },
+            loading_more: false,
+          };
+        case 'person':
+          result = [...state.people.data];
+
+          result.forEach((item) => {
+            if (!set.has(item.id)) {
+              set.add(item.id);
+            }
+          });
+          payload.results.forEach((item) => {
+            if (!set.has(item.id)) {
+              set.add(item.id);
+              result.push(item);
+            }
+          });
+          return {
+            ...state,
+            people: {
+              ...state.people,
+              data: result,
+              currentPage: payload.page,
+            },
+            loading_more: false,
+          };
+        case 'company':
+          result = [...state.company.data];
+
+          result.forEach((item) => {
+            if (!set.has(item.id)) {
+              set.add(item.id);
+            }
+          });
+          payload.results.forEach((item) => {
+            if (!set.has(item.id)) {
+              set.add(item.id);
+              result.push(item);
+            }
+          });
+          return {
+            ...state,
+            company: {
+              ...state.company,
+              data: result,
+              currentPage: payload.page,
+            },
+            loading_more: false,
           };
         default:
           console.log(payload.resultType);
           return { ...state };
       }
+    case LOADING_MORE:
+      return { ...state, loading_more: true };
+    case UPDATE_FILTER:
+      return { ...state, currentFilter: payload };
     default:
       return { ...state };
   }

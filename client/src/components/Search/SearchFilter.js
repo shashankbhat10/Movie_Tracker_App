@@ -1,6 +1,6 @@
 import React from 'react';
 
-const SearchFilter = ({ resultType, updateResultType, searchedResults }) => {
+const SearchFilter = ({ resultType, updateFilter, searchedResults }) => {
   return (
     <div className="search-filter">
       <span className="align-self-center py-2">
@@ -8,7 +8,7 @@ const SearchFilter = ({ resultType, updateResultType, searchedResults }) => {
       </span>
       <div
         className="filter-options d-flex flex-row px-3 py-2 mx-auto"
-        onClick={() => updateResultType('movie')}
+        onClick={() => updateFilter('movie')}
       >
         <span>Movie</span>
         <span className="filter-count ml-auto">
@@ -17,7 +17,9 @@ const SearchFilter = ({ resultType, updateResultType, searchedResults }) => {
       </div>
       <div
         className="filter-options d-flex flex-row px-3 py-2 mx-auto"
-        onClick={() => updateResultType('tv')}
+        onClick={() => {
+          updateFilter('tv');
+        }}
       >
         <span>TV</span>
         <span className="filter-count ml-auto">
@@ -26,7 +28,7 @@ const SearchFilter = ({ resultType, updateResultType, searchedResults }) => {
       </div>
       <div
         className="filter-options d-flex flex-row px-3 py-2 mx-auto"
-        onClick={() => updateResultType('people')}
+        onClick={() => updateFilter('person')}
       >
         <span>People</span>
         <span className="filter-count ml-auto">
@@ -35,14 +37,14 @@ const SearchFilter = ({ resultType, updateResultType, searchedResults }) => {
       </div>
       <div
         className="filter-options d-flex flex-row px-3 py-2 mx-auto"
-        onClick={() => updateResultType('company')}
+        onClick={() => updateFilter('company')}
       >
         <span>Company</span>
         <span className="filter-count ml-auto">
           {searchedResults.company.totalResults}
         </span>
       </div>
-      <span>{resultType}</span>
+      {console.log(resultType)}
     </div>
   );
 };
