@@ -220,11 +220,57 @@ body{
 
 .filter-count {
   justify-self: center;
-  width: 15%;
+  width: 20%;
+  text-align: center;
   border: 1px solid black;
   background-color: white;
 }
 
 .filter-options:hover{
   cursor: pointer;
+}
+
+.search-result-container {
+  width: 75%;
+  border: 1px solid black;
+}
+
+.search-result {
+  width: 80%;
+  background-color: aqua;
+}
+
+.search-poster {
+  width: auto;
+  height: 100%;
+  margin-top: auto;
+  margin-bottom: auto;
+
+  @media only screen and (max-width: 420px) {
+    width: 85%;
+    padding: 0;
+    flex-direction: column;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+.searched-result {
+  width: 100%;
+  height: 200px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  border: 1px solid black;
+  @media only screen and (max-width: 1024px) {
+    // width: 85%;
+    // padding: 0;
+    // flex-direction: column;
+    // margin-left: auto;
+    // margin-right: auto;
+    width: 100%;
+    height: auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border: 1px solid black;
+  }
 }

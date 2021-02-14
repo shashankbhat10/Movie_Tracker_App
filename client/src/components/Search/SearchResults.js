@@ -63,35 +63,35 @@ const SearchResults = ({
   };
 
   return (
-    <div>
-      <ul>
-        {console.log('ResultType: ' + currentFilter)}
-        {currentFilter === 'movie' && (
-          <DisplayMovieResults
-            // movies={searchedResults.movies}
-            loadMoreResults={loadMoreResults}
-          />
-        )}
-        {currentFilter === 'tv' && (
-          <DisplayTVResults
-            tv={searchedResults.tv}
-            loadMoreResults={loadMoreResults}
-          />
-        )}
-        {currentFilter === 'person' && (
-          <DisplayPeopleResults
-            people={searchedResults.people}
-            loadMoreResults={loadMoreResults}
-          />
-        )}
-        {currentFilter === 'company' && (
-          <DisplayCompanyResults
-            company={searchedResults.company}
-            loadMoreResults={loadMoreResults}
-          />
-        )}
+    <div className="search-result-container">
+      {/* <ul> */}
+      {console.log('ResultType: ' + currentFilter)}
+      {currentFilter === 'movie' && (
+        <DisplayMovieResults
+          // movies={searchedResults.movies}
+          loadMoreResults={loadMoreResults}
+        />
+      )}
+      {currentFilter === 'tv' && (
+        <DisplayTVResults
+          tv={searchedResults.tv}
+          loadMoreResults={loadMoreResults}
+        />
+      )}
+      {currentFilter === 'person' && (
+        <DisplayPeopleResults
+          people={searchedResults.people}
+          loadMoreResults={loadMoreResults}
+        />
+      )}
+      {currentFilter === 'company' && (
+        <DisplayCompanyResults
+          company={searchedResults.company}
+          loadMoreResults={loadMoreResults}
+        />
+      )}
 
-        {/* {resultData.data.map((result, index) => {
+      {/* {resultData.data.map((result, index) => {
           if (resultData.data.length === index + 1) {
             return (
               <li ref={lastSearchedResult} key={`searchedResult_${result.id}`}>
@@ -106,7 +106,7 @@ const SearchResults = ({
             );
           }
         })} */}
-      </ul>
+      {/* </ul> */}
       <div className="mt-auto">
         {/* {searchedResults.page < resultData.totalPages && (
           // <button

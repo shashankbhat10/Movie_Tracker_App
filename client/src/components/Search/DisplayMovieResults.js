@@ -1,6 +1,8 @@
 import React, { useRef, useCallback } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
 
 const DisplayMovieResults = ({ movies, loadMoreResults }) => {
   const observer = useRef();
@@ -29,32 +31,56 @@ const DisplayMovieResults = ({ movies, loadMoreResults }) => {
 
   return (
     <div>
-      <ul>
+      <ul style={{ listStyleType: 'none' }}>
         {console.log('Movie Page Number: ' + movies.currentPage)}
         {movies.data.map((movie, index) => {
-          // return (
-          //   <li key={`searchedResult_${movie.id}`} className="py-5">
-          //     {movie.title}
-          //   </li>
-          // );
-
-          if (movies.data.length === index + 1) {
-            return (
-              <li
-                ref={lastSearchedResult}
-                key={`movie_${movie.id}`}
-                className="py-5"
+          return (
+            <li
+              key={`searchedResult_${movie.id}`}
+              className="row py-1"
+              style={{
+                margin: '10px 10px 10px 10px',
+              }}
+              ref={movies.data.length === index + 1 ? lastSearchedResult : null}
+            >
+              <div
+                style={{
+                  display: 'flex',
+                  borderRadius: '10px',
+                  border: '1px solid black',
+                  width: '100%',
+                  height: 'auto',
+                  backgroundColor: 'cyan',
+                  overflow: 'hidden',
+                  maxHeight: '15em',
+                  minWidth: '500px',
+                }}
               >
-                {movie.title}
-              </li>
-            );
-          } else {
-            return (
-              <li key={`searchedResult_${movie.id}`} className="py-5">
-                {movie.title}
-              </li>
-            );
-          }
+                <Link to={`movie/${movie.id}`} className="col-md-3 pl-0">
+                  <img
+                    style={{ width: 'auto', maxWidth: '100%', height: '100%' }}
+                    src={`https://image.tmdb.org/t/p/w342${movie.poster_path}`}
+                  />
+                </Link>
+                <div className="col-md-9 pt-2">
+                  <div className="d-flex">
+                    <Link
+                      to={`movie/${movie.id}`}
+                      style={{ textDecoration: 'none' }}
+                    >
+                      <h5 className="mb-0">{movie.title}</h5>
+                    </Link>
+                    <span className="pl-3">
+                      {movie.vote_average}
+                      <FontAwesomeIcon icon={faStar} className="pl-1" />
+                    </span>
+                  </div>
+                  <span>{movie.release_date}</span>
+                  <p className="pt-2">{movie.overview}</p>
+                </div>
+              </div>
+            </li>
+          );
         })}
       </ul>
     </div>

@@ -3,7 +3,7 @@ import React from 'react';
 const SearchFilter = ({ resultType, updateFilter, searchedResults }) => {
   return (
     <div className="search-filter">
-      <span className="align-self-center py-2">
+      <span className="align-self-center py-3">
         <strong>Search Results</strong>
       </span>
       <div
@@ -40,9 +40,9 @@ const SearchFilter = ({ resultType, updateFilter, searchedResults }) => {
         onClick={() => updateFilter('company')}
       >
         <span>Company</span>
-        <span className="filter-count ml-auto">
+        <div className="filter-count ml-auto">
           {searchedResults.company.totalResults}
-        </span>
+        </div>
       </div>
       {console.log(resultType)}
     </div>
