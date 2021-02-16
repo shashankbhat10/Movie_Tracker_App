@@ -7,6 +7,7 @@ import Spinner from '../Utility/Spinner';
 import MovieCast from './MovieCast';
 import MovieAdditionalDetails from './MovieAdditionalDetails';
 import MovieWatchlink from './MovieWatchlink';
+import MovieReview from './MovieReview';
 
 const Movie = ({
   getMovieById,
@@ -18,6 +19,7 @@ const Movie = ({
   trailer,
   loading,
   watchlinks,
+  reviews,
 }) => {
   useEffect(() => {
     getMovieById(match.params.id);
@@ -49,7 +51,9 @@ const Movie = ({
             <MovieCast cast={cast.cast} />
           </div>
           <div>{watchlinks && <MovieWatchlink watchlinks={watchlinks} />}</div>
-          <div>Review</div>
+          <div>
+            <MovieReview reviews={reviews} />
+          </div>
           <div>Media</div>
           <div>Similar Movies</div>
         </div>
@@ -66,6 +70,7 @@ const mapStateToProps = (state) => ({
   loading: state.movie.loading,
   trailer: state.movie.trailer,
   watchlinks: state.movie.watchlinks,
+  reviews: state.movie.reviews,
 });
 
 export default connect(mapStateToProps, { getMovieById })(Movie);
