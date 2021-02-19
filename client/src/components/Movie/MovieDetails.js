@@ -37,24 +37,30 @@ const MovieDetails = ({
           </div>
         </div>
         <div className="d-flex flex-column flex-sm-row justify-content-between mt-auto pb-sm-3 pr-sm-2 align-sm-items-center">
-          <div className="d-flex flex-sm-column">
-            <span className="mb-sm-0 pad-xs">
-              <strong>{director.name}</strong>
-            </span>
-            <span>Director</span>
-          </div>
-          {/* <div className="d-flex flex-sm-column">
-            <span className="mb-sm-0 pad-xs">
-              <strong>{screenplay.name}</strong>
-            </span>
-            <span>Screenplay</span>
-          </div> */}
-          <div className="d-flex flex-sm-column">
-            <span className="mb-sm-0 pad-xs">
-              <strong>{producer.name}</strong>
-            </span>
-            <span>Producer</span>
-          </div>
+          {director !== undefined && (
+            <div className="d-flex flex-sm-column">
+              <span className="mb-sm-0 pad-xs">
+                <strong>{director.name}</strong>
+              </span>
+              <span>Director</span>
+            </div>
+          )}
+          {screenplay !== undefined && (
+            <div className="d-flex flex-sm-column">
+              <span className="mb-sm-0 pad-xs">
+                <strong>{screenplay.name}</strong>
+              </span>
+              <span>Screenplay</span>
+            </div>
+          )}
+          {producer !== undefined && (
+            <div className="d-flex flex-sm-column">
+              <span className="mb-sm-0 pad-xs">
+                <strong>{producer !== null && producer.name}</strong>
+              </span>
+              <span>Producer</span>
+            </div>
+          )}
         </div>
       </div>
     </div>

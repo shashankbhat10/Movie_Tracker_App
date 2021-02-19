@@ -8,6 +8,8 @@ import MovieCast from './MovieCast';
 import MovieAdditionalDetails from './MovieAdditionalDetails';
 import MovieWatchlink from './MovieWatchlink';
 import MovieReview from './MovieReview';
+import MovieMedia from './MovieMedia/MovieMedia';
+import MovieSimilar from './MovieSimilar';
 
 const Movie = ({
   getMovieById,
@@ -20,10 +22,13 @@ const Movie = ({
   loading,
   watchlinks,
   reviews,
+  media,
+  similarMovies,
 }) => {
   useEffect(() => {
     getMovieById(match.params.id);
-  }, [getMovieById]);
+  }, [getMovieById, match.params.id]);
+
   return (
     <Fragment>
       {loading ? (
@@ -54,8 +59,12 @@ const Movie = ({
           <div>
             <MovieReview reviews={reviews} />
           </div>
-          <div>Media</div>
-          <div>Similar Movies</div>
+          <div>
+            <MovieMedia posters={media.posters} backdrops={media.backdrops} />
+          </div>
+          <div>
+            <MovieSimilar movies={similarMovies} />
+          </div>
         </div>
       )}
     </Fragment>
@@ -71,6 +80,8 @@ const mapStateToProps = (state) => ({
   trailer: state.movie.trailer,
   watchlinks: state.movie.watchlinks,
   reviews: state.movie.reviews,
+  media: state.movie.media,
+  similarMovies: state.movie.similar,
 });
 
 export default connect(mapStateToProps, { getMovieById })(Movie);

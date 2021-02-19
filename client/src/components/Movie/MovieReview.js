@@ -45,11 +45,13 @@ const MovieReview = ({ reviews }) => {
               return (
                 <div className="d-flex" key={`review_${index}_${review.id}`}>
                   <span>
-                    {console.log(
-                      review['author_details']['avatar_path'].substring(1)
-                    )}
+                    {console.log(review['author_details']['avatar_path'])}
                     <img
-                      src={review['author_details']['avatar_path'].substring(1)}
+                      src={
+                        review['author_details']['avatar_path'] !== null
+                          ? review['author_details']['avatar_path'].substring(1)
+                          : null
+                      }
                       alt="avatar"
                       className="pt-2 pb-auto pl-3"
                       style={{ borderRadius: '50%' }}

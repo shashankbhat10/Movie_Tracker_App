@@ -1,6 +1,7 @@
 export const SET_ALERT = 'SET_ALERT';
 export const REMOVE_ALERT = 'REMOVE_ALERT';
 export const MOVIE_LOADED = 'GET_MOVIE';
+export const MOVIE_LOADING = 'MOVIE_LOADING';
 export const CLEAR_MOVIE = 'CLEAR_MOVIE';
 export const LOAD_TRAILER = 'LOAD_TRAILER';
 export const UNLOAD_TRAILER = 'UNLOAD_TRAILER';

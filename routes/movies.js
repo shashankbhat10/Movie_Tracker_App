@@ -68,6 +68,8 @@ router.get('/movie/:id', async (req, res) => {
   let reviews = {};
   let watchlinks = {};
   let trailer = {};
+  let similar = {};
+  let media = {};
   try {
     const detailsURL = `${moviedbBaseURI}movie/${req.params.id}${moviedbAPIKey}`;
     const castURL = `${moviedbBaseURI}movie/${req.params.id}/credits${moviedbAPIKey}`;
@@ -75,6 +77,8 @@ router.get('/movie/:id', async (req, res) => {
     const reviewsURL = `${moviedbBaseURI}movie/${req.params.id}/reviews${moviedbAPIKey}`;
     const watchlinksURL = `${moviedbBaseURI}movie/${req.params.id}/watch/providers${moviedbAPIKey}`;
     const trailerURL = `${moviedbBaseURI}movie/${req.params.id}/videos${moviedbAPIKey}`;
+    const similarURL = `${moviedbBaseURI}movie/${req.params.id}/similar${moviedbAPIKey}`;
+
     // get details
     const detailsRes = await axios.get(detailsURL);
     const castsRes = await axios.get(castURL);
@@ -82,6 +86,7 @@ router.get('/movie/:id', async (req, res) => {
     const reviewsRes = await axios.get(reviewsURL);
     const watchlinksRes = await axios.get(watchlinksURL);
     const trailerRes = await axios.get(trailerURL);
+    const similarRes = await axios.get(similarURL);
     // Need to add media and videos
 
     // build required objects
@@ -100,6 +105,8 @@ router.get('/movie/:id', async (req, res) => {
     });
     details['genres'] = genres;
 
+    // Send 1st poster and backdrop as main images
+    // ToDo: Refactor object name
     images = {
       poster: imagesRes.data.posters[0].file_path,
       backdrop: imagesRes.data.backdrops[0].file_path,
@@ -120,11 +127,57 @@ router.get('/movie/:id', async (req, res) => {
 
     reviews = reviewsRes.data;
 
+    // Get Watchlinks based on Region
+    // ToDo: Get high-level location data such as country to send proper watchlink
     watchlinks = watchlinksRes.data.results['IN'];
 
+    // Send 1st trailer as main trailer
     trailer = trailerRes.data.results.filter((trailer) => {
       return trailer.type === 'Trailer';
     })[0];
+
+    // Process Similar Movie response
+    similar = similarRes.data.results
+      .map((result) => {
+        return {
+          id: result.id,
+          release_date: result.release_date,
+          title: result.title,
+          backdrop_path: result.backdrop_path,
+          popularity: result.popularity,
+        };
+      })
+      .sort((a, b) => {
+        return b.popularity - a.popularity;
+      });
+
+    // Process media response
+    const poster_count = imagesRes.data.posters.length;
+    const backdrop_count = imagesRes.data.backdrops.length;
+    const video_count = trailerRes.data.results.length;
+    media = {
+      posters: {
+        count: poster_count,
+        images: imagesRes.data.posters.slice(
+          0,
+          poster_count > 15 ? 15 : poster_count
+        ),
+      },
+      backdrops: {
+        count: backdrop_count,
+        images: imagesRes.data.backdrops.slice(
+          0,
+          backdrop_count > 15 ? 15 : backdrop_count
+        ),
+      },
+      videos: {
+        count: video_count,
+        videos: trailerRes.data.results.slice(
+          0,
+          video_count > 15 ? 15 : video_count
+        ),
+      },
+    };
 
     const response = {
       details: details,
@@ -133,6 +186,8 @@ router.get('/movie/:id', async (req, res) => {
       reviews: reviews,
       watchlinks: watchlinks,
       trailer: trailer,
+      similar: similar,
+      media: media,
     };
 
     res.json(response);

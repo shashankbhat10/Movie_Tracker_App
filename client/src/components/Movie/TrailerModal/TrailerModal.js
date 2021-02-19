@@ -8,12 +8,14 @@ const TrailerModal = ({ name, trailerKey }) => {
   return (
     <Fragment>
       <button onClick={() => setModalShow(!showModal)}>Show Trailer</button>
-      <Modal
-        showModal={showModal}
-        setModalShow={setModalShow}
-        name={name}
-        trailerKey={trailerKey}
-      />
+      {showModal && (
+        <Modal
+          showModal={showModal}
+          setModalShow={setModalShow}
+          name={name}
+          trailerKey={trailerKey}
+        />
+      )}
     </Fragment>
   );
 };
