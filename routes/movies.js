@@ -23,6 +23,7 @@ router.get('/popular', (req, res) => {
         movie_data['overview'] = movie.overview;
         movie_data['poster_path'] = movie.poster_path;
         movie_data['language'] = movie.original_language;
+        movie_data['backdrop_path'] = movie.backdrop_path;
 
         movies.push(movie_data);
       });
@@ -41,7 +42,6 @@ router.get('/trending', (req, res, next) => {
   axios
     .get(url)
     .then((response) => {
-      console.log(response.data.results);
       response.data.results.map((movie) => {
         let movie_data = {};
         movie_data['title'] = movie.title;
@@ -50,6 +50,7 @@ router.get('/trending', (req, res, next) => {
         movie_data['overview'] = movie.overview;
         movie_data['poster_path'] = movie.poster_path;
         movie_data['language'] = movie.original_language;
+        movie_data['backdrop_path'] = movie.backdrop_path;
 
         movies.push(movie_data);
       });
@@ -194,6 +195,22 @@ router.get('/movie/:id', async (req, res) => {
   } catch (err) {
     console.log(err.message);
     res.json({ msg: 'Server Error' });
+  }
+});
+
+// @route   GET /genres
+// @desc    Get list of genres of movies
+// @Access  Private
+router.get('/genres', async (req, res) => {
+  try {
+    const genresRes = await axios.get(
+      `${moviedbBaseURI}genre/movie/list${moviedbAPIKey}`
+    );
+
+    res.json(genresRes.data);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({ msg: 'Server Error' });
   }
 });
 

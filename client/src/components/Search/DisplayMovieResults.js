@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
+import noImage from '../../images/download.png';
 
 const DisplayMovieResults = ({ movies, loadMoreResults }) => {
   const observer = useRef();
@@ -59,7 +60,11 @@ const DisplayMovieResults = ({ movies, loadMoreResults }) => {
                 <Link to={`movie/${movie.id}`} className="col-md-3 pl-0">
                   <img
                     style={{ width: 'auto', maxWidth: '100%', height: '100%' }}
-                    src={`https://image.tmdb.org/t/p/w342${movie.poster_path}`}
+                    src={
+                      movie.poster_path === null
+                        ? noImage
+                        : `https://image.tmdb.org/t/p/w342${movie.poster_path}`
+                    }
                   />
                 </Link>
                 <div className="col-md-9 pt-2">
