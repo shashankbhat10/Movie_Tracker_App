@@ -3,7 +3,8 @@ Todo for project:
 [ ] - Add Login/Register Page
 [ ] - Add Authentication
 [ ] - Add Clean base Styling
-[ ] - Add Dashboard
+[ X ] - Add Dashboard
+[ ] - Add random banner image to Dashboard
 [ ] - Add Node Scraper for getting actual watchlinks
 [ ] - Complete search module display for TV
 [ ] - Complete search module display for People
@@ -13,6 +14,8 @@ Todo for project:
 [ ] - Feature to add/edit/delete rating
 [ ] - Feature to create lists
 [ ] - Add Watchlist feature
-[ ] - Add TMDB Recommendation based
+[ ] - Add TMDB Recommendation
 [ ] - Add Custom Movie recommendation
 [ ] - Add Separate Review Page
+[ ] - Create Video Section in Movie/TV Media
+[ ] - Add Discover Section

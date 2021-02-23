@@ -12,9 +12,9 @@ const DashboardDiscover = ({
   selectRandomGenres,
 }) => {
   const loadMoreGenres = () => {
-    console.log('IN DASHBOARD DISCOVER');
     selectRandomGenres(movieGenre.remaining, tvGenre.remaining);
   };
+
   return (
     <Fragment>
       {console.log(loading)}

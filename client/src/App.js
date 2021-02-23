@@ -6,6 +6,7 @@ import './App.scss';
 import Dashboard from './components/Dashboard/Dashboard';
 import Movie from './components/Movie/Movie';
 import Search from './components/Search/SearchMovie';
+import TV from './components/TV/TV';
 import Navbar from './components/Utility/Navbar';
 
 import store from './store';
@@ -20,6 +21,7 @@ function App() {
           <Route exact path="/dashboard" component={Dashboard} />
           <Route exact path="/movie/:id" component={Movie} />
           <Route exact path="/search" component={Search} />
+          <Route exact path="/tv/:id" component={TV} />
         </Switch>
       </Router>
     </Provider>

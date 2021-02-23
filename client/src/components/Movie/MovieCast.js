@@ -13,10 +13,7 @@ const MovieCast = ({ cast }) => {
           <div className="d-flex flex-row flex-nowrap my-2 ">
             {cast.map((c, index) => {
               return (
-                <div
-                  className="cast-card mr-1 ml-1 d-flex flex-column"
-                  key={index}
-                >
+                <div className="cast-card mx-1 d-flex flex-column" key={index}>
                   <img
                     src={`https://image.tmdb.org/t/p/w185${c.profile_path}`}
                     alt=""

@@ -71,4 +71,132 @@ router.get('/genres', async (req, res) => {
   }
 });
 
+// @route   GET /:id
+// @desc    Get details of TV show
+// @Access  Private
+router.get('/:id', async (req, res) => {
+  try {
+    const detailsRes = await axios.get(
+      `${moviedbBaseURI}tv/${req.params.id}${moviedbAPIKey}`
+    );
+    const castRes = await axios.get(
+      `${moviedbBaseURI}tv/${req.params.id}/aggregate_credits${moviedbAPIKey}`
+    );
+    const watchproviderRes = await axios.get(
+      `${moviedbBaseURI}tv/${req.params.id}/watch/providers${moviedbAPIKey}`
+    );
+    const reviewRes = await axios.get(
+      `${moviedbBaseURI}tv/${req.params.id}/reviews${moviedbAPIKey}&language=en-US&page=1`
+    );
+    const mediaRes = await axios.get(
+      `${moviedbBaseURI}tv/${req.params.id}/images${moviedbAPIKey}`
+    );
+    const videoRes = await axios.get(
+      `${moviedbBaseURI}tv/${req.params.id}/videos${moviedbAPIKey}`
+    );
+    const similarRes = await axios.get(
+      `${moviedbBaseURI}tv/${req.params.id}/similar${moviedbAPIKey}`
+    );
+    const externalRes = await axios.get(
+      `${moviedbBaseURI}tv/${req.params.id}/external_ids${moviedbAPIKey}`
+    );
+    const languageRes = await axios.get(
+      `${moviedbBaseURI}configuration/languages${moviedbAPIKey}`
+    );
+
+    const show = {
+      id: detailsRes.data.id,
+      name: detailsRes.data.name,
+      numberOfSeasons: detailsRes.data.number_of_seasons,
+      overview: detailsRes.data.overview,
+      backdrop_path: detailsRes.data.backdrop_path,
+      poster_path: detailsRes.data.poster_path,
+      seasons: detailsRes.data.seasons,
+      tagline: detailsRes.data.tagline,
+      inProduction: detailsRes.data.in_production,
+      genres: detailsRes.data.genres,
+      startDate: detailsRes.data.first_air_date,
+    };
+
+    const cast = castRes.data.cast.map((cast) => {
+      return {
+        id: cast.id,
+        name: cast.name,
+        profile_path: cast.profile_path,
+        character: cast.roles.map((role) => role.character).join(' / '),
+        episodeCount: cast.total_episode_count,
+      };
+    });
+
+    const watch = watchproviderRes.data.results['IN'];
+
+    const reviews = reviewRes.data;
+
+    const images = mediaRes.data;
+
+    const videos = videoRes.data.results;
+
+    const posterCount = images.posters.length;
+    const backdropCount = images.backdrops.length;
+    const videoCount = videos.length;
+    const media = {
+      posters: {
+        count: posterCount,
+        images: images.posters.slice(0, posterCount > 15 ? 15 : posterCount),
+      },
+      backdrops: {
+        count: backdropCount,
+        images: images.backdrops.slice(
+          0,
+          backdropCount > 15 ? 15 : backdropCount
+        ),
+      },
+      videos: {
+        count: videoCount,
+        videos: videos.slice(0, videoCount > 15 ? 15 : videoCount),
+      },
+    };
+
+    const similar = similarRes.data.results;
+
+    const links = {
+      homepage: detailsRes.data.homepage,
+      social: {
+        facebook: externalRes.data.facebook_id,
+        instagram: externalRes.data.instagram_id,
+        twitter: externalRes.data.twitter_id,
+      },
+    };
+
+    const additionalDetails = {
+      episodeRunTime: detailsRes.data.episode_run_time[0],
+      status: detailsRes.data.status,
+      type: detailsRes.data.type,
+      originalLanguage: languageRes.data.filter(
+        (lang) => lang['iso_639_1'] === detailsRes.data.original_language
+      )[0].english_name,
+      networks: detailsRes.data.networks,
+      firstAirDate: detailsRes.data.first_air_date,
+      production: detailsRes.data.production_companies.filter(
+        (company) => company.logo_path !== null
+      ),
+    };
+
+    const response = {
+      details: show,
+      additionalDetails: additionalDetails,
+      cast: cast,
+      providers: watch,
+      reviews: reviews,
+      media: media,
+      similar: similar,
+      links: links,
+    };
+
+    res.json(response);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send({ msg: 'Server Error' });
+  }
+});
 module.exports = router;

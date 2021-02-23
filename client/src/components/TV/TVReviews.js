@@ -1,8 +1,7 @@
 import React from 'react';
-import { Fragment } from 'react';
 import Slider from 'react-slick';
 
-const MovieReview = ({ reviews }) => {
+const TVReviews = ({ reviews }) => {
   const reviewsSlice = reviews.results.slice(
     0,
     reviews.results.length > 6 ? 6 : reviews.results.length
@@ -18,19 +17,20 @@ const MovieReview = ({ reviews }) => {
     autoplaySpeed: 10000,
     pauseOnHover: true,
   };
+
   return (
-    <Fragment>
-      <div
-        className="mt-4 pl-4 mx-auto"
-        style={{ border: '1px solid black', width: '95%' }}
-      >
-        <div className="d-flex justify-content-between px-3">
-          <h5>Reviews</h5>
+    <div className="mb-4 pl-4 mx-auto" style={{ width: '95%' }}>
+      <div className="d-flex justify-content-between px-3">
+        <h5>Reviews ({reviews.total_results})</h5>
+        {reviewsSlice.length !== 0 && (
           <a href="#!" target="_blank" rel="noreferrer">
             See All Reviews
           </a>
-        </div>
-        <hr className="mt-1" />
+        )}
+      </div>
+      {reviewsSlice.length === 0 ? (
+        <span className="pl-3">No Reviews found</span>
+      ) : (
         <div
           style={{
             width: '95%',
@@ -81,9 +81,9 @@ const MovieReview = ({ reviews }) => {
             })}
           </Slider>
         </div>
-      </div>
-    </Fragment>
+      )}
+    </div>
   );
 };
 
-export default MovieReview;
+export default TVReviews;
