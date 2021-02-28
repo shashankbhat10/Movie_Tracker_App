@@ -15,54 +15,56 @@ const TVAdditionalDetails = ({ details, links }) => {
       <div className="show-info d-flex flex-row justify-content-between px-3">
         <span className="d-flex flex-column align-items-center">
           <strong>Status</strong>
-          <span>{details.status}</span>
+          <span className="text-muted">{details.status}</span>
         </span>
         <span className="d-flex flex-column align-items-center">
           <strong>Original Language</strong>
-          <span>{details.originalLanguage}</span>
+          <span className="text-muted">{details.originalLanguage}</span>
         </span>
         <span className="d-flex flex-column align-items-center">
           <strong>Type</strong>
-          <span>{details.type}</span>
+          <span className="text-muted">{details.type}</span>
         </span>
         <span className="d-flex flex-column align-items-center">
           <strong>Episode Run Time</strong>
-          <span>{details.episodeRunTime} mins</span>
+          <span className="text-muted">{details.episodeRunTime} mins</span>
         </span>
         <span className="d-flex flex-column align-items-center">
           <strong>First Air Date</strong>
-          <span>{details.firstAirDate}</span>
+          <span className="text-muted">{details.firstAirDate}</span>
         </span>
       </div>
       <div
         className="d-flex flex-row justify-content-between px-3 pt-3 mx-auto"
         style={{ width: '75%' }}
       >
-        <div className="d-flex flex-column align-items-center">
-          <strong>Production</strong>
-          <div>
-            {details.production.map((company, index) => {
-              return (
-                <OverlayTrigger
-                  key={`tooltip_rent_${company.name}`}
-                  placement="right"
-                  overlay={
-                    <Tooltip id={`tooltip-${company.name}`}>
-                      {company.name}
-                    </Tooltip>
-                  }
-                >
-                  <img
-                    src={`https://image.tmdb.org/t/p/original${company.logo_path}`}
-                    alt={`${company.name}`}
-                    style={{ maxWidth: '60px' }}
-                    className="pt-1 px-1"
-                  />
-                </OverlayTrigger>
-              );
-            })}
+        {details.production.length !== 0 && (
+          <div className="d-flex flex-column align-items-center">
+            <strong>Production</strong>
+            <div>
+              {details.production.map((company, index) => {
+                return (
+                  <OverlayTrigger
+                    key={`tooltip_rent_${company.name}`}
+                    placement="right"
+                    overlay={
+                      <Tooltip id={`tooltip-${company.name}`}>
+                        {company.name}
+                      </Tooltip>
+                    }
+                  >
+                    <img
+                      src={`https://image.tmdb.org/t/p/original${company.logo_path}`}
+                      alt={`${company.name}`}
+                      style={{ maxWidth: '60px' }}
+                      className="pt-1 px-1"
+                    />
+                  </OverlayTrigger>
+                );
+              })}
+            </div>
           </div>
-        </div>
+        )}
         <div className="d-flex flex-column align-items-center">
           <strong>Networks</strong>
           <div>

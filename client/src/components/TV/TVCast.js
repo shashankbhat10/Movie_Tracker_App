@@ -1,7 +1,8 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
-const TVCast = ({ cast }) => {
+const TVCast = ({ id, cast }) => {
   return (
     <div className="px-4 mb-3">
       <h5 className="pl-3">Main Cast</h5>
@@ -19,15 +20,21 @@ const TVCast = ({ cast }) => {
                 minWidth: '140px',
               }}
             >
-              <Card.Img
-                className="profile-image"
-                style={{ width: '100%', height: 'auto' }}
-                src={`https://image.tmdb.org/t/p/w185${actor.profile_path}`}
-              />
+              <Link className="profile-image" to={`/person/${actor.id}`}>
+                <Card.Img
+                  style={{ width: '100%', height: 'auto' }}
+                  src={`https://image.tmdb.org/t/p/w185${actor.profile_path}`}
+                />
+              </Link>
               <Card.Body className="px-1 py-1 d-flex flex-column">
-                <span>
-                  <strong>{actor.name}</strong>
-                </span>
+                <Link
+                  to={`/person/${actor.id}`}
+                  style={{ textDecoration: 'none', color: 'black' }}
+                >
+                  <span>
+                    <strong>{actor.name}</strong>
+                  </span>
+                </Link>
                 <span style={{ fontSize: '90%' }}>{actor.character}</span>
                 <span className="mt-auto pl-1" style={{ fontSize: '90%' }}>
                   {actor.episodeCount} Episodes
@@ -37,7 +44,14 @@ const TVCast = ({ cast }) => {
           );
         })}
       </div>
-      <h6 className="pt-3 pl-3">Full Cast and Crew</h6>
+      <h6 className="pt-3 pl-3">
+        <Link
+          to={`/tv/${id}/complete-credits`}
+          style={{ textDecoration: 'none', color: 'black' }}
+        >
+          Full Cast and Crew
+        </Link>
+      </h6>
     </div>
   );
 };

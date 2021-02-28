@@ -17,7 +17,7 @@ const Movie = ({
   poster_path,
   backdrop_path,
   movie_details,
-  cast,
+  credits,
   trailer,
   loading,
   watchlinks,
@@ -46,14 +46,14 @@ const Movie = ({
                 image_source_poster={poster_path}
                 movie_name={movie_details.title}
               />
-              <MovieDetails details={movie_details} cast={cast} />
+              <MovieDetails details={movie_details} crew={credits.crew} />
             </div>
           </div>
           <div>
             <MovieAdditionalDetails details={movie_details} trailer={trailer} />
           </div>
           <div>
-            <MovieCast cast={cast.cast} />
+            <MovieCast cast={credits.cast} />
           </div>
           <div>{watchlinks && <MovieWatchlink watchlinks={watchlinks} />}</div>
           <div>
@@ -75,7 +75,7 @@ const mapStateToProps = (state) => ({
   poster_path: state.movie.images.poster,
   backdrop_path: state.movie.images.backdrop,
   movie_details: state.movie.details,
-  cast: state.movie.cast,
+  credits: state.movie.credits,
   loading: state.movie.loading,
   trailer: state.movie.trailer,
   watchlinks: state.movie.watchlinks,

@@ -2,8 +2,14 @@ import React from 'react';
 
 const MovieDetails = ({
   details: { title, release_date, overview, tagline, genres, runtime },
-  cast: { director, screenplay, producer },
+  crew,
 }) => {
+  const director = crew.filter((person) => person.job === 'Director')[0];
+  const screenplay = crew.filter((person) => person.job === 'Screenplay')[0];
+  const producer = crew.filter(
+    (person) => person.job === 'Executive Producer'
+  )[0];
+
   return (
     <div
       className="col-sm-8 p-3 pl-sm-5"

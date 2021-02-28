@@ -4,10 +4,12 @@ import {
   MOVIE_LOADED,
   UNLOAD_TRAILER,
   MOVIE_LOADING,
+  MOVIE_CREDITS_LOADED,
 } from './types';
 
 // Get all details for individual movie
 export const getMovieById = (movieId) => async (dispatch) => {
+  console.log('IN');
   try {
     dispatch({
       type: MOVIE_LOADING,
@@ -17,6 +19,23 @@ export const getMovieById = (movieId) => async (dispatch) => {
     dispatch({
       type: MOVIE_LOADED,
       payload: movieDetails.data,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getMovieCredits = (movieId) => async (dispatch) => {
+  console.log('IN');
+  try {
+    dispatch({
+      type: MOVIE_LOADING,
+    });
+    const movieCredits = await axios.get(`/api/movies/${movieId}/credits`);
+    console.log(movieCredits);
+    dispatch({
+      type: MOVIE_CREDITS_LOADED,
+      payload: movieCredits.data,
     });
   } catch (err) {
     console.log(err);

@@ -131,3 +131,9 @@ function getRandom(arr, n) {
   }
   return result;
 }
+
+export const clearDashboard = () => async (dispatch) => {
+  dispatch({
+    type: actionTypes.CLEAR_DASHBOARD,
+  });
+};

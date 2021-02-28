@@ -8,7 +8,7 @@ const TVBackdrops = ({ backdrops }) => {
         return (
           <Card
             className="col-md-5 px-0"
-            style={{ minWidth: '350px' }}
+            style={{ minWidth: '300px', maxWidth: '450px' }}
             key={`backdrop_${index}`}
           >
             <Card.Img

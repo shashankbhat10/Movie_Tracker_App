@@ -79,7 +79,7 @@ router.get('/:id', async (req, res) => {
     const detailsRes = await axios.get(
       `${moviedbBaseURI}tv/${req.params.id}${moviedbAPIKey}`
     );
-    const castRes = await axios.get(
+    const creditsRes = await axios.get(
       `${moviedbBaseURI}tv/${req.params.id}/aggregate_credits${moviedbAPIKey}`
     );
     const watchproviderRes = await axios.get(
@@ -118,15 +118,33 @@ router.get('/:id', async (req, res) => {
       startDate: detailsRes.data.first_air_date,
     };
 
-    const cast = castRes.data.cast.map((cast) => {
+    const cast = creditsRes.data.cast.map((cast) => {
       return {
         id: cast.id,
         name: cast.name,
         profile_path: cast.profile_path,
-        character: cast.roles.map((role) => role.character).join(' / '),
+        character: cast.roles
+          .map((role) => role.character)
+          .slice(0, cast.roles.length > 1 ? 2 : 1)
+          .join(' / '),
         episodeCount: cast.total_episode_count,
       };
     });
+    // const crewNames = {};
+    // creditsRes.data.crew.forEach((person) => {
+    //   const id = person.id;
+    //   if (!crewNames[id]) {
+    //     crewNames[id] = person;
+    //   } else {
+    //     console.log(crewNames[id]['job']);
+    //     crewNames[id]['job'] = crewNames[id]['job'].concat('/ ', person.job);
+    //   }
+    //   console.log(crewNames[id]);
+    // });
+    // const crew = [];
+    // Object.keys(crewNames).forEach((id) => crew.push(crewNames[id]));
+
+    const credits = { cast: cast, crew: creditsRes.data.crew };
 
     const watch = watchproviderRes.data.results['IN'];
 
@@ -185,7 +203,7 @@ router.get('/:id', async (req, res) => {
     const response = {
       details: show,
       additionalDetails: additionalDetails,
-      cast: cast,
+      credits: credits,
       providers: watch,
       reviews: reviews,
       media: media,
@@ -196,6 +214,53 @@ router.get('/:id', async (req, res) => {
     res.json(response);
   } catch (error) {
     console.log(error.message);
+    res.status(500).send({ msg: 'Server Error' });
+  }
+});
+
+// @route   GET /:id/credits
+// @desc    Get details of TV show
+// @Access  Private
+router.get('/:id/credits', async (req, res) => {
+  try {
+    const creditsRes = await axios.get(
+      `${moviedbBaseURI}tv/${req.params.id}/aggregate_credits${moviedbAPIKey}`
+    );
+
+    const cast = creditsRes.data.cast.map((cast) => {
+      return {
+        id: cast.id,
+        name: cast.name,
+        profile_path: cast.profile_path,
+        character: cast.roles
+          .map((role) => role.character)
+          .slice(0, cast.roles.length > 1 ? 2 : 1)
+          .join(' / '),
+        episodeCount: cast.total_episode_count,
+      };
+    });
+
+    const crewNames = {};
+    creditsRes.data.crew.forEach((person) => {
+      const id = person.id;
+      if (!crewNames[id]) {
+        crewNames[id] = person;
+      } else {
+        crewNames[id]['jobs'].push(...person.jobs);
+      }
+    });
+    const crew = [];
+    Object.keys(crewNames).forEach((id) => crew.push(crewNames[id]));
+    crew.sort((a, b) => b.total_episode_count - a.total_episode_count);
+
+    const credits = {
+      cast: cast,
+      crew: crew,
+    };
+
+    res.json(credits);
+  } catch (err) {
+    console.log(err.message);
     res.status(500).send({ msg: 'Server Error' });
   }
 });

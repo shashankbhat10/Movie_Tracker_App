@@ -5,44 +5,51 @@ import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 const TVWatchProviders = ({ providers }) => {
   return (
     <div className="pl-3 mb-3 mx-auto" style={{ width: '95%' }}>
-      <div className="d-flex flex-row">
-        <h5 className="mb-0">Where to Watch?</h5>
-        <a
-          href={providers.link}
-          target="_blank"
-          rel="noreferrer"
-          className="pl-3"
-        >
-          TMDB <FontAwesomeIcon icon={faExternalLinkAlt} />
-        </a>
-      </div>
-      <div className="pl-2">
-        {Object.keys(providers)
-          .slice(1)
-          .map((provider) => {
-            return (
-              <div
-                className="d-flex align-items-center"
-                key={`watch_${provider.id}`}
-              >
-                <span style={{ width: '100px' }}>
-                  {provider.charAt(0).toUpperCase() + provider.slice(1)}
-                </span>
-                {providers[provider].map((stream, index) => {
-                  return (
-                    <span key={`stream_${stream.provider_id}`} className="pl-4">
-                      <img
-                        className="watch-logo"
-                        src={`https://image.tmdb.org/t/p/original${stream.logo_path}`}
-                        alt={stream.provider_name}
-                      />
+      <h5>Providers</h5>
+      {providers === undefined && <span>No Watch Providers found!</span>}
+      {providers !== undefined && (
+        <div>
+          <div className="d-flex flex-row">
+            <h5 className="mb-0">Where to Watch?</h5>
+            <a
+              href={providers.link}
+              target="_blank"
+              rel="noreferrer"
+              className="pl-3"
+            >
+              TMDB <FontAwesomeIcon icon={faExternalLinkAlt} />
+            </a>
+          </div>
+          <div className="pl-2">
+            {Object.keys(providers)
+              .slice(1)
+              .map((provider) => {
+                return (
+                  <div
+                    className="d-flex align-items-center"
+                    key={`watch_${provider.id}`}
+                  >
+                    <span style={{ width: '100px' }}>
+                      {provider.charAt(0).toUpperCase() + provider.slice(1)}
                     </span>
-                  );
-                })}
-              </div>
-            );
-          })}
-        {/* {providers['flatrate'] !== undefined && (
+                    {providers[provider].map((stream, index) => {
+                      return (
+                        <span
+                          key={`stream_${stream.provider_id}`}
+                          className="pl-4"
+                        >
+                          <img
+                            className="watch-logo"
+                            src={`https://image.tmdb.org/t/p/original${stream.logo_path}`}
+                            alt={stream.provider_name}
+                          />
+                        </span>
+                      );
+                    })}
+                  </div>
+                );
+              })}
+            {/* {providers['flatrate'] !== undefined && (
           <div className="d-flex align-items-center">
             <span style={{ width: '100px' }}>Streaming</span>
             {providers.flatrate.map((stream, index) => {
@@ -90,7 +97,9 @@ const TVWatchProviders = ({ providers }) => {
             })}
           </div>
         )} */}
-      </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

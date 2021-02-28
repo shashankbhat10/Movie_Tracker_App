@@ -1,7 +1,8 @@
 import React, { Fragment, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { getTVDetails } from '../../actions/tv';
-import TVHeader from './TVHeader/TVHeader';
+import { clearDashboard } from '../../actions/dashboard';
+import TVHeader from './TVHeader';
 import TVCast from './TVCast';
 import TVWatchProviders from './TVWatchProviders';
 import TVReviews from './TVReviews';
@@ -13,7 +14,7 @@ const TV = ({
   match,
   getTVDetails,
   details,
-  cast,
+  credits,
   providers,
   reviews,
   media,
@@ -23,6 +24,7 @@ const TV = ({
   loading,
 }) => {
   useEffect(() => {
+    clearDashboard();
     getTVDetails(match.params.id);
   }, [match.params.id]);
 
@@ -38,7 +40,7 @@ const TV = ({
           </div>
           <hr style={{ width: '90%' }} />
           <div>
-            <TVCast cast={cast} />
+            <TVCast cast={credits.cast} id={match.params.id} />
           </div>
           <hr style={{ width: '90%' }} />
           <div>TV Seasons</div>
@@ -66,7 +68,7 @@ const TV = ({
 
 const mapStateToProps = (state) => ({
   details: state.tv.details,
-  cast: state.tv.cast,
+  credits: state.tv.credits,
   providers: state.tv.providers,
   loading: state.tv.loading,
   reviews: state.tv.reviews,
@@ -75,4 +77,4 @@ const mapStateToProps = (state) => ({
   additionalDetails: state.tv.additionalDetails,
   links: state.tv.links,
 });
-export default connect(mapStateToProps, { getTVDetails })(TV);
+export default connect(mapStateToProps, { getTVDetails, clearDashboard })(TV);

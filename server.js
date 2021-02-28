@@ -18,6 +18,7 @@ app.use('/api/tv', require('./routes/tv'));
 app.use('/api/profile', require('./routes/profile'));
 app.use('/api/search', require('./routes/search'));
 app.use('/api/discover', require('./routes/discover'));
+app.use('/api/person', require('./routes/person'));
 
 app.get('/', (req, res) => {
   res.send('Hello World');

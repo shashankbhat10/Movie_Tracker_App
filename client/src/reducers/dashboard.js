@@ -108,6 +108,8 @@ export default function (state = initialState, action) {
         discover: newDiscoverList,
         discoverLoading: false,
       };
+    case actionTypes.CLEAR_DASHBOARD:
+      return { ...state, movies: {}, tv: {}, discover: [], genre: {} };
     default:
       return { ...state };
   }

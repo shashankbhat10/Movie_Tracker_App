@@ -73,7 +73,7 @@ router.get('/movie/:id', async (req, res) => {
   let media = {};
   try {
     const detailsURL = `${moviedbBaseURI}movie/${req.params.id}${moviedbAPIKey}`;
-    const castURL = `${moviedbBaseURI}movie/${req.params.id}/credits${moviedbAPIKey}`;
+    const creditsURL = `${moviedbBaseURI}movie/${req.params.id}/credits${moviedbAPIKey}`;
     const imagesURL = `${moviedbBaseURI}movie/${req.params.id}/images${moviedbAPIKey}&languages=en`;
     const reviewsURL = `${moviedbBaseURI}movie/${req.params.id}/reviews${moviedbAPIKey}`;
     const watchlinksURL = `${moviedbBaseURI}movie/${req.params.id}/watch/providers${moviedbAPIKey}`;
@@ -82,7 +82,7 @@ router.get('/movie/:id', async (req, res) => {
 
     // get details
     const detailsRes = await axios.get(detailsURL);
-    const castsRes = await axios.get(castURL);
+    const creditsRes = await axios.get(creditsURL);
     const imagesRes = await axios.get(imagesURL);
     const reviewsRes = await axios.get(reviewsURL);
     const watchlinksRes = await axios.get(watchlinksURL);
@@ -113,18 +113,20 @@ router.get('/movie/:id', async (req, res) => {
       backdrop: imagesRes.data.backdrops[0].file_path,
     };
 
-    cast = {
-      director: castsRes.data.crew.filter((crew) => {
-        return crew.job === 'Director';
-      })[0],
-      producer: castsRes.data.crew.filter((crew) => {
-        return crew.job === 'Executive Producer';
-      })[0],
-      screenplay: castsRes.data.crew.filter((crew) => {
-        return crew.job === 'Screenplay';
-      })[0],
-      cast: castsRes.data.cast.splice(0, 10),
-    };
+    // cast = {
+    //   director: castsRes.data.crew.filter((crew) => {
+    //     return crew.job === 'Director';
+    //   })[0],
+    //   producer: castsRes.data.crew.filter((crew) => {
+    //     return crew.job === 'Executive Producer';
+    //   })[0],
+    //   screenplay: castsRes.data.crew.filter((crew) => {
+    //     return crew.job === 'Screenplay';
+    //   })[0],
+    //   cast: castsRes.data.cast,
+    // };
+
+    credits = { cast: creditsRes.data.cast, crew: creditsRes.data.crew };
 
     reviews = reviewsRes.data;
 
@@ -182,7 +184,7 @@ router.get('/movie/:id', async (req, res) => {
 
     const response = {
       details: details,
-      cast: cast,
+      credits: credits,
       images: images,
       reviews: reviews,
       watchlinks: watchlinks,
@@ -211,6 +213,36 @@ router.get('/genres', async (req, res) => {
   } catch (err) {
     console.log(err.message);
     res.status(500).json({ msg: 'Server Error' });
+  }
+});
+
+router.get('/:id/credits', async (req, res) => {
+  try {
+    const creditsRes = await axios.get(
+      `${moviedbBaseURI}movie/${req.params.id}/credits${moviedbAPIKey}`
+    );
+
+    const crewNames = {};
+    creditsRes.data.crew.forEach((person) => {
+      const id = person.id;
+      if (!crewNames[id]) {
+        crewNames[id] = person;
+      } else {
+        crewNames[id]['job'] = crewNames[id]['job'].concat('/ ', person.job);
+      }
+    });
+    const crew = [];
+    Object.keys(crewNames).forEach((id) => crew.push(crewNames[id]));
+
+    const credits = {
+      cast: creditsRes.data.cast,
+      crew: crew,
+    };
+
+    res.json(credits);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send({ msg: 'Server Error' });
   }
 });
 

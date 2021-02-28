@@ -16,3 +16,20 @@ export const getTVDetails = (id) => async (dispatch) => {
     console.log(error);
   }
 };
+
+export const getTVCredits = (tvId) => async (dispatch) => {
+  console.log('IN');
+  try {
+    dispatch({
+      type: actionTypes.TV_CREDITS_LOADING,
+    });
+    const tvCredits = await axios.get(`/api/tv/${tvId}/credits`);
+    console.log(tvCredits.data.test);
+    dispatch({
+      type: actionTypes.TV_CREDITS_LOADED,
+      payload: tvCredits.data,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
