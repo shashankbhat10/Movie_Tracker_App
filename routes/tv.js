@@ -198,6 +198,9 @@ router.get('/:id', async (req, res) => {
       production: detailsRes.data.production_companies.filter(
         (company) => company.logo_path !== null
       ),
+      trailer: videoRes.data.results.filter(
+        (video) => video.type === 'Trailer'
+      )[0],
     };
 
     const response = {

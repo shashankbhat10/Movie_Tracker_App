@@ -282,3 +282,16 @@ body{
   height: 50px;
   border-radius: 5px;
 }
+
+.tv-trailer {
+  width: 60%;
+  max-width: 65% !important;
+}
+
+.modal-dialog {
+  max-width: none;
+}
+
+// .modal-content {
+//   width: 60vw !important;
+// }

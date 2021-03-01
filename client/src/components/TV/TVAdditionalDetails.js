@@ -1,17 +1,45 @@
-import React from 'react';
-import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGlobeAsia } from '@fortawesome/free-solid-svg-icons';
+import { faGlobeAsia, faPlay } from '@fortawesome/free-solid-svg-icons';
 import {
   faFacebook,
   faInstagram,
   faTwitter,
 } from '@fortawesome/free-brands-svg-icons';
+import TVTrailerModal from './TVTrailerModal';
 
 const TVAdditionalDetails = ({ details, links }) => {
+  const [showModal, setShowModal] = useState(false);
+
+  const handleModalClose = () => {
+    setShowModal(false);
+  };
+
+  const handleModalOpen = () => {
+    console.log('IN');
+    setShowModal(true);
+  };
+
   return (
     <div className="pl-3 mt-4 mb-4 mx-auto" style={{ width: '95%' }}>
-      <h5>Additional Details</h5>
+      <div className="d-flex flex-row justify-content-between align-items-center mb-3">
+        <h5>Additional Details</h5>
+        <span className="pr-3 d-none d-lg-block">
+          <Button onClick={() => handleModalOpen()}>
+            <FontAwesomeIcon icon={faPlay} className="mr-2" />
+            Show Trailer
+          </Button>
+          {showModal && (
+            <TVTrailerModal
+              showModal={showModal}
+              handleClose={handleModalClose}
+              trailer={details.trailer}
+            />
+          )}
+          {console.log(showModal)}
+        </span>
+      </div>
       <div className="show-info d-flex flex-row justify-content-between px-3">
         <span className="d-flex flex-column align-items-center">
           <strong>Status</strong>
