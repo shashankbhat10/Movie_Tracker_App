@@ -9,7 +9,6 @@ import {
 
 // Get all details for individual movie
 export const getMovieById = (movieId) => async (dispatch) => {
-  console.log('IN');
   try {
     dispatch({
       type: MOVIE_LOADING,
@@ -26,7 +25,6 @@ export const getMovieById = (movieId) => async (dispatch) => {
 };
 
 export const getMovieCredits = (movieId) => async (dispatch) => {
-  console.log('IN');
   try {
     dispatch({
       type: MOVIE_LOADING,

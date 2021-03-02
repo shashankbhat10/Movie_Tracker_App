@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
-const TVTrailerModal = ({ showModal, handleClose, trailer }) => {
+const MovieTrailerModal = ({ showModal, handleClose, trailer }) => {
   return (
     <Fragment>
       <Modal show={showModal} onHide={handleClose} dialogClassName="tv-trailer">
@@ -29,4 +29,4 @@ const TVTrailerModal = ({ showModal, handleClose, trailer }) => {
   );
 };
 
-export default TVTrailerModal;
+export default MovieTrailerModal;

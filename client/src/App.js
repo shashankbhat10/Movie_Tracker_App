@@ -28,7 +28,7 @@ function App() {
           <Route exact path="/person/:id" component={Person} />
           <Route
             exact
-            path="/movie/:id/complete-cast"
+            path="/movie/:id/complete-credits"
             component={MovieCompleteCast}
           />
           <Route

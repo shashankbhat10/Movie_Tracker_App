@@ -14,6 +14,7 @@ Todo for project:
 [ X ] - Page for full cast and crew for TV
 [ X ] - Show Crew person only once
 [ X ] - Add People Page
+[ ] - Add Crew list in Person Page credits
 [ ] - Feature to add/edit/delete review
 [ ] - Feature to add/edit/delete rating
 [ ] - Feature to create lists

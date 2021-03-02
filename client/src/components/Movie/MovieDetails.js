@@ -36,7 +36,7 @@ const MovieDetails = ({
           </div>
         </div>
         <div className="pt-sm-3 align-self-center">
-          <p className="mb-sm-1">{tagline}</p>
+          <span className="mb-sm-1">{tagline}</span>
           <div className="movie-overview">
             <strong>Overview</strong>
             <p>{overview}</p>

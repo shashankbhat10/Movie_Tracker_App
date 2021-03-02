@@ -2,6 +2,8 @@ import * as actionTypes from '../actions/types';
 
 const initialState = {
   details: {},
+  additionalDetails: {},
+  links: {},
   images: {},
   credits: {},
   reviews: {},
@@ -20,6 +22,8 @@ export default function (state = initialState, action) {
       return {
         ...state,
         details: payload.details,
+        additionalDetails: payload.additionalDetails,
+        links: payload.links,
         images: payload.images,
         credits: payload.credits,
         reviews: payload.reviews !== null ? payload.reviews : null,
@@ -33,6 +37,8 @@ export default function (state = initialState, action) {
       return {
         ...state,
         details: {},
+        additionalDetails: {},
+        links: {},
         images: {},
         description: '',
         credits: {},

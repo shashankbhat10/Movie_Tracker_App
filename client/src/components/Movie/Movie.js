@@ -10,6 +10,7 @@ import MovieWatchlink from './MovieWatchlink';
 import MovieReview from './MovieReview';
 import MovieMedia from './MovieMedia/MovieMedia';
 import MovieSimilar from './MovieSimilar';
+import MovieHeader from './MovieHeader';
 
 const Movie = ({
   getMovieById,
@@ -18,12 +19,13 @@ const Movie = ({
   backdrop_path,
   movie_details,
   credits,
-  trailer,
   loading,
   watchlinks,
   reviews,
   media,
   similarMovies,
+  additionalDetails,
+  links,
 }) => {
   useEffect(() => {
     getMovieById(match.params.id);
@@ -37,7 +39,7 @@ const Movie = ({
         </div>
       ) : (
         <div className="movie-header">
-          <div
+          {/* <div
             className="conatiner movie-header-main py-2"
             style={{ border: '2px solid brown' }}
           >
@@ -48,12 +50,19 @@ const Movie = ({
               />
               <MovieDetails details={movie_details} crew={credits.crew} />
             </div>
+          </div> */}
+          <div>
+            <MovieHeader
+              details={movie_details}
+              poster={poster_path}
+              crew={credits.crew}
+            />
           </div>
           <div>
-            <MovieAdditionalDetails details={movie_details} trailer={trailer} />
+            <MovieAdditionalDetails details={additionalDetails} links={links} />
           </div>
           <div>
-            <MovieCast cast={credits.cast} />
+            <MovieCast cast={credits.cast} id={match.params.id} />
           </div>
           <div>{watchlinks && <MovieWatchlink watchlinks={watchlinks} />}</div>
           <div>
@@ -77,11 +86,12 @@ const mapStateToProps = (state) => ({
   movie_details: state.movie.details,
   credits: state.movie.credits,
   loading: state.movie.loading,
-  trailer: state.movie.trailer,
   watchlinks: state.movie.watchlinks,
   reviews: state.movie.reviews,
   media: state.movie.media,
   similarMovies: state.movie.similar,
+  additionalDetails: state.movie.additionalDetails,
+  links: state.movie.links,
 });
 
 export default connect(mapStateToProps, { getMovieById })(Movie);

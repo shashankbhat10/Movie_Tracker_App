@@ -79,6 +79,12 @@ router.get('/movie/:id', async (req, res) => {
     const watchlinksURL = `${moviedbBaseURI}movie/${req.params.id}/watch/providers${moviedbAPIKey}`;
     const trailerURL = `${moviedbBaseURI}movie/${req.params.id}/videos${moviedbAPIKey}`;
     const similarURL = `${moviedbBaseURI}movie/${req.params.id}/similar${moviedbAPIKey}`;
+    const externalRes = await axios.get(
+      `${moviedbBaseURI}movie/${req.params.id}/external_ids${moviedbAPIKey}`
+    );
+    const languageRes = await axios.get(
+      `${moviedbBaseURI}configuration/languages${moviedbAPIKey}`
+    );
 
     // get details
     const detailsRes = await axios.get(detailsURL);
@@ -126,7 +132,18 @@ router.get('/movie/:id', async (req, res) => {
     //   cast: castsRes.data.cast,
     // };
 
-    credits = { cast: creditsRes.data.cast, crew: creditsRes.data.crew };
+    const crewNames = {};
+    creditsRes.data.crew.forEach((person) => {
+      const id = person.id;
+      if (!crewNames[id]) {
+        crewNames[id] = person;
+      } else {
+        crewNames[id]['job'] += '/ ' + person.job;
+      }
+    });
+    const crew = [];
+    Object.keys(crewNames).forEach((id) => crew.push(crewNames[id]));
+    credits = { cast: creditsRes.data.cast, crew: crew };
 
     reviews = reviewsRes.data;
 
@@ -182,8 +199,34 @@ router.get('/movie/:id', async (req, res) => {
       },
     };
 
+    const additionalDetails = {
+      status: detailsRes.data.status,
+      originalLanguage: languageRes.data.filter(
+        (lang) => lang['iso_639_1'] === detailsRes.data.original_language
+      )[0].english_name,
+      releaseDate: detailsRes.data.release_date,
+      production: detailsRes.data.production_companies.filter(
+        (company) => company.logo_path !== null
+      ),
+      trailer: trailerRes.data.results.filter(
+        (video) => video.type === 'Trailer'
+      )[0],
+      budget: detailsRes.data.budget,
+      revenue: detailsRes.data.revenue,
+    };
+
+    const links = {
+      homepage: detailsRes.data.homepage,
+      social: {
+        facebook: externalRes.data.facebook_id,
+        instagram: externalRes.data.instagram_id,
+        twitter: externalRes.data.twitter_id,
+      },
+    };
+
     const response = {
       details: details,
+      additionalDetails: additionalDetails,
       credits: credits,
       images: images,
       reviews: reviews,
@@ -191,6 +234,7 @@ router.get('/movie/:id', async (req, res) => {
       trailer: trailer,
       similar: similar,
       media: media,
+      links: links,
     };
 
     res.json(response);
@@ -222,13 +266,24 @@ router.get('/:id/credits', async (req, res) => {
       `${moviedbBaseURI}movie/${req.params.id}/credits${moviedbAPIKey}`
     );
 
+    // const crewNames = {};
+    // creditsRes.data.crew.forEach((person) => {
+    //   const id = person.id;
+    //   if (!crewNames[id]) {
+    //     crewNames[id] = person;
+    //   } else {
+    //     crewNames[id]['job'] = crewNames[id]['job'].concat('/ ', person.job);
+    //   }
+    // });
+    // const crew = [];
+    // Object.keys(crewNames).forEach((id) => crew.push(crewNames[id]));
     const crewNames = {};
     creditsRes.data.crew.forEach((person) => {
       const id = person.id;
       if (!crewNames[id]) {
         crewNames[id] = person;
       } else {
-        crewNames[id]['job'] = crewNames[id]['job'].concat('/ ', person.job);
+        crewNames[id]['job'] += '/ ' + person.job;
       }
     });
     const crew = [];
