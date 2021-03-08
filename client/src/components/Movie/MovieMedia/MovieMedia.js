@@ -1,5 +1,4 @@
-import React from 'react';
-import { Fragment, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Tab, Tabs } from 'react-bootstrap';
 import BackDrops from './MovieMediaBackDrops';
@@ -29,38 +28,35 @@ const MovieMedia = ({ posters, backdrops }) => {
   };
 
   return (
-    <Fragment>
-      <div className="mt-5 mx-auto" style={{ width: '95%' }}>
-        <div className="px-5 d-flex justify-content-between">
-          <h5>Media</h5>
-          <span>
-            <Link to={`/${key}`}>View all {title}</Link>
-          </span>
-        </div>
-        <hr className="mt-1 mb-1" />
-        <div className="px-3">
-          <Tabs
-            defaultActiveKey="poster"
-            activeKey={key}
-            onSelect={(k) => {
-              handleTabChange(k);
-            }}
-          >
-            {posters !== null && (
-              <Tab eventKey="poster" title={`Posters (${posters.count})`}>
-                <Posters posters={posters} />
-              </Tab>
-            )}
-            <Tab eventKey="backdrop" title={`Backdrops (${backdrops.count})`}>
-              <BackDrops backdrops={backdrops} />
-            </Tab>
-            <Tab eventKey="video" title="Videos">
-              <Videos image={posters} />
-            </Tab>
-          </Tabs>
-        </div>
+    <div className="pl-3 mb-4" style={{ width: '95%' }}>
+      <div className="px-5 d-flex justify-content-between align-items-center">
+        <h5>Media</h5>
+        <span>
+          <Link to={`/${key}`}>View all {title}</Link>
+        </span>
       </div>
-    </Fragment>
+      <div className="px-3">
+        <Tabs
+          defaultActiveKey="poster"
+          activeKey={key}
+          onSelect={(k) => {
+            handleTabChange(k);
+          }}
+        >
+          {posters !== null && (
+            <Tab eventKey="poster" title={`Posters (${posters.count})`}>
+              <Posters posters={posters} />
+            </Tab>
+          )}
+          <Tab eventKey="backdrop" title={`Backdrops (${backdrops.count})`}>
+            <BackDrops backdrops={backdrops} />
+          </Tab>
+          <Tab eventKey="video" title="Videos">
+            <Videos image={posters} />
+          </Tab>
+        </Tabs>
+      </div>
+    </div>
   );
 };
 

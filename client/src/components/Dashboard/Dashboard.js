@@ -5,8 +5,13 @@ import DashboardDiscover from './DashboardDiscover/DashboardDiscover';
 import DashboardMovie from './DashboardMovie/DashboardMovie';
 import DashboardTV from './DashboardTV/DashboardTV';
 import { getGenres } from '../../actions/dashboard';
+import { Redirect } from 'react-router-dom';
 
-const Dashboard = ({ getGenres }) => {
+const Dashboard = ({ isAuthenticated, getGenres }) => {
+  if (!isAuthenticated) {
+    <Redirect to="/" />;
+  }
+
   useEffect(() => {
     getGenres();
   }, []);
@@ -21,5 +26,9 @@ const Dashboard = ({ getGenres }) => {
     </Fragment>
   );
 };
+
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+});
 
 export default connect(null, { getGenres })(Dashboard);

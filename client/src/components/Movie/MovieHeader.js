@@ -43,30 +43,45 @@ const MovieHeader = ({ details, poster, crew }) => {
           </Card.Text>
           <Card.Text>{details.overview}</Card.Text>
           <div className="d-flex flex-row justify-content-between align-items-center pt-4">
-            <div>
-              {director !== undefined && (
+            {director !== undefined && (
+              <div>
                 <span className="d-flex flex-column align-items-center">
-                  <strong>{director.name}</strong>
+                  <Link
+                    to={`/person/${director.id}`}
+                    style={{ textDecoration: 'none', color: 'black' }}
+                  >
+                    <strong>{director.name}</strong>
+                  </Link>
                   <span>Director</span>
                 </span>
-              )}
-            </div>
-            <div>
-              {screenplay !== undefined && (
+              </div>
+            )}
+            {screenplay !== undefined && (
+              <div>
                 <span className="d-flex flex-column align-items-center">
-                  <strong>{screenplay.name}</strong>
+                  <Link
+                    to={`/person/${screenplay.id}`}
+                    style={{ textDecoration: 'none', color: 'black' }}
+                  >
+                    <strong>{screenplay.name}</strong>
+                  </Link>
                   <span>Screenplay</span>
                 </span>
-              )}
-            </div>
-            <div>
-              {producer !== undefined && (
+              </div>
+            )}
+            {producer !== undefined && (
+              <div>
                 <span className="d-flex flex-column align-items-center">
-                  <strong>{producer.name}</strong>
+                  <Link
+                    to={`/person/${producer.id}`}
+                    style={{ textDecoration: 'none', color: 'black' }}
+                  >
+                    <strong>{producer.name}</strong>
+                  </Link>
                   <span>Producer</span>
                 </span>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </Card.Body>
       </Card>

@@ -1,5 +1,7 @@
 import axios from 'axios';
+import { authFailed } from './auth';
 import * as actionTypes from './types';
+import setAuthToken from './utils/setAuthToken';
 
 export const getGenres = () => async (dispatch) => {
   try {
@@ -63,9 +65,6 @@ export const selectRandomGenres = (movieGenres, tvGenres) => async (
   dispatch
 ) => {
   try {
-    console.log('movieGenres', movieGenres);
-    console.log('tvGenres', tvGenres);
-
     let genres = movieGenres.map((genre) => {
       return { ...genre, type: 'movie' };
     });
@@ -83,7 +82,6 @@ export const selectRandomGenres = (movieGenres, tvGenres) => async (
         return genre.type === 'tv';
       }),
     };
-    console.log(randomList);
 
     dispatch({
       type: actionTypes.RANDOM_GENRES_SELECTED,
@@ -103,6 +101,10 @@ export const selectRandomGenres = (movieGenres, tvGenres) => async (
 
 export const getGenresContent = (genres) => async (dispatch) => {
   try {
+    if (!axios.defaults.headers.common['x-auth-token']) {
+      setAuthToken(localStorage.getItem('movieTrackerAccessToken'));
+    }
+
     const discoverGenresRes = await axios.put(
       '/api/discover/contentByGenre',
       genres
@@ -113,6 +115,7 @@ export const getGenresContent = (genres) => async (dispatch) => {
       payload: discoverGenresRes.data,
     });
   } catch (err) {
+    dispatch(authFailed());
     console.log(err);
   }
 };

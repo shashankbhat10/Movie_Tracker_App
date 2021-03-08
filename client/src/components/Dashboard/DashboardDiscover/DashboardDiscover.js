@@ -17,7 +17,6 @@ const DashboardDiscover = ({
 
   return (
     <Fragment>
-      {console.log(loading)}
       {!loading && (
         <DisplayDiscoverContent
           loadMoreGenres={loadMoreGenres}

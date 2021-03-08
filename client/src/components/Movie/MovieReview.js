@@ -21,7 +21,7 @@ const MovieReview = ({ reviews }) => {
   return (
     <Fragment>
       <div
-        className="mt-4 pl-4 mx-auto"
+        className="mt-4 mb-4 pl-4 mx-auto"
         style={{ border: '1px solid black', width: '95%' }}
       >
         <div className="d-flex justify-content-between px-3">
@@ -30,7 +30,6 @@ const MovieReview = ({ reviews }) => {
             See All Reviews
           </a>
         </div>
-        <hr className="mt-1" />
         <div
           style={{
             width: '95%',
@@ -63,7 +62,6 @@ const MovieReview = ({ reviews }) => {
                       style={{
                         width: '96px',
                         height: '88px',
-                        // borderRadius: '50px',
                       }}
                     />
                   </span>

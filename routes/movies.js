@@ -74,7 +74,7 @@ router.get('/movie/:id', async (req, res) => {
   try {
     const detailsURL = `${moviedbBaseURI}movie/${req.params.id}${moviedbAPIKey}`;
     const creditsURL = `${moviedbBaseURI}movie/${req.params.id}/credits${moviedbAPIKey}`;
-    const imagesURL = `${moviedbBaseURI}movie/${req.params.id}/images${moviedbAPIKey}&languages=en`;
+    const imagesURL = `${moviedbBaseURI}movie/${req.params.id}/images${moviedbAPIKey}`;
     const reviewsURL = `${moviedbBaseURI}movie/${req.params.id}/reviews${moviedbAPIKey}`;
     const watchlinksURL = `${moviedbBaseURI}movie/${req.params.id}/watch/providers${moviedbAPIKey}`;
     const trailerURL = `${moviedbBaseURI}movie/${req.params.id}/videos${moviedbAPIKey}`;

@@ -2,13 +2,14 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 const config = require('config');
+const auth = require('../middleware/auth');
 const moviedbBaseURI = config.get('moviedbBaseURI');
 const moviedbAPIKey = config.get('moviedbAPIKey');
 
 // @route   GET /contentByGenre
 // @desc    Get list of tv and movie based on respective genre
 // @Access  Private
-router.put('/contentByGenre', async (req, res) => {
+router.put('/contentByGenre', auth, async (req, res) => {
   try {
     let movieGenre = req.body.movie;
     let tvGenre = req.body.tv;

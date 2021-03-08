@@ -22,6 +22,7 @@ const TVHeader = ({ details }) => {
           <Card.Title className="d-flex flex-row">
             <h2>
               {details.name}
+              {console.log(details.startDate)}
               {'  (' + details.startDate.slice(0, 4)})
             </h2>
           </Card.Title>

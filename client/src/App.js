@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import './App.scss';
 import Dashboard from './components/Dashboard/Dashboard';
+import Landing from './components/Landing/Landing';
 import Movie from './components/Movie/Movie';
 import MovieCompleteCast from './components/Movie/MovieCompleteCast/MovieCompleteCast';
 import Person from './components/People/Person';
@@ -19,7 +20,7 @@ function App() {
     <Provider store={store}>
       <Router>
         <Navbar />
-        <Route exact path="/" component={Dashboard} />
+        <Route exact path="/" component={Landing} />
         <Switch>
           <Route exact path="/dashboard" component={Dashboard} />
           <Route exact path="/movie/:id" component={Movie} />
