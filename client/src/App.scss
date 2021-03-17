@@ -17,10 +17,6 @@ body{
   text-align: center;
 }
 
-body{
-  background-color: black;
-}
-
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -310,3 +306,80 @@ body{
 // .modal-content {
 //   width: 60vw !important;
 // }
+
+.dashboard-content{
+  position: relative;
+  overflow: hidden;
+}
+
+.dashboard-options{
+  position: absolute;
+  // z-index: 500;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  transition: transform 0.3s ease-in-out;
+  background-color: rgb(5, 18, 59);
+  color: white;
+}
+
+// .dashboard-content:hover .dashboard-options{
+//   transform: translateY(0%);
+// }
+
+.dashboard-options-not-hover{
+  transform: translateY(100%);
+}
+
+.dashboard-options-hover{
+  transform: translateY(0%);
+}
+
+.dashboard-icons:hover {
+  cursor: pointer;
+}
+
+/* Let's get this party started */
+::-webkit-scrollbar {
+  height: 0.5rem;
+  width: 0.3rem;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  background: rgba(78, 72, 72, 0.8);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+  background: rgba(17, 8, 8, 0.4);
+}
+
+.icon-border {
+  padding: 0rem 0.25rem;
+  border: 3px solid green;
+  border-radius: 50%;
+}
+
+.list-icon{
+  display: flex;
+}
+
+.list-icon:before {
+  content: "\2022";
+  height: inherit; 
+  margin-right: 0.3em;
+  color: #11c020;
+  font-size: 120%;
+}

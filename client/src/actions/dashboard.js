@@ -1,4 +1,5 @@
 import axios from 'axios';
+import dashboard from '../reducers/dashboard';
 import { authFailed } from './auth';
 import * as actionTypes from './types';
 import setAuthToken from './utils/setAuthToken';
@@ -61,6 +62,58 @@ export const getDashboardTV = () => async (dispatch) => {
   }
 };
 
+export const getDashboardTopContent = () => async (dispatch) => {
+  try {
+    const popularMoviesRes = await axios.get('/api/movies/popular');
+    const trendingMoviesRes = await axios.get('/api/movies/trending');
+    const popularTVRes = await axios.get('/api/tv/popular');
+    const trendingTVRes = await axios.get('/api/tv/trending');
+
+    const dashboardMovies = [
+      {
+        category: 'popular',
+        type: 'movie',
+        list: popularMoviesRes.data,
+      },
+      {
+        category: 'trending',
+        type: 'movie',
+        list: trendingMoviesRes.data,
+      },
+    ];
+
+    const dashboardTV = [
+      {
+        category: 'popular',
+        type: 'tv',
+        list: popularTVRes.data,
+      },
+      {
+        category: 'trending',
+        type: 'tv',
+        list: trendingTVRes.data,
+      },
+    ];
+
+    var newList = [...dashboardMovies];
+    Array.prototype.push.apply(newList, dashboardTV);
+    const payload = {
+      movie: dashboardMovies,
+      tv: dashboardTV,
+      dashboard: newList,
+    };
+
+    dispatch({
+      type: actionTypes.DASHBOARD_TOP_CONTENT_LOADED,
+      payload: payload,
+    });
+
+    dispatch(getGenres());
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const selectRandomGenres = (movieGenres, tvGenres) => async (
   dispatch
 ) => {
@@ -83,11 +136,12 @@ export const selectRandomGenres = (movieGenres, tvGenres) => async (
       }),
     };
 
+    console.log('genre selected');
     dispatch({
       type: actionTypes.RANDOM_GENRES_SELECTED,
       payload: genre,
     });
-
+    console.log('genres set');
     // const discoverGenresRes = await axios.put(
     //   '/api/discover/contentByGenre',
     //   genre
@@ -109,10 +163,18 @@ export const getGenresContent = (genres) => async (dispatch) => {
       '/api/discover/contentByGenre',
       genres
     );
-    console.log(discoverGenresRes.data);
+
+    const list = discoverGenresRes.data.content;
+    list.forEach((item) => {
+      item.category = 'genre';
+    });
     dispatch({
       type: actionTypes.PARTIAL_GENRE_MOVIES_LOADED,
-      payload: discoverGenresRes.data,
+      payload: list,
+    });
+    console.log('test');
+    dispatch({
+      type: actionTypes.DASHBOARD_TOP_CONTENT_LOADED_FIN,
     });
   } catch (err) {
     dispatch(authFailed());

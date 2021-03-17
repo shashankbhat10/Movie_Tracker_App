@@ -7,7 +7,7 @@ import { getDashboardMovies } from '../../../actions/dashboard';
 
 const DashboardMovie = ({ popular, trending, loading, getDashboardMovies }) => {
   useEffect(() => {
-    getDashboardMovies();
+    // getDashboardMovies();
   }, []);
 
   return (

@@ -1,18 +1,17 @@
-import React, { useRef, useCallback } from 'react';
-import { Card, OverlayTrigger, Tooltip } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import React, { useRef, useCallback, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck, faList } from '@fortawesome/free-solid-svg-icons';
-import noImage from '../../../images/image-not-found.png';
 import DashboardContentRow from './DashboardContentRow';
 
 const DisplayDiscoverContent = ({
   loadMoreGenres,
-  content,
+  topContent,
+  genreContent,
   loading,
   remainingGenres,
   renderedGenres,
+  movies,
+  tv,
+  content,
 }) => {
   const observer = useRef();
   const lastDisplayed = useCallback(
@@ -40,15 +39,20 @@ const DisplayDiscoverContent = ({
             <div
               className="mb-3 mx-auto px-3"
               style={{ width: '95%' }}
-              key={`${singleContent.type}_${singleContent.name}_${singleContent.id}`}
-              ref={renderedGenres === index + 1 ? lastDisplayed : null}
+              key={`${singleContent.type}_${singleContent.category}_${index}`}
+              ref={renderedGenres + 4 === index + 1 ? lastDisplayed : null}
             >
               <h5>
-                {singleContent.name +
-                  ' ' +
-                  (singleContent.type === 'movie' ? 'Movies' : 'TV Shows')}
+                {singleContent.category === 'genre'
+                  ? singleContent.name
+                  : singleContent.category[0].toUpperCase() +
+                    singleContent.category.slice(1)}{' '}
+                {singleContent.type === 'movie' ? 'Movies' : 'TV Shows'}
               </h5>
-              <DashboardContentRow content={singleContent} />
+              <DashboardContentRow
+                content={singleContent}
+                category={singleContent.category}
+              />
             </div>
           );
         })}
@@ -57,8 +61,14 @@ const DisplayDiscoverContent = ({
 };
 
 const mapStateToProps = (state) => ({
-  content: state.dashboard.discover,
+  movies: state.dashboard.movies,
+  tv: state.dashboard.tv,
+  genreContent: state.dashboard.discover,
   loading: state.dashboard.discoverLoading,
+  movieGenre: state.dashboard.genres.movie,
+  tvGenre: state.dashboard.genres.tv,
+  gLoading: state.dashboard.genresLoading,
+  content: state.dashboard.dashboard,
 });
 
 export default connect(mapStateToProps, {})(DisplayDiscoverContent);

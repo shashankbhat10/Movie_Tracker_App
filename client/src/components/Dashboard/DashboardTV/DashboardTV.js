@@ -7,7 +7,7 @@ import { getDashboardTV } from '../../../actions/dashboard';
 
 const DashboardTV = ({ popular, trending, loading, getDashboardTV }) => {
   useEffect(() => {
-    getDashboardTV();
+    // getDashboardTV();
   }, []);
 
   return (

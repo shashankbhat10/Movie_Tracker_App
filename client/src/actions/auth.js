@@ -2,6 +2,7 @@ import * as actionTypes from './types';
 import axios from 'axios';
 import setAuthToken from './utils/setAuthToken';
 import Cookies from 'universal-cookie';
+import { getProfileData } from './profile';
 
 export const setUser = () => async (dispatch) => {
   if (localStorage.getItem('movieTrackerAccessToken')) {
@@ -26,6 +27,7 @@ export const registerUser = (formData) => async (dispatch) => {
     );
 
     dispatch(setUser());
+    dispatch(getProfileData());
 
     dispatch({
       type: actionTypes.REGISTER_SUCCESS,
@@ -60,6 +62,8 @@ export const loginUser = (formData) => async (dispatch) => {
     // let c = new Cookie();
 
     dispatch(setUser());
+    dispatch(getProfileData());
+
     dispatch({
       type: actionTypes.LOGIN_SUCCESS,
     });
@@ -88,4 +92,13 @@ export const authFailed = () => async (dispatch) => {
 
 export const clearErrors = () => async (dispatch) => {
   dispatch({ type: actionTypes.CLEAR_AUTH_ERRORS });
+};
+
+export const checkAuth = () => async (dispatch) => {
+  if (localStorage.getItem('movieTrackerAccessToken')) {
+    setAuthToken(localStorage.getItem('movieTrackerAccessToken'));
+    dispatch({ type: actionTypes.AUTH_CHECK_SUCCESS });
+  } else {
+    dispatch({ type: actionTypes.AUTH_CHECK_FAIL });
+  }
 };

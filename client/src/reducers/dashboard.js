@@ -1,14 +1,18 @@
 import * as actionTypes from '../actions/types';
 
 const initialState = {
-  movies: {},
-  tv: {},
+  // movies: {},
+  movies: [],
+  // tv: {},
+  tv: [],
   genres: {},
   discover: [],
   providers: {},
   people: {},
+  dashboard: [],
   movieLoading: true,
   tvLoading: true,
+  loading: true,
   genresLoading: true,
   discoverLoading: true,
 };
@@ -16,25 +20,13 @@ const initialState = {
 export default function (state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
-    case actionTypes.DASHBOARD_MOVIES_LOADED:
+    case actionTypes.DASHBOARD_TOP_CONTENT_LOADED:
       return {
         ...state,
-        movies: {
-          ...state.movies,
-          popular: payload.popular,
-          trending: payload.trending,
-        },
-        movieLoading: false,
-      };
-    case actionTypes.DASHBOARD_TV_LOADED:
-      return {
-        ...state,
-        tv: {
-          ...state.tv,
-          popular: payload.popular,
-          trending: payload.trending,
-        },
-        tvLoading: false,
+        movies: payload.movie,
+        tv: payload.tv,
+        dashboard: payload.dashboard,
+        // loading: false,
       };
     case actionTypes.GENRES_LOADED:
       return {
@@ -102,14 +94,20 @@ export default function (state = initialState, action) {
       };
     case actionTypes.PARTIAL_GENRE_MOVIES_LOADED:
       const newDiscoverList = [...state.discover];
-      Array.prototype.push.apply(newDiscoverList, payload.content);
+      let newList = [...state.dashboard];
+      Array.prototype.push.apply(newList, payload);
+      Array.prototype.push.apply(newDiscoverList, payload);
       return {
         ...state,
         discover: newDiscoverList,
         discoverLoading: false,
+        dashboard: newList,
+        // loading: false,
       };
     case actionTypes.CLEAR_DASHBOARD:
       return { ...state, movies: {}, tv: {}, discover: [], genre: {} };
+    case actionTypes.DASHBOARD_TOP_CONTENT_LOADED_FIN:
+      return { ...state, loading: false };
     default:
       return { ...state };
   }

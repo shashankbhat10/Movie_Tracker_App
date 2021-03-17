@@ -8,7 +8,6 @@ const DashboardDiscover = ({
   loading,
   movieGenre,
   tvGenre,
-  getGenresContent,
   selectRandomGenres,
 }) => {
   const loadMoreGenres = () => {

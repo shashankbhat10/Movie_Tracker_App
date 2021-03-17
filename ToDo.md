@@ -1,7 +1,7 @@
 Todo for project:
 
-[ ] - Add Login/Register Page
-[ ] - Add Authentication
+[ X ] - Add Login/Register Page (More clean styling required)
+[ X ] - Add Authentication
 [ ] - Add Clean base Styling
 [ X ] - Add Dashboard
 [ ] - Add random banner image to Dashboard
@@ -25,3 +25,4 @@ Todo for project:
 [ ] - Create Video Section in Movie/TV Media
 [ ] - Add Discover Section
 [ ] - Add Current/Last Season or some Season related info in individual TV show page
+[ ] - Add deeper authentication using Refresh token

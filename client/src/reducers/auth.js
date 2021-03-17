@@ -23,6 +23,7 @@ export default function (state = initialState, action) {
       return { ...state, errors: [] };
     case actionTypes.REGISTER_SUCCESS:
     case actionTypes.LOGIN_SUCCESS:
+    case actionTypes.AUTH_CHECK_SUCCESS:
       return {
         ...state,
         token: localStorage.getItem('movieTrackerAccessToken'),
@@ -31,6 +32,7 @@ export default function (state = initialState, action) {
       };
     case actionTypes.REGISTER_FAIL:
     case actionTypes.LOGIN_FAIL:
+    case actionTypes.AUTH_CHECK_FAIL:
       return {
         ...state,
         loading: false,

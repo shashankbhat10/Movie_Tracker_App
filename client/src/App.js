@@ -1,6 +1,8 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { checkAuth } from './actions/auth';
+import { getProfileData } from './actions/profile';
 
 import './App.scss';
 import Dashboard from './components/Dashboard/Dashboard';
@@ -14,6 +16,9 @@ import TVCompleteCredits from './components/TV/TVCompleteCredits/TVCompleteCredi
 import Navbar from './components/Utility/Navbar';
 
 import store from './store';
+
+store.dispatch(checkAuth());
+store.dispatch(getProfileData());
 
 function App() {
   return (

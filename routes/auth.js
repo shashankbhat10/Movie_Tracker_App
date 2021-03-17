@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 const bcrypt = require('bcrypt');
 const collection = 'users';
+const profileCollection = 'userProfile';
+const listCollection = 'lists';
 const authCollection = 'auth';
 
 const auth = require('../middleware/auth');
@@ -45,6 +47,12 @@ router.post(
       const salt = await bcrypt.genSalt(10);
       userEntry.password = await bcrypt.hash(password, salt);
 
+      let watchlist = {
+        type: 'watchlist',
+        content: [],
+        userId: '',
+      };
+
       await db
         .getDB()
         .collection(collection)
@@ -53,37 +61,84 @@ router.post(
             console.log(err);
             throw err;
           } else {
-            const payload = {
-              user: {
-                id: userEntry.id,
-              },
+            let watchlist = {
+              type: 'watchlist',
+              name: 'Watchlist',
+              content: [],
+              userId: userEntry._id,
             };
 
-            const accessToken = jwt.sign(payload, config.get('accessTokenKey'));
-            const refreshToken = jwt.sign(
-              payload,
-              config.get('refreshTokenKey')
-            );
-
-            const authPayload = {
-              userID: userEntry.id,
-              refreshToken: refreshToken,
-              name: userEntry.name,
-              email: userEntry.email,
-            };
+            let insertedWatchlist = {};
+            console.log('1');
             await db
               .getDB()
-              .collection(authCollection)
-              .insertOne(authPayload, (err, response) => {
+              .collection(listCollection)
+              .insertOne(watchlist, async (err) => {
                 if (err) {
-                  console.log(err);
-                  return res
-                    .status(500)
-                    .send({ msg: 'Error inserting refreshToken' });
+                  console.log('Profile Watchlist error', err);
+                  throw err;
+                } else {
+                  // console.log('2');
+                  // insertedWatchlist = watchlist;
+                  // console.log(insertedWatchlist);
+                  let profile = {
+                    name: name,
+                    watched: [],
+                    reviews: [],
+                    ratings: [],
+                    lists: [],
+                  };
+                  profile.userId = userEntry._id;
+                  profile.lists.push(watchlist._id);
+                  await db
+                    .getDB()
+                    .collection(profileCollection)
+                    .insertOne(profile, async (err, response) => {
+                      if (err) {
+                        console.log('Profile Entry', err);
+                        throw err;
+                      }
+                    });
+
+                  const payload = {
+                    user: {
+                      id: userEntry._id,
+                    },
+                  };
+
+                  const accessToken = jwt.sign(
+                    payload,
+                    config.get('accessTokenKey')
+                  );
+                  res.json({ accessToken });
                 }
               });
+            console.log('3');
 
-            res.json({ accessToken, refreshToken });
+            // const refreshToken = jwt.sign(
+            //   payload,
+            //   config.get('refreshTokenKey')
+            // );
+
+            // const authPayload = {
+            //   userID: userEntry.id,
+            //   refreshToken: refreshToken,
+            //   name: userEntry.name,
+            //   email: userEntry.email,
+            // };
+            // await db
+            //   .getDB()
+            //   .collection(authCollection)
+            //   .insertOne(authPayload, (err, response) => {
+            //     if (err) {
+            //       console.log(err);
+            //       return res
+            //         .status(500)
+            //         .send({ msg: 'Error inserting refreshToken' });
+            //     }
+            //   });
+
+            // res.json({ accessToken, refreshToken });
           }
         });
     } catch (error) {
