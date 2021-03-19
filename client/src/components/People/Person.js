@@ -14,7 +14,7 @@ const Person = ({ match, getPersonDetails, details, credits, loading }) => {
     <Fragment>
       {!loading && (
         <div className="d-md-flex flex-row mt-2 px-2">
-          <div className="person-details col-md-4 col-lg-3 mx-0">
+          <div className="person-details col-md-4 col-lg-3 mx-0 px-0">
             <PersonInfo details={details} />
           </div>
           <div className="col-md-8 col-lg-9">

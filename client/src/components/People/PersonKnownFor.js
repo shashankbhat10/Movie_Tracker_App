@@ -11,6 +11,10 @@ const PersonKnownFor = ({ credits }) => {
     >
       {credits.cast
         .concat(credits.crew)
+        .filter(
+          (item, index, self) =>
+            index === self.findIndex((obj) => obj.id === item.id)
+        )
         .sort((a, b) => {
           return b.popularity - a.popularity;
         })

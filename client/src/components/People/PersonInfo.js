@@ -5,7 +5,7 @@ const PersonInfo = ({ details }) => {
   return (
     <div>
       <Card
-        style={{ maxWidth: '350px' }}
+        style={{ maxWidth: '350px', boxShadow: '5px 5px 20px gray' }}
         className="pr-0 mx-0 d-flex flex-row d-md-block"
       >
         <Card.Img

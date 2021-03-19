@@ -7,27 +7,45 @@ const PersonCredits = ({ credits }) => {
 
   useEffect(() => {
     const content = credits.cast
-      .map((item) => {
-        return {
-          type: item.media_type,
-          id: item.id,
-          title: item.media_type === 'movie' ? item.title : item.name,
-          date:
-            item.media_type === 'movie'
-              ? item.release_date
-              : item.first_air_date,
-          character: item.character,
-          episode_count:
-            item.media_type !== 'movie' ? item.episode_count : null,
-        };
-      })
+      .filter(
+        (item, index, self) =>
+          index === self.findIndex((obj) => obj.id === item.id)
+      )
+      .reduce((result, item) => {
+        if (item.id === 114695) {
+          console.log('item', item);
+        }
+        if (item.character !== '') {
+          result.push({
+            type: item.media_type,
+            id: item.id,
+            title: item.media_type === 'movie' ? item.title : item.name,
+            date:
+              item.media_type === 'movie'
+                ? item.release_date
+                : item.first_air_date,
+            character: item.character,
+            episode_count:
+              item.media_type !== 'movie' ? item.episode_count : null,
+          });
+        }
+        return result;
+      }, [])
       .sort((a, b) => {
         return b.date - a.date;
       })
       .reduce((groups, item) => {
-        const group = groups[parseInt(item.date.slice(0, 5))] || [];
+        const date =
+          item.date === undefined ? 'undated' : parseInt(item.date.slice(0, 5));
+        const group = groups[date] || [];
+        // console.log(group);
+        // if ((item.id = '114695') && item.type === 'tv') {
+        //   console.log('YES');
+        //   console.log(group);
+        //   console.log(item);
+        // }
         group.push(item);
-        groups[parseInt(item.date.slice(0, 5))] = group;
+        groups[date] = group;
         return groups;
       }, {});
 

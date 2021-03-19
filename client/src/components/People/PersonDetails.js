@@ -6,7 +6,7 @@ import PersonKnownFor from './PersonKnownFor';
 const PersonDetails = ({ details, credits }) => {
   return (
     <div>
-      <Card>
+      <Card style={{ boxShadow: '5px 5px 20px gray' }}>
         <Card.Body>
           <Card.Title className="mb-5">
             <h3>
