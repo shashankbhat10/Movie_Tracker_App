@@ -1,8 +1,6 @@
 import React, { Fragment, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { getMovieById } from '../../actions/movie';
-import Poster from './Poster';
-import MovieDetails from './MovieDetails';
 import Spinner from '../Utility/Spinner';
 import MovieCast from './MovieCast';
 import MovieAdditionalDetails from './MovieAdditionalDetails';
@@ -38,19 +36,7 @@ const Movie = ({
           <Spinner />
         </div>
       ) : (
-        <div className="movie-header">
-          {/* <div
-            className="conatiner movie-header-main py-2"
-            style={{ border: '2px solid brown' }}
-          >
-            <div className="row" style={{ margin: 'auto' }}>
-              <Poster
-                image_source_poster={poster_path}
-                movie_name={movie_details.title}
-              />
-              <MovieDetails details={movie_details} crew={credits.crew} />
-            </div>
-          </div> */}
+        <div className="movie-header pt-3">
           <div>
             <MovieHeader
               details={movie_details}
@@ -64,13 +50,20 @@ const Movie = ({
           <div>
             <MovieCast cast={credits.cast} id={match.params.id} />
           </div>
+          <hr className="my-2" style={{ width: '95%' }} />
           <div>{watchlinks && <MovieWatchlink watchlinks={watchlinks} />}</div>
           <div>
             <MovieReview reviews={reviews} />
           </div>
+          <hr className="my-2" style={{ width: '95%' }} />
           <div>
-            <MovieMedia posters={media.posters} backdrops={media.backdrops} />
+            <MovieMedia
+              posters={media.posters}
+              backdrops={media.backdrops}
+              videos={media.videos}
+            />
           </div>
+          <hr className="my-2" style={{ width: '95%' }} />
           <div>
             <MovieSimilar movies={similarMovies} />
           </div>

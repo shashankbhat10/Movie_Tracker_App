@@ -20,10 +20,7 @@ const MovieReview = ({ reviews }) => {
   };
   return (
     <Fragment>
-      <div
-        className="mt-4 mb-4 pl-4 mx-auto"
-        style={{ border: '1px solid black', width: '95%' }}
-      >
+      <div className="mb-5 pl-4 mx-auto" style={{ width: '95%' }}>
         <div className="d-flex justify-content-between px-3">
           <h5>Reviews</h5>
           <a href="#!" target="_blank" rel="noreferrer">

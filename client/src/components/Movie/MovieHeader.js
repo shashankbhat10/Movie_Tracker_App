@@ -12,7 +12,7 @@ const MovieHeader = ({ details, poster, crew }) => {
   return (
     <Fragment>
       <Card
-        className="d-flex flex-row mx-auto mt-3"
+        className="d-flex flex-row mx-auto"
         style={{
           width: '95%',
           maxWidth: '1000px',

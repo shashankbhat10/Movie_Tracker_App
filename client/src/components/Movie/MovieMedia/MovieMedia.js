@@ -1,11 +1,11 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Tab, Tabs } from 'react-bootstrap';
 import BackDrops from './MovieMediaBackDrops';
 import Posters from './MovieMediaPosters';
 import Videos from './MovieMediaVideos';
 
-const MovieMedia = ({ posters, backdrops }) => {
+const MovieMedia = ({ posters, backdrops, videos }) => {
   const [key, setKey] = useState('poster');
   const [title, setTitle] = useState('Posters');
 
@@ -19,7 +19,7 @@ const MovieMedia = ({ posters, backdrops }) => {
         setTitle('Backdrops');
         break;
       case 'video':
-        setTitle('Titles');
+        setTitle('Videos');
         break;
       default:
         setTitle('Posters');
@@ -51,8 +51,8 @@ const MovieMedia = ({ posters, backdrops }) => {
           <Tab eventKey="backdrop" title={`Backdrops (${backdrops.count})`}>
             <BackDrops backdrops={backdrops} />
           </Tab>
-          <Tab eventKey="video" title="Videos">
-            <Videos image={posters} />
+          <Tab eventKey="video" title={`Videos (${videos.count})`}>
+            <Videos videos={videos} />
           </Tab>
         </Tabs>
       </div>

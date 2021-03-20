@@ -1,91 +1,26 @@
 import React from 'react';
+import { Card } from 'react-bootstrap';
 
-const Videos = ({ image }) => {
+const Videos = ({ videos }) => {
   return (
     <div
       className="pt-3 mr-auto d-flex flex-row flex-nowrap"
       style={{ overflowX: 'auto' }}
     >
-      <div
-        className="mx-1"
-        style={{ width: '25%', maxWidth: '300px', minWidth: '200px' }}
-      >
-        <img
-          src={`https://image.tmdb.org/t/p/w342${image}`}
-          alt="poster"
-          style={{ width: '100%', height: 'auto' }}
-        />
-      </div>
-      <div
-        className="mx-1"
-        style={{ width: '25%', maxWidth: '250px', minWidth: '200px' }}
-      >
-        <img
-          src={`https://image.tmdb.org/t/p/w342${image}`}
-          alt="poster"
-          style={{ width: '100%', height: 'auto' }}
-        />
-      </div>
-      <div
-        className="mx-1"
-        style={{ width: '25%', maxWidth: '250px', minWidth: '200px' }}
-      >
-        <img
-          src={`https://image.tmdb.org/t/p/w342${image}`}
-          alt="poster"
-          style={{ width: '100%', height: 'auto' }}
-        />
-      </div>
-      <div
-        className="mx-1"
-        style={{ width: '25%', maxWidth: '250px', minWidth: '200px' }}
-      >
-        <img
-          src={`https://image.tmdb.org/t/p/w342${image}`}
-          alt="poster"
-          style={{ width: '100%', height: 'auto' }}
-        />
-      </div>
-      <div
-        className="mx-1"
-        style={{ width: '25%', maxWidth: '250px', minWidth: '200px' }}
-      >
-        <img
-          src={`https://image.tmdb.org/t/p/w342${image}`}
-          alt="poster"
-          style={{ width: '100%', height: 'auto' }}
-        />
-      </div>
-      <div
-        className="mx-1"
-        style={{ width: '25%', maxWidth: '250px', minWidth: '200px' }}
-      >
-        <img
-          src={`https://image.tmdb.org/t/p/w342${image}`}
-          alt="poster"
-          style={{ width: '100%', height: 'auto' }}
-        />
-      </div>
-      <div
-        className="mx-1"
-        style={{ width: '25%', maxWidth: '250px', minWidth: '200px' }}
-      >
-        <img
-          src={`https://image.tmdb.org/t/p/w342${image}`}
-          alt="poster"
-          style={{ width: '100%', height: 'auto' }}
-        />
-      </div>
-      <div
-        className="mx-1"
-        style={{ width: '25%', maxWidth: '250px', minWidth: '200px' }}
-      >
-        <img
-          src={`https://image.tmdb.org/t/p/w342${image}`}
-          alt="poster"
-          style={{ width: '100%', height: 'auto' }}
-        />
-      </div>
+      {videos.videos.map((video, index) => {
+        return (
+          <Card
+            key={`video_${index}`}
+            className="col-md-5 img-responsive px-0"
+            style={{ border: '0px', cursor: 'pointer' }}
+          >
+            <Card.Img
+              src={`https://img.youtube.com/vi/${video.key}/hqdefault.jpg`}
+              alt="poster"
+            />
+          </Card>
+        );
+      })}
     </div>
   );
 };
