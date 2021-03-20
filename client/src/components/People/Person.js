@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { getPersonDetails } from '../../actions/person';
 import PersonInfo from './PersonInfo';
 import PersonDetails from './PersonDetails';
+import Spinner from '../Utility/Spinner';
 
 const Person = ({ match, getPersonDetails, details, credits, loading }) => {
   useEffect(() => {
@@ -12,7 +13,11 @@ const Person = ({ match, getPersonDetails, details, credits, loading }) => {
 
   return (
     <Fragment>
-      {!loading && (
+      {loading ? (
+        <div className="poster-spinner">
+          <Spinner />
+        </div>
+      ) : (
         <div className="d-md-flex flex-row mt-2 px-2">
           <div className="person-details col-md-4 col-lg-3 mx-0 px-0">
             <PersonInfo details={details} />
