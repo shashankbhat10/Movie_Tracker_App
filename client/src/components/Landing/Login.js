@@ -60,7 +60,7 @@ const Login = ({
             <h5 className="text-center">Login to Account</h5>
           </Col>
         </Row>
-        {errors.length !== 0 && (
+        {errors && errors.length !== 0 && (
           <Row>
             {errors.map((error, index) => {
               return (

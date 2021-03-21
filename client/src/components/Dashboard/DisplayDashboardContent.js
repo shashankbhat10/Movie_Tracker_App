@@ -4,13 +4,9 @@ import DashboardContentRow from './DashboardContentRow';
 
 const DisplayDiscoverContent = ({
   loadMoreGenres,
-  topContent,
-  genreContent,
   loading,
   remainingGenres,
   renderedGenres,
-  movies,
-  tv,
   content,
 }) => {
   const observer = useRef();
@@ -32,7 +28,7 @@ const DisplayDiscoverContent = ({
   );
 
   return (
-    <div>
+    <div style={{ backgroundColor: 'grey' }}>
       {!loading &&
         content.map((singleContent, index) => {
           return (

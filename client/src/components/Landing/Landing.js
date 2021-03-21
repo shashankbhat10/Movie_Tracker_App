@@ -8,6 +8,8 @@ const Landing = ({ loading, errors, isAuthenticated }) => {
   const [isLoginForm, changeLoginForm] = useState(true);
   // return localStorage.movieTrackerAccessToken !== undefined &&
   //   localStorage.movieTrackerAccessToken.length !== 0 ? (
+  console.log(isAuthenticated);
+
   return isAuthenticated ? (
     <Redirect to="/dashboard" />
   ) : (
