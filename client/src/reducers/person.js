@@ -11,6 +11,8 @@ export default function (state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
+    case actionTypes.PERSON_DATA_LOADING:
+      return { ...state, loading: true };
     case actionTypes.PERSON_DATA_LOADED:
       return {
         ...state,

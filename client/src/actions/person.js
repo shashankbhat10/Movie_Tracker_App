@@ -3,6 +3,9 @@ import axios from 'axios';
 
 export const getPersonDetails = (id) => async (dispatch) => {
   try {
+    dispatch({
+      type: actionTypes.PERSON_DATA_LOADING,
+    });
     const personRes = await axios.get(`/api/person/${id}`);
 
     dispatch({
