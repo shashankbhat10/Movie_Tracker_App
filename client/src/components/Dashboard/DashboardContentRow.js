@@ -87,8 +87,6 @@ const DashboardContentRow = ({
     }
   };
 
-  const removeFromWatchlist = (item) => {};
-
   return (
     <div className="d-flex flex-row flex-nowrap" style={{ overflowX: 'auto' }}>
       {contentList.map((item, index) => {
@@ -179,7 +177,7 @@ const DashboardContentRow = ({
                 className="my-1 pl-1"
                 style={{ fontSize: '1em', color: 'black' }}
               >
-                {type === 'movie' ? item.title : item.name}
+                {item.title}
               </Card.Title>
             </Link>
           </Card>
