@@ -9,6 +9,7 @@ import TVReviews from './TVReviews';
 import TVMedia from './TVMedia/TVMedia';
 import TVSimilar from './TVSimilar';
 import TVAdditionalDetails from './TVAdditionalDetails';
+import Spinner from '../Utility/Spinner';
 
 const TV = ({
   match,
@@ -30,9 +31,13 @@ const TV = ({
 
   return (
     <Fragment>
-      {!loading && (
+      {loading ? (
+        <div className="poster-spinner">
+          <Spinner />
+        </div>
+      ) : (
         <div>
-          <div>
+          <div className="pt-3">
             <TVHeader details={details} />
           </div>
           <div>

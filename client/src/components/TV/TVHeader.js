@@ -6,12 +6,13 @@ const TVHeader = ({ details }) => {
   return (
     <Fragment>
       <Card
-        className="d-flex flex-row mx-auto mt-3"
+        className="d-flex flex-row mx-auto"
         style={{
           width: '95%',
           maxWidth: '1000px',
           borderRadius: '10px',
           overflow: 'hidden',
+          backgroundImage: `https://image.tmdb.org/t/p/w342${details.backdrop_path}`,
         }}
       >
         <Card.Img

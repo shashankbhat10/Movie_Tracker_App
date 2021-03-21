@@ -19,7 +19,7 @@ const TVMedia = ({ media }) => {
         setTitle('Backdrops');
         break;
       case 'video':
-        setTitle('Titles');
+        setTitle('Videos');
         break;
       default:
         setTitle('Posters');
@@ -28,14 +28,14 @@ const TVMedia = ({ media }) => {
   };
 
   return (
-    <div className="pl-3 mb-4" style={{ width: '95%' }}>
-      <div className="px-5 d-flex justify-content-between">
+    <div className="px-4 mb-4">
+      <div className="px-3 d-flex justify-content-between">
         <h5>Media</h5>
         <span>
           <Link to={`/${key}`}>View all {title}</Link>
         </span>
       </div>
-      <div className="px-3">
+      <div>
         <Tabs
           defaultActiveKey="poster"
           activeKey={key}

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import noImage from '../../images/download.png';
 
 const TVCast = ({ id, cast }) => {
   return (
@@ -10,7 +11,7 @@ const TVCast = ({ id, cast }) => {
         className="pt-1 d-flex flex-row flex-nowrap"
         style={{ overflowX: 'auto' }}
       >
-        {cast.map((actor, index) => {
+        {cast.slice(0, 15).map((actor, index) => {
           return (
             <Card
               key={`tv_cast_${actor.id}`}
@@ -18,12 +19,20 @@ const TVCast = ({ id, cast }) => {
               style={{
                 display: 'block',
                 minWidth: '140px',
+                border: '0px',
               }}
             >
               <Link className="profile-image" to={`/person/${actor.id}`}>
                 <Card.Img
-                  style={{ width: '100%', height: 'auto' }}
-                  src={`https://image.tmdb.org/t/p/w185${actor.profile_path}`}
+                  style={{
+                    width: '100%',
+                    height: 'auto',
+                  }}
+                  src={
+                    actor.profile_path
+                      ? `https://image.tmdb.org/t/p/w185${actor.profile_path}`
+                      : noImage
+                  }
                 />
               </Link>
               <Card.Body className="px-1 py-1 d-flex flex-column">

@@ -12,6 +12,7 @@ const TVBackdrops = ({ backdrops }) => {
             key={`backdrop_${index}`}
           >
             <Card.Img
+              loading="lazy"
               src={`https://image.tmdb.org/t/p/w342${[backdrop.file_path]}`}
             />
           </Card>

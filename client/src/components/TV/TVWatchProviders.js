@@ -9,7 +9,7 @@ const TVWatchProviders = ({ providers }) => {
       {providers === undefined && <span>No Watch Providers found!</span>}
       {providers !== undefined && (
         <div>
-          <div className="d-flex flex-row">
+          <div className="d-flex flex-row align-items-center">
             <h5 className="mb-0">Where to Watch?</h5>
             <a
               href={providers.link}

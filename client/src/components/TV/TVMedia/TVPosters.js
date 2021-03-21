@@ -12,6 +12,7 @@ const TVPosters = ({ posters }) => {
             style={{ minWidth: '200px', maxWidth: '220px' }}
           >
             <Card.Img
+              loading="lazy"
               src={`https://image.tmdb.org/t/p/w342${[poster.file_path]}`}
             />
           </Card>

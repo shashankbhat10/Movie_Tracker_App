@@ -43,23 +43,23 @@ const TVAdditionalDetails = ({ details, links }) => {
       <div className="show-info d-flex flex-row justify-content-between px-3">
         <span className="d-flex flex-column align-items-center">
           <strong>Status</strong>
-          <span className="text-muted">{details.status}</span>
+          <span>{details.status}</span>
         </span>
         <span className="d-flex flex-column align-items-center">
           <strong>Original Language</strong>
-          <span className="text-muted">{details.originalLanguage}</span>
+          <span>{details.originalLanguage}</span>
         </span>
         <span className="d-flex flex-column align-items-center">
           <strong>Type</strong>
-          <span className="text-muted">{details.type}</span>
+          <span>{details.type}</span>
         </span>
         <span className="d-flex flex-column align-items-center">
           <strong>Episode Run Time</strong>
-          <span className="text-muted">{details.episodeRunTime} mins</span>
+          <span>{details.episodeRunTime} mins</span>
         </span>
         <span className="d-flex flex-column align-items-center">
           <strong>First Air Date</strong>
-          <span className="text-muted">{details.firstAirDate}</span>
+          <span>{details.firstAirDate}</span>
         </span>
       </div>
       <div
@@ -69,7 +69,7 @@ const TVAdditionalDetails = ({ details, links }) => {
         {details.production.length !== 0 && (
           <div className="d-flex flex-column align-items-center">
             <strong>Production</strong>
-            <div>
+            <div style={{ backgroundColor: 'white' }}>
               {details.production.map((company, index) => {
                 return (
                   <OverlayTrigger

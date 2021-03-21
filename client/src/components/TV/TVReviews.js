@@ -1,5 +1,6 @@
 import React from 'react';
 import Slider from 'react-slick';
+import noImage from '../../images/download.png';
 
 const TVReviews = ({ reviews }) => {
   const reviewsSlice = reviews.results.slice(
@@ -56,7 +57,7 @@ const TVReviews = ({ reviews }) => {
                                 1
                               )
                             : `https://image.tmdb.org/t/p/w185${review['author_details']['avatar_path']}`
-                          : null
+                          : noImage
                       }
                       alt="avatar"
                       className="pt-2 pb-auto pl-3"
