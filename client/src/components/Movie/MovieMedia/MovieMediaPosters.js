@@ -3,7 +3,7 @@ import React from 'react';
 const Posters = ({ posters }) => {
   return (
     <div
-      className="pt-3 mr-auto d-flex flex-row flex-nowrap"
+      className="pt-1 mr-auto d-flex flex-row flex-nowrap"
       style={{ overflowX: 'auto' }}
     >
       {posters.images.map((poster, index) => {
