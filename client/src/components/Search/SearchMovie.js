@@ -30,7 +30,10 @@ const Search = ({
       {loading ? (
         <Spinner />
       ) : (
-        <div className="d-md-flex flex-md-row py-3 px-3">
+        <div
+          className="d-md-flex flex-md-row py-3 px-3"
+          style={{ backgroundColor: 'grey' }}
+        >
           <SearchFilter
             resultType={currentFilter}
             updateFilter={updateFilter}

@@ -6,6 +6,7 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 import noImage from '../../images/download.png';
 
 const DisplayPeopleResults = ({ people, loadMoreResults }) => {
+  console.log(people);
   const observer = useRef();
   const lastSearchedResult = useCallback(
     (result) => {
@@ -32,7 +33,7 @@ const DisplayPeopleResults = ({ people, loadMoreResults }) => {
 
   return (
     <div>
-      <ul>
+      <ul style={{ listStyle: 'none' }}>
         {people.data.map((person, index) => {
           return (
             <li
@@ -44,7 +45,7 @@ const DisplayPeopleResults = ({ people, loadMoreResults }) => {
                 style={{ maxHeight: '300px' }}
               >
                 <Link
-                  to={`/tv/${person.id}`}
+                  to={`/person/${person.id}`}
                   className="col-md-3 col-lg-2 px-0"
                   style={{ textDecoration: 'none' }}
                 >
@@ -69,29 +70,32 @@ const DisplayPeopleResults = ({ people, loadMoreResults }) => {
                   <Card.Subtitle className="text-muted">
                     {person.known_for_department}
                   </Card.Subtitle>
-                  <Card.Subtitle
-                    className="mt-2 d-flex flex-row"
-                    style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}
-                  >
-                    Known for:
-                    <span
-                      key={`search_people_known_for_${person.known_for[0].id}`}
-                      className="pl-1"
+                  {/* {console.log(person.known_for[0])} */}
+                  {person.known_for[0] && (
+                    <Card.Subtitle
+                      className="mt-2 d-flex flex-row"
+                      style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}
                     >
-                      <Link
-                        to={
-                          person.known_for[0].media_type === 'movie'
-                            ? `/movie/${person.known_for[0].id}`
-                            : `/tv/${person.known_for[0].id}`
-                        }
-                        style={{ textDecoration: 'none' }}
+                      Known for:
+                      <span
+                        key={`search_people_known_for_${person.known_for[0].id}`}
+                        className="pl-1"
                       >
-                        {person.known_for[0].media_type === 'movie'
-                          ? `${person.known_for[0].title}`
-                          : `${person.known_for[0].name}`}
-                      </Link>
-                    </span>
-                  </Card.Subtitle>
+                        <Link
+                          to={
+                            person.known_for[0].media_type === 'movie'
+                              ? `/movie/${person.known_for[0].id}`
+                              : `/tv/${person.known_for[0].id}`
+                          }
+                          style={{ textDecoration: 'none' }}
+                        >
+                          {person.known_for[0].media_type === 'movie'
+                            ? `${person.known_for[0].title}`
+                            : `${person.known_for[0].name}`}
+                        </Link>
+                      </span>
+                    </Card.Subtitle>
+                  )}
                 </Card.Body>
               </Card>
             </li>
