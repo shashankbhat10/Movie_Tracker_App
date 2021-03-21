@@ -18,6 +18,9 @@ const MovieHeader = ({ details, poster, crew }) => {
           maxWidth: '1000px',
           borderRadius: '10px',
           overflow: 'hidden',
+          backgroundColor: '#16161d',
+          border: '#30363d 2px solid',
+          color: '#c3d1d9'
         }}
       >
         <Card.Img
@@ -61,7 +64,7 @@ const MovieHeader = ({ details, poster, crew }) => {
                 <span className="d-flex flex-column align-items-center">
                   <Link
                     to={`/person/${screenplay.id}`}
-                    style={{ textDecoration: 'none', color: 'black' }}
+                    style={{ textDecoration: 'none', color: '#c3d1d9' }}
                   >
                     <strong>{screenplay.name}</strong>
                   </Link>
@@ -74,7 +77,7 @@ const MovieHeader = ({ details, poster, crew }) => {
                 <span className="d-flex flex-column align-items-center">
                   <Link
                     to={`/person/${producer.id}`}
-                    style={{ textDecoration: 'none', color: 'black' }}
+                    style={{ textDecoration: 'none', color: '#c3d1d9' }}
                   >
                     <strong>{producer.name}</strong>
                   </Link>

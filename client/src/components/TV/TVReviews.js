@@ -35,9 +35,10 @@ const TVReviews = ({ reviews }) => {
         <div
           style={{
             width: '95%',
-            border: '1px black solid',
+            border: '#30363d 2px solid',
             borderRadius: '20px',
             boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.3)',
+            backgroundColor: '#16161d'
           }}
           className="mx-auto mt-2"
         >

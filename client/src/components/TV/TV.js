@@ -36,7 +36,7 @@ const TV = ({
           <Spinner />
         </div>
       ) : (
-        <div>
+        <div style={{backgroundColor: '#090c12', color:'#c3d1d9'}}>
           <div className="pt-3">
             <TVHeader details={details} />
           </div>

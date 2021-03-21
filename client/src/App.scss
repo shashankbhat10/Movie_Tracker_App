@@ -13,6 +13,10 @@ body{
   padding: 0;
 }
 
+.bg-dark {
+  background-color: black !important;
+}
+
 .App {
   text-align: center;
 }
@@ -75,8 +79,15 @@ body{
 
 .movie-header{
   width: 100%;
-  // background-color: cornflowerblue;
+  background-color: #090c12;
+  color: #c3d1d9;
   // margin-top: 0;
+}
+
+.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+  color: #c3d1d9 !important;
+  background-color: #16161d !important;
+  border-color: #30363d !important;
 }
 
 .movie-header-main {
@@ -392,11 +403,11 @@ body{
 
 // Change colors for Arrow keys in Review Slider
 .slick-prev:before {
-  color: black;
+  color: #c3d1d9;
 }
 
 .slick-next:before {
-  color: black;
+  color: #c3d1d9;
 }
 
 .credit-dept span:after {

@@ -95,7 +95,7 @@ const MovieAdditionalDetails = ({ details, links }) => {
                     <img
                       src={`https://image.tmdb.org/t/p/original${company.logo_path}`}
                       alt={`${company.name}`}
-                      style={{ maxWidth: '60px' }}
+                      style={{ maxWidth: '60px' ,backgroundColor: 'white',padding: '5px',margin: '5px'}}
                       className="pt-1 px-1"
                     />
                   </OverlayTrigger>

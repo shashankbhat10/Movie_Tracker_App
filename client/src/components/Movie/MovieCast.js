@@ -23,8 +23,8 @@ const MovieCast = ({ id, cast }) => {
                 style={{
                   display: 'block',
                   minWidth: '140px',
-                  backgroundColor: 'transparent',
-                  border: '0px',
+                  border: '#30363d 2px solid',
+                  backgroundColor: '#16161d'
                 }}
               >
                 <Link className="profile-image" to={`/person/${actor.id}`}>
@@ -43,7 +43,7 @@ const MovieCast = ({ id, cast }) => {
                 <Card.Body className="px-1 py-1 d-flex flex-column">
                   <Link
                     to={`/person/${actor.id}`}
-                    style={{ textDecoration: 'none', color: 'black' }}
+                    style={{ textDecoration: 'none', color: '#c3d1d9' }}
                   >
                     <span>
                       <strong>{actor.name}</strong>
@@ -58,7 +58,7 @@ const MovieCast = ({ id, cast }) => {
       <h6 className="pt-3 pl-3">
         <Link
           to={`/movie/${id}/complete-credits`}
-          style={{ textDecoration: 'none', color: 'black' }}
+          style={{ textDecoration: 'none', color: '#c3d1d9' }}
         >
           Full Cast and Crew
         </Link>

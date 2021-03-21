@@ -12,6 +12,9 @@ const TVHeader = ({ details }) => {
           maxWidth: '1000px',
           borderRadius: '10px',
           overflow: 'hidden',
+          backgroundColor: '#16161d',
+          border: '#30363d 2px solid',
+          color: '#c3d1d9',
           backgroundImage: `https://image.tmdb.org/t/p/w342${details.backdrop_path}`,
         }}
       >

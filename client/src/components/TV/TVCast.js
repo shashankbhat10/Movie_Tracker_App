@@ -19,7 +19,8 @@ const TVCast = ({ id, cast }) => {
               style={{
                 display: 'block',
                 minWidth: '140px',
-                border: '0px',
+                border: '#30363d 2px solid',
+                backgroundColor: '#16161d'
               }}
             >
               <Link className="profile-image" to={`/person/${actor.id}`}>
@@ -38,7 +39,7 @@ const TVCast = ({ id, cast }) => {
               <Card.Body className="px-1 py-1 d-flex flex-column">
                 <Link
                   to={`/person/${actor.id}`}
-                  style={{ textDecoration: 'none', color: 'black' }}
+                  style={{ textDecoration: 'none', color: '#c3d1d9' }}
                 >
                   <span>
                     <strong>{actor.name}</strong>
