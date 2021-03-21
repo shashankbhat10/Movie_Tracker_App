@@ -209,28 +209,28 @@ router.post(
       );
       console.log('decoded', decoded);
 
-      decoded = jwt.verify(
-        accessToken,
-        config.get('refreshTokenKey'),
-        (err) => {
-          if (err) {
-            return res.status(403).send({ msg: 'Access Token not valid' });
-          }
-        }
-      );
+      // decoded = jwt.verify(
+      //   accessToken,
+      //   config.get('refreshTokenKey'),
+      //   (err) => {
+      //     if (err) {
+      //       return res.status(403).send({ msg: 'Access Token not valid' });
+      //     }
+      //   }
+      // );
 
-      console.log('decoded', decoded);
-      await db
-        .getDB()
-        .collection(authCollection)
-        .insertOne(authPayload, (err, response) => {
-          if (err) {
-            console.log(err);
-            return res
-              .status(500)
-              .send({ msg: 'Error inserting refreshToken' });
-          }
-        });
+      // console.log('decoded', decoded);
+      // await db
+      //   .getDB()
+      //   .collection(authCollection)
+      //   .insertOne(authPayload, (err, response) => {
+      //     if (err) {
+      //       console.log(err);
+      //       return res
+      //         .status(500)
+      //         .send({ msg: 'Error inserting refreshToken' });
+      //     }
+      //   });
 
       res.json({ accessToken, refreshToken });
     } catch (error) {
