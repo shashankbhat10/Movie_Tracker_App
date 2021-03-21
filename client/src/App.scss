@@ -75,8 +75,8 @@ body{
 
 .movie-header{
   width: 100%;
-  background-color: cornflowerblue;
-  margin-top: 0;
+  // background-color: cornflowerblue;
+  // margin-top: 0;
 }
 
 .movie-header-main {
@@ -221,19 +221,20 @@ body{
   min-width: 250px;
   display: flex;
   flex-flow: column;
-  background-color: pink;
+  background-color: transparent;
+  color: black;
 }
 
 .filter-options {
   width: 95%;
   align-items: center;
-  background-color: beige;
+  background-color: brown;
   border: 1px solid black ;
 }
 
 .filter-count {
   justify-self: center;
-  width: 20%;
+  // width: 20%;
   text-align: center;
   border: 1px solid black;
   background-color: white;
@@ -243,10 +244,10 @@ body{
   cursor: pointer;
 }
 
-.search-result-container {
-  width: 75%;
-  border: 1px solid black;
-}
+// .search-result-container {
+//   width: 75%;
+//   // border: 1px solid black;
+// }
 
 .search-result {
   width: 80%;
@@ -300,7 +301,8 @@ body{
 }
 
 .modal-dialog {
-  max-width: none;
+  width: 85% !important;
+  max-width: 1000px !important;
 }
 
 // .modal-content {
@@ -382,4 +384,32 @@ body{
   margin-right: 0.3em;
   color: #11c020;
   font-size: 120%;
+}
+
+.modal-backdrop {
+  opacity: 0.5 !important;
+}
+
+// Change colors for Arrow keys in Review Slider
+.slick-prev:before {
+  color: black;
+}
+
+.slick-next:before {
+  color: black;
+}
+
+.credit-dept span:after {
+  content: '';
+  display: block;
+  border-bottom: 3px solid red;
+  width: 0;
+  position: absolute;
+  right: 0;
+  -webkit-transition: 1s ease;
+  transition: 1s ease;
+}
+
+.credit-dept span:hover:after {
+  width: 100%;
 }
