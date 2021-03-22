@@ -28,7 +28,7 @@ const DisplayDiscoverContent = ({
   );
 
   return (
-    <div style={{ backgroundColor: 'grey' }}>
+    <div style={{ backgroundColor: '#090c12' }}>
       {!loading &&
         content.map((singleContent, index) => {
           return (
@@ -38,7 +38,7 @@ const DisplayDiscoverContent = ({
               key={`${singleContent.type}_${singleContent.category}_${index}`}
               ref={renderedGenres + 4 === index + 1 ? lastDisplayed : null}
             >
-              <h5>
+              <h5 style={{ color: '#c3d1d9' }} className="pl-2">
                 {singleContent.category === 'genre'
                   ? singleContent.name
                   : singleContent.category[0].toUpperCase() +

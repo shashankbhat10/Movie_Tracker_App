@@ -9,9 +9,13 @@ import {
   addContentToWatched,
   removeContentFromWatched,
   removeContentFromList,
+  addRating,
+  updateRating,
+  removeRating,
 } from '../../actions/profile';
 import noImage from '../../images/image-not-found.png';
 import ListPopover from '../Utility/ListPopover';
+import Rating from '../Utility/Rating';
 
 const DashboardContentRow = ({
   content,
@@ -21,6 +25,9 @@ const DashboardContentRow = ({
   removeContentFromWatched,
   addContentToList,
   removeContentFromList,
+  addRating,
+  updateRating,
+  removeRating,
 }) => {
   const [type, setType] = useState('movie');
   const [contentList, setContentList] = useState([]);
@@ -78,12 +85,32 @@ const DashboardContentRow = ({
   };
 
   const addToWatchlist = (listId, item, action) => {
-    // console.log(item);
     console.log(action);
     if (action === 'add') {
       addContentToList(listId, type, item);
     } else {
       removeContentFromList(listId, type, item);
+    }
+  };
+
+  const handleRating = (item, action, rating = 0) => {
+    switch (action) {
+      case 'add':
+        if (!watchedContent.includes(item.id)) {
+          item.type = type;
+          addContentToWatched(item);
+        }
+        addRating(item, type, rating);
+        break;
+      case 'update':
+        updateRating(item.id, type, rating);
+        break;
+      case 'remove':
+        console.log('remove');
+        removeRating(item.id, type);
+        break;
+      default:
+        break;
     }
   };
 
@@ -124,10 +151,11 @@ const DashboardContentRow = ({
                       ? noImage
                       : `https://image.tmdb.org/t/p/w780${item.backdrop_path}`
                   }
+                  style={{ border: '2px solid #30363d' }}
                 />
               </Link>
               <div
-                className="d-flex flex-row dashboard-options px-4 py-2 justify-content-between align-items-center"
+                className="d-flex flex-row dashboard-options px-4 py-2 justify-content-between align-items-center bg-dark"
                 ref={refEl}
                 style={{
                   transform:
@@ -136,37 +164,52 @@ const DashboardContentRow = ({
                       : 'translateY(100%)',
                 }}
               >
-                <div>
-                  <OverlayTrigger
-                    key={`tooltip_dashboard_content_options_${item.id}_watchlist`}
-                    placement="bottom"
-                    overlay={
-                      <Tooltip id={`content_${item.id}_${index}_watchlist`}>
-                        {watchedContent.includes(item.id)
-                          ? 'Movie Watched'
-                          : 'Add to Watched'}
-                      </Tooltip>
-                    }
-                  >
-                    <div
-                      className={`dashboard-icons ${
-                        watchedContent.includes(item.id) && 'icon-border'
-                      }`}
-                      onClick={() => handleWatchedClick(type, item)}
+                {(activeId === item.id || popoverId === item.id) && (
+                  <div>
+                    <OverlayTrigger
+                      key={`tooltip_dashboard_content_options_${item.id}_watchlist`}
+                      placement="bottom"
+                      overlay={
+                        <Tooltip id={`content_${item.id}_${index}_watchlist`}>
+                          {watchedContent.includes(item.id)
+                            ? 'Movie Watched'
+                            : 'Add to Watched'}
+                        </Tooltip>
+                      }
                     >
-                      <FontAwesomeIcon icon={faCheck} />
-                    </div>
-                  </OverlayTrigger>
-                </div>
-                <div className="dashboard-icons">
-                  <ListPopover
-                    item={item}
-                    itemType={type}
-                    open={popoverOpen}
-                    close={popoverClose}
-                    addToWatchlist={addToWatchlist}
-                  />
-                </div>
+                      <div
+                        className={`dashboard-icons ${
+                          watchedContent.includes(item.id) && 'icon-border'
+                        }`}
+                        onClick={() => handleWatchedClick(type, item)}
+                      >
+                        <FontAwesomeIcon icon={faCheck} />
+                      </div>
+                    </OverlayTrigger>
+                  </div>
+                )}
+                {(activeId === item.id || popoverId === item.id) && (
+                  <div className="dashboard-icons">
+                    <Rating
+                      item={item}
+                      itemType={type}
+                      open={popoverOpen}
+                      close={popoverClose}
+                      handleRating={handleRating}
+                    />
+                  </div>
+                )}
+                {(activeId === item.id || popoverId === item.id) && (
+                  <div className="dashboard-icons">
+                    <ListPopover
+                      item={item}
+                      itemType={type}
+                      open={popoverOpen}
+                      close={popoverClose}
+                      addToWatchlist={addToWatchlist}
+                    />
+                  </div>
+                )}
               </div>
             </div>
             <Link
@@ -175,7 +218,7 @@ const DashboardContentRow = ({
             >
               <Card.Title
                 className="my-1 pl-1"
-                style={{ fontSize: '1em', color: 'black' }}
+                style={{ fontSize: '1em', color: '#c3d1d9' }}
               >
                 {item.title}
               </Card.Title>
@@ -196,4 +239,7 @@ export default connect(mapStateToProps, {
   removeContentFromWatched,
   addContentToList,
   removeContentFromList,
+  addRating,
+  updateRating,
+  removeRating,
 })(DashboardContentRow);

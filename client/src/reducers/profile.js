@@ -13,6 +13,8 @@ export default function (state = initialState, action) {
 
   let list = {};
   let contentType = '';
+  let rating = {};
+  let newList = {};
 
   switch (type) {
     case actionTypes.CONTENT_ADDED_TO_WATCH:
@@ -55,12 +57,16 @@ export default function (state = initialState, action) {
           movie: [
             ...payload.ratings
               .filter((item) => item.type === 'movie')
-              .map((item) => item.id),
+              .map((item) => {
+                return { id: item.id, rating: item.rating };
+              }),
           ],
           tv: [
             ...payload.ratings
               .filter((item) => item.type === 'tv')
-              .map((item) => item.id),
+              .map((item) => {
+                return { id: item.id, rating: item.rating };
+              }),
           ],
         },
         watchlist: {
@@ -85,7 +91,7 @@ export default function (state = initialState, action) {
       list[contentType].splice(list[contentType].indexOf(payload.id), 1);
       return { ...state, watched: list };
     case actionTypes.CONTENT_ADDED_TO_LIST:
-      const newList = { ...state.watchlist };
+      newList = { ...state.watchlist };
       if (payload.type === 'movie') newList['movie'].push(payload.id);
       else if (payload.type === 'tv') newList['tv'].push(payload.id);
       return { ...state, watchlist: newList };
@@ -95,6 +101,31 @@ export default function (state = initialState, action) {
       else contentType = 'tv';
       list[contentType].splice(list[contentType].indexOf(payload.id), 1);
       return { ...state, watchlist: list };
+    case actionTypes.CONTENT_RATING_ADDED:
+      rating = {
+        id: payload.id,
+        rating: payload.rating,
+      };
+      list = { ...state.ratings };
+      if (payload.type === 'movie') list['movie'].push(rating);
+      else list['movie'].push(rating);
+      return { ...state, ratings: list };
+    case actionTypes.CONTENT_RATING_UPDATED:
+      rating = {
+        id: payload.id,
+        rating: payload.rating,
+      };
+      list = { ...state.ratings };
+      list[payload.type].filter((item) => item.id === payload.id)[0].rating =
+        payload.rating;
+      return { ...state, ratings: list };
+    case actionTypes.CONTENT_RATING_REMOVED:
+      list = { ...state.ratings };
+      list[payload.type].splice(
+        list[payload.type].findIndex((item) => item.id === payload.id),
+        1
+      );
+      return { ...state, ratings: list };
     default:
       return { ...state };
   }

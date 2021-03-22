@@ -20,15 +20,24 @@ router.post('/add-to-watched', auth, async (req, res) => {
       .collection(profileCollection)
       .updateOne(
         { userId: mongo.ObjectID(req.user.id) },
-        { $addToSet: { watched: content } }
+        { $addToSet: { watched: content } },
+        (err, response) => {
+          if (err) throw err;
+          if (response.modifiedCount !== 1) {
+            res
+              .status(400)
+              .json({ message: 'Content couldnt be added to Watched' });
+          } else {
+            res.json({
+              status: 200,
+              message: 'Content Added to Watched',
+              content: content,
+            });
+          }
+        }
       );
-    res.json({
-      status: 200,
-      message: 'Content Added to Watched',
-      content: content,
-    });
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
     res.status(500).send({ message: 'Server Error' });
   }
 });
@@ -49,7 +58,7 @@ router.delete('/remove-watched/:type/:id', auth, async (req, res) => {
         },
         (err, response) => {
           if (err) {
-            console.log(err);
+            console.log(err.message);
             throw err;
           } else if (response.modifiedCount !== 1) {
             return res
@@ -63,15 +72,14 @@ router.delete('/remove-watched/:type/:id', auth, async (req, res) => {
         }
       );
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
     res.status(500).json({ message: 'Server Error' });
   }
 });
 
 router.get('/me', auth, async (req, res) => {
   try {
-    let watchlist = {};
-    const profile = await db
+    await db
       .getDB()
       .collection(profileCollection)
       .findOne(
@@ -93,13 +101,11 @@ router.get('/me', auth, async (req, res) => {
                       err.message
                     );
                   } else {
-                    // console.log(watchlist);
                     profile.watchlist = watchlist;
                     res.json(profile);
                   }
                 }
               );
-            // console.log(watchlist);
           }
         }
       );
@@ -114,7 +120,8 @@ router.get('/me', auth, async (req, res) => {
     //   .findOne({ _id: mongo.ObjectID(profile.lists[0]) });
     // res.json(profile);
   } catch (error) {
-    console.log(error);
+    console.log(profile);
+    console.log(error.message);
     res.status(500).json({
       message: 'Server Error',
     });
@@ -142,7 +149,7 @@ router.post('/list/add', auth, async (req, res) => {
         { $addToSet: { content: payload.content } },
         (err, response) => {
           if (err) {
-            console.log(err);
+            console.log(err.message);
             throw err;
           } else if (response.modifiedCount === 0) {
             return res
@@ -181,7 +188,7 @@ router.post('/list/remove', auth, async (req, res) => {
         },
         (err, response) => {
           if (err) {
-            console.log(err);
+            console.log(err.message);
             throw err;
           } else if (response.modifiedCount === 0) {
             return res
@@ -189,6 +196,114 @@ router.post('/list/remove', auth, async (req, res) => {
               .json({ message: 'Content not present in Watchlist' });
           } else {
             res.json({ message: 'Content removed from Watchlist' });
+          }
+        }
+      );
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+
+router.post('/rating/add', auth, async (req, res) => {
+  try {
+    const content = req.body;
+    await db
+      .getDB()
+      .collection(profileCollection)
+      .updateOne(
+        { userId: mongo.ObjectID(req.user.id) },
+        { $addToSet: { ratings: content } },
+        (err, response) => {
+          if (err) throw err;
+          if (response.modifiedCount !== 1) {
+            res
+              .status(400)
+              .json({ message: 'Content couldnt be added to Watched' });
+          } else {
+            res.json({
+              status: 200,
+              message: 'Content Added to Watched',
+              content: content,
+            });
+          }
+        }
+      );
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+
+router.delete('/rating/remove/:type/:id', auth, async (req, res) => {
+  try {
+    await db
+      .getDB()
+      .collection(profileCollection)
+      .updateOne(
+        { userId: mongo.ObjectID(req.user.id) },
+        {
+          $pull: {
+            ratings: { id: parseInt(req.params.id), type: req.params.type },
+          },
+        },
+        (err, response) => {
+          console.log(response.modifiedCount);
+          if (err) throw err;
+          else if (response.modifiedCount !== 1) {
+            return res
+              .status(400)
+              .json({ message: 'Couldnt remove content rating' });
+          } else {
+            return res.status(200).json({ message: 'Content rating deleted' });
+          }
+        }
+      );
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.patch('/rating/update', auth, async (req, res) => {
+  try {
+    const content = req.body;
+    console.log(content);
+    // const doc = await db
+    //   .getDB()
+    //   .collection(profileCollection)
+    //   .findOne({
+    //     userId: mongo.ObjectID(req.user.id),
+    //     'ratings.id': parseInt(content.id),
+    //     'ratings.type': content.type,
+    //   });
+    // console.log(doc);
+    await db
+      .getDB()
+      .collection(profileCollection)
+      .updateOne(
+        {
+          userId: mongo.ObjectID(req.user.id),
+          ratings: {
+            $elemMatch: { type: content.type, id: parseInt(content.id) },
+          },
+
+          // 'ratings.type': content.type,
+          // 'ratings.id': parseInt(content.id),
+        },
+        {
+          $set: { 'ratings.$.rating': content.rating },
+        },
+        (err, response) => {
+          if (err) throw err;
+          else if (response.modifiedCount === 0) {
+            // console.log(response.message.documents);
+            res.status(400).json({ message: 'Could not update rating' });
+          } else {
+            console.log(response.documents);
+            res.status(200).json({
+              message: 'Rating updated succesfully',
+              content: content,
+            });
           }
         }
       );

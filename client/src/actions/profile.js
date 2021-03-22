@@ -101,3 +101,58 @@ export const removeContentFromList = (listId, type, item) => async (
     }
   }
 };
+
+export const addRating = (content, type, rating) => async (dispatch) => {
+  try {
+    console.log('addRating');
+    const payload = {
+      id: content.id,
+      title: content.title,
+      rating: rating,
+      poster: content.poster_path,
+      backdrop: content.backdrop_path,
+      type: type,
+    };
+    const res = await axios.post('api/profile/rating/add', payload);
+
+    dispatch({
+      type: actionTypes.CONTENT_RATING_ADDED,
+      payload: payload,
+    });
+  } catch (error) {
+    //Handle error message display
+    console.log(error.message);
+  }
+};
+
+export const updateRating = (id, type, rating) => async (dispatch) => {
+  try {
+    const payload = {
+      id: id,
+      type: type,
+      rating: rating,
+    };
+
+    const res = await axios.patch('/api/profile/rating/update', payload);
+
+    dispatch({
+      type: actionTypes.CONTENT_RATING_UPDATED,
+      payload: payload,
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+export const removeRating = (id, type) => async (dispatch) => {
+  try {
+    const res = await axios.delete(`api/profile/rating/remove/${type}/${id}`);
+
+    dispatch({
+      type: actionTypes.CONTENT_RATING_REMOVED,
+      payload: { id: id, type: type },
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
