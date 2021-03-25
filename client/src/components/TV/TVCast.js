@@ -20,7 +20,7 @@ const TVCast = ({ id, cast }) => {
                 display: 'block',
                 minWidth: '140px',
                 border: '#30363d 2px solid',
-                backgroundColor: '#16161d'
+                backgroundColor: '#16161d',
               }}
             >
               <Link className="profile-image" to={`/person/${actor.id}`}>
@@ -57,7 +57,7 @@ const TVCast = ({ id, cast }) => {
       <h6 className="pt-3 pl-3">
         <Link
           to={`/tv/${id}/complete-credits`}
-          style={{ textDecoration: 'none', color: 'black' }}
+          style={{ textDecoration: 'none', color: '#c3d1d9' }}
         >
           Full Cast and Crew
         </Link>

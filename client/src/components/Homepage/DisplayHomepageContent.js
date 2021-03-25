@@ -1,8 +1,8 @@
 import React, { useRef, useCallback, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import DashboardContentRow from './DashboardContentRow';
+import HomepageContentRow from './HomepageContentRow';
 
-const DisplayDiscoverContent = ({
+const DisplayHomepageContent = ({
   loadMoreGenres,
   loading,
   remainingGenres,
@@ -45,7 +45,7 @@ const DisplayDiscoverContent = ({
                     singleContent.category.slice(1)}{' '}
                 {singleContent.type === 'movie' ? 'Movies' : 'TV Shows'}
               </h5>
-              <DashboardContentRow
+              <HomepageContentRow
                 content={singleContent}
                 category={singleContent.category}
               />
@@ -67,4 +67,4 @@ const mapStateToProps = (state) => ({
   content: state.homepage.dashboard,
 });
 
-export default connect(mapStateToProps, {})(DisplayDiscoverContent);
+export default connect(mapStateToProps, {})(DisplayHomepageContent);

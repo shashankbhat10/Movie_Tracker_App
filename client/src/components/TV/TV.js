@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { getTVDetails } from '../../actions/tv';
-import { clearDashboard } from '../../actions/dashboard';
+import { clearDashboard } from '../../actions/homepage';
 import TVHeader from './TVHeader';
 import TVCast from './TVCast';
 import TVWatchProviders from './TVWatchProviders';
@@ -36,7 +36,7 @@ const TV = ({
           <Spinner />
         </div>
       ) : (
-        <div style={{backgroundColor: '#090c12', color:'#c3d1d9'}}>
+        <div style={{ backgroundColor: '#090c12', color: '#c3d1d9' }}>
           <div className="pt-3">
             <TVHeader details={details} />
           </div>

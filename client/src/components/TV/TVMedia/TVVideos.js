@@ -22,13 +22,17 @@ const TVVideos = ({ videos }) => {
         return (
           <Card
             key={`video_${index}`}
-            className="col-md-5 px-0"
+            className="col-md-5 px-0 bg-transparent"
             style={{ minWidth: '200px', maxWidth: '400px' }}
           >
             <Card.Img
               loading="lazy"
               src={`https://img.youtube.com/vi/${video.key}/hqdefault.jpg`}
-              style={{ width: '100%', cursor: 'pointer' }}
+              style={{
+                width: '100%',
+                cursor: 'pointer',
+                border: '2px solid #30363d',
+              }}
               onClick={() => handleModalOpen(video.id)}
             />
             {showModal && videoId === video.id && (

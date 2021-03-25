@@ -107,8 +107,7 @@ export default function (state = initialState, action) {
         rating: payload.rating,
       };
       list = { ...state.ratings };
-      if (payload.type === 'movie') list['movie'].push(rating);
-      else list['movie'].push(rating);
+      list[payload.type].push(rating);
       return { ...state, ratings: list };
     case actionTypes.CONTENT_RATING_UPDATED:
       rating = {

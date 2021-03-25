@@ -7,13 +7,14 @@ const TVBackdrops = ({ backdrops }) => {
       {backdrops.map((backdrop, index) => {
         return (
           <Card
-            className="col-md-5 px-0"
+            className="col-md-5 px-0 bg-transparent"
             style={{ minWidth: '300px', maxWidth: '450px' }}
             key={`backdrop_${index}`}
           >
             <Card.Img
               loading="lazy"
               src={`https://image.tmdb.org/t/p/w342${[backdrop.file_path]}`}
+              style={{ border: '2px solid #30363d' }}
             />
           </Card>
         );

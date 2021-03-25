@@ -1,5 +1,5 @@
 import axios from 'axios';
-import dashboard from '../reducers/dashboard';
+// import homepage from '../reducers/homepage';
 import { authFailed } from './auth';
 import * as actionTypes from './types';
 import setAuthToken from './utils/setAuthToken';

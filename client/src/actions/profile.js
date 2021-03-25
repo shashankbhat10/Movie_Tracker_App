@@ -105,6 +105,10 @@ export const removeContentFromList = (listId, type, item) => async (
 export const addRating = (content, type, rating) => async (dispatch) => {
   try {
     console.log('addRating');
+    console.log(type);
+    // console.log(content);
+    // console.log(type);
+    // console.log(rating);
     const payload = {
       id: content.id,
       title: content.title,
@@ -114,7 +118,7 @@ export const addRating = (content, type, rating) => async (dispatch) => {
       type: type,
     };
     const res = await axios.post('api/profile/rating/add', payload);
-
+    console.log(res.data);
     dispatch({
       type: actionTypes.CONTENT_RATING_ADDED,
       payload: payload,

@@ -8,12 +8,13 @@ const TVPosters = ({ posters }) => {
         return (
           <Card
             key={`poster_${index}`}
-            className="col-md-3 px-0"
+            className="col-md-3 px-0 bg-transparent"
             style={{ minWidth: '200px', maxWidth: '220px' }}
           >
             <Card.Img
               loading="lazy"
               src={`https://image.tmdb.org/t/p/w342${[poster.file_path]}`}
+              style={{ border: '2px solid #30363d' }}
             />
           </Card>
         );

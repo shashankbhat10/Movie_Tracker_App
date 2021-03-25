@@ -1,9 +1,7 @@
 import * as actionTypes from '../actions/types';
 
 const initialState = {
-  // movies: {},
   movies: [],
-  // tv: {},
   tv: [],
   genres: {},
   discover: [],
@@ -93,13 +91,13 @@ export default function (state = initialState, action) {
         genresLoading: false,
       };
     case actionTypes.PARTIAL_GENRE_MOVIES_LOADED:
-      const newDiscoverList = [...state.discover];
+      // const newDiscoverList = [...state.discover];
       let newList = [...state.dashboard];
       Array.prototype.push.apply(newList, payload);
-      Array.prototype.push.apply(newDiscoverList, payload);
+      // Array.prototype.push.apply(newDiscoverList, payload);
       return {
         ...state,
-        discover: newDiscoverList,
+        // discover: newDiscoverList,
         discoverLoading: false,
         dashboard: newList,
         // loading: false,

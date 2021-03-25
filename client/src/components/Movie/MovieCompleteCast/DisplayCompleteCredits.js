@@ -18,6 +18,10 @@ const DisplayCompleteCredits = ({ type, list }) => {
             <Card
               key={`person_{${type}_${person.id}`}
               className="col-6 col-md-3 d-flex flex-row mb-1 px-0 m-0"
+              style={{
+                border: '#30363d 2px solid',
+                backgroundColor: '#16161d',
+              }}
             >
               <Link
                 to={`/person/${person.id}`}
@@ -30,13 +34,14 @@ const DisplayCompleteCredits = ({ type, list }) => {
                       ? `https://image.tmdb.org/t/p/h632${person.profile_path}`
                       : noImage
                   }
+                  loading="lazy"
                   style={{ height: '100%' }}
                 />
               </Link>
               <Card.Body className="p-0 pl-2">
                 <Link
                   to={`/person/${person.id}`}
-                  style={{ textDecoration: 'none', color: 'black' }}
+                  style={{ textDecoration: 'none', color: '#c3d1d9' }}
                   className="pt-1 mb-0"
                 >
                   <Card.Text>{person.name}</Card.Text>

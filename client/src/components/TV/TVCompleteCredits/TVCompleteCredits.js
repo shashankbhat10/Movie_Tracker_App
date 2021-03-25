@@ -24,9 +24,17 @@ const TVCompleteCredits = ({ loading, credits, getTVCredits, match }) => {
       {!loading && (
         <div
           className="px-2"
-          style={{ overflow: 'hidden', flexGrow: '1', position: 'relative' }}
+          style={{
+            overflow: 'hidden',
+            flexGrow: '1',
+            position: 'relative',
+            backgroundColor: '#090c12',
+            height: '93vh',
+          }}
         >
-          <h5 className="mt-2 pl-3">Cast and Crew</h5>
+          <h5 className="mt-2 pl-3" style={{ color: '#c3d1d9' }}>
+            Cast and Crew
+          </h5>
           <Tabs
             defaultActiveKey="poster"
             activeKey={key}

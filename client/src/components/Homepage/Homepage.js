@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Fragment } from 'react';
 import { connect } from 'react-redux';
-import { getGenres, getDashboardTopContent } from '../../actions/dashboard';
+import { getGenres, getDashboardTopContent } from '../../actions/homepage';
 import { Redirect } from 'react-router-dom';
-import DisplayDashboardContent from './DisplayDashboardContent';
+import DisplayHomepageContent from './DisplayHomepageContent';
 import Spinner from '../Utility/Spinner';
-import { selectRandomGenres } from '../../actions/dashboard';
+import { selectRandomGenres } from '../../actions/homepage';
 
-const Dashboard = ({
+const Homepage = ({
   isAuthenticated,
   getDashboardTopContent,
   loading,
@@ -37,7 +37,7 @@ const Dashboard = ({
               <Spinner />
             </div>
           ) : (
-            <DisplayDashboardContent
+            <DisplayHomepageContent
               loadMoreGenres={loadMoreGenres}
               remainingGenres={
                 movieGenre.remaining.length + tvGenre.remaining.length
@@ -55,18 +55,18 @@ const Dashboard = ({
 
 const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
-  movies: state.dashboard.movies,
-  tv: state.dashboard.tv,
-  genreContent: state.dashboard.discover,
-  loading: state.dashboard.loading,
-  discoverLoading: state.dashboard.discoverLoading,
-  movieGenre: state.dashboard.genres.movie,
-  tvGenre: state.dashboard.genres.tv,
-  genreLoading: state.dashboard.genresLoading,
+  movies: state.homepage.movies,
+  tv: state.homepage.tv,
+  genreContent: state.homepage.discover,
+  loading: state.homepage.loading,
+  discoverLoading: state.homepage.discoverLoading,
+  movieGenre: state.homepage.genres.movie,
+  tvGenre: state.homepage.genres.tv,
+  genreLoading: state.homepage.genresLoading,
 });
 
 export default connect(mapStateToProps, {
   getGenres,
   getDashboardTopContent,
   selectRandomGenres,
-})(Dashboard);
+})(Homepage);

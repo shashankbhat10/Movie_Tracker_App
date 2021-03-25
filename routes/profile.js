@@ -217,13 +217,11 @@ router.post('/rating/add', auth, async (req, res) => {
         (err, response) => {
           if (err) throw err;
           if (response.modifiedCount !== 1) {
-            res
-              .status(400)
-              .json({ message: 'Content couldnt be added to Watched' });
+            res.status(400).json({ message: 'Could not add Rating' });
           } else {
             res.json({
               status: 200,
-              message: 'Content Added to Watched',
+              message: 'Rating Added Succesfully',
               content: content,
             });
           }
@@ -248,7 +246,6 @@ router.delete('/rating/remove/:type/:id', auth, async (req, res) => {
           },
         },
         (err, response) => {
-          console.log(response.modifiedCount);
           if (err) throw err;
           else if (response.modifiedCount !== 1) {
             return res
@@ -267,16 +264,6 @@ router.delete('/rating/remove/:type/:id', auth, async (req, res) => {
 router.patch('/rating/update', auth, async (req, res) => {
   try {
     const content = req.body;
-    console.log(content);
-    // const doc = await db
-    //   .getDB()
-    //   .collection(profileCollection)
-    //   .findOne({
-    //     userId: mongo.ObjectID(req.user.id),
-    //     'ratings.id': parseInt(content.id),
-    //     'ratings.type': content.type,
-    //   });
-    // console.log(doc);
     await db
       .getDB()
       .collection(profileCollection)
@@ -286,9 +273,6 @@ router.patch('/rating/update', auth, async (req, res) => {
           ratings: {
             $elemMatch: { type: content.type, id: parseInt(content.id) },
           },
-
-          // 'ratings.type': content.type,
-          // 'ratings.id': parseInt(content.id),
         },
         {
           $set: { 'ratings.$.rating': content.rating },
@@ -296,10 +280,8 @@ router.patch('/rating/update', auth, async (req, res) => {
         (err, response) => {
           if (err) throw err;
           else if (response.modifiedCount === 0) {
-            // console.log(response.message.documents);
             res.status(400).json({ message: 'Could not update rating' });
           } else {
-            console.log(response.documents);
             res.status(200).json({
               message: 'Rating updated succesfully',
               content: content,

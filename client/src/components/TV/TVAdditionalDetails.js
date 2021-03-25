@@ -69,7 +69,7 @@ const TVAdditionalDetails = ({ details, links }) => {
         {details.production.length !== 0 && (
           <div className="d-flex flex-column align-items-center">
             <strong>Production</strong>
-            <div style={{ backgroundColor: 'white' }}>
+            <div>
               {details.production.map((company, index) => {
                 return (
                   <OverlayTrigger
@@ -84,7 +84,14 @@ const TVAdditionalDetails = ({ details, links }) => {
                     <img
                       src={`https://image.tmdb.org/t/p/original${company.logo_path}`}
                       alt={`${company.name}`}
-                      style={{ maxWidth: '60px' ,backgroundColor: 'white',padding: '5px',margin: '5px'}}
+                      style={{
+                        maxWidth: '60px',
+                        backgroundColor: 'white',
+                        padding: '5px',
+                        margin: '5px',
+                        border: '#30363d 3px solid',
+                        borderRadius: '10px',
+                      }}
                       className="pt-1 px-1"
                     />
                   </OverlayTrigger>
@@ -110,7 +117,14 @@ const TVAdditionalDetails = ({ details, links }) => {
                   <img
                     src={`https://image.tmdb.org/t/p/original${network.logo_path}`}
                     alt={`${network.name}`}
-                    style={{ maxWidth: '60px' }}
+                    style={{
+                      maxWidth: '60px',
+                      backgroundColor: 'white',
+                      padding: '5px',
+                      margin: '5px',
+                      border: '#30363d 3px solid',
+                      borderRadius: '10px',
+                    }}
                     className="pt-1 px-1"
                   />
                 </OverlayTrigger>

@@ -40,7 +40,12 @@ export default function (state = initialState, action) {
         isAuthenticated: false,
       };
     case actionTypes.AUTH_FAILED:
-      return { ...state, isAuthenticated: false };
+    case actionTypes.USER_LOGOUT_SUCCESS:
+      return {
+        ...state,
+        isAuthenticated: false,
+        token: state.token !== null && null,
+      };
     default:
       return { ...state };
   }

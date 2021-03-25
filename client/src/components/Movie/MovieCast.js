@@ -2,8 +2,6 @@ import React from 'react';
 import { Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import noImage from '../../images/download.png';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 const MovieCast = ({ id, cast }) => {
   return (
@@ -24,7 +22,7 @@ const MovieCast = ({ id, cast }) => {
                   display: 'block',
                   minWidth: '140px',
                   border: '#30363d 2px solid',
-                  backgroundColor: '#16161d'
+                  backgroundColor: '#16161d',
                 }}
               >
                 <Link className="profile-image" to={`/person/${actor.id}`}>

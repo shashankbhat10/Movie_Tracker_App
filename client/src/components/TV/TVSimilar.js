@@ -10,7 +10,7 @@ const TVSimilar = ({ shows }) => {
         <h5>Similar TV Shows</h5>
       </div>
       {shows.length === 0 && (
-        <span className="pl-3">
+        <span className="pl-3" style={{ color: '#c3d1d9' }}>
           Insufficient data to provide Similar Content.
         </span>
       )}
@@ -23,7 +23,7 @@ const TVSimilar = ({ shows }) => {
             return (
               <Card
                 key={`show_similar_${show.id}`}
-                className="col-md-4 px-0"
+                className="col-md-4 px-0 bg-transparent"
                 style={{ minWidth: '300px', maxWidth: '350px', border: '0px' }}
               >
                 <Link to={`/tv/${show.id}`} style={{ textDecoration: 'none' }}>
@@ -34,8 +34,9 @@ const TVSimilar = ({ shows }) => {
                         ? `https://image.tmdb.org/t/p/w780${show.backdrop_path}`
                         : noImage
                     }
+                    style={{ border: '2px solid #30363d' }}
                   />
-                  <Card.Text className="pl-1 pt-1" style={{ color: 'black' }}>
+                  <Card.Text className="pl-1 pt-1" style={{ color: '#c3d1d9' }}>
                     <strong>{show.name}</strong>
                   </Card.Text>
                 </Link>

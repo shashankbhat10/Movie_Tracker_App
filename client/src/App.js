@@ -5,7 +5,7 @@ import { checkAuth } from './actions/auth';
 import { getProfileData } from './actions/profile';
 
 import './App.scss';
-import Dashboard from './components/Dashboard/Dashboard';
+import Homepage from './components/Homepage/Homepage';
 import Landing from './components/Landing/Landing';
 import Movie from './components/Movie/Movie';
 import MovieCompleteCast from './components/Movie/MovieCompleteCast/MovieCompleteCast';
@@ -27,7 +27,7 @@ function App() {
         <Navbar />
         <Route exact path="/" component={Landing} />
         <Switch>
-          <Route exact path="/dashboard" component={Dashboard} />
+          <Route exact path="/homepage" component={Homepage} />
           <Route exact path="/movie/:id" component={Movie} />
           <Route exact path="/search" component={Search} />
           <Route exact path="/tv/:id" component={TV} />

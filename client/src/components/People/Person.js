@@ -18,7 +18,10 @@ const Person = ({ match, getPersonDetails, details, credits, loading }) => {
           <Spinner />
         </div>
       ) : (
-        <div className="d-md-flex flex-row mt-2 px-2">
+        <div
+          className="d-md-flex flex-row pt-2 px-2"
+          style={{ backgroundColor: '#090c12' }}
+        >
           <div className="person-details col-md-4 col-lg-3 mx-0 px-0">
             <PersonInfo details={details} />
           </div>

@@ -3,6 +3,7 @@ import axios from 'axios';
 import setAuthToken from './utils/setAuthToken';
 import Cookies from 'universal-cookie';
 import { getProfileData } from './profile';
+import { useHistory } from 'react-router';
 
 export const setUser = () => async (dispatch) => {
   if (localStorage.getItem('movieTrackerAccessToken')) {
@@ -101,4 +102,13 @@ export const checkAuth = () => async (dispatch) => {
   } else {
     dispatch({ type: actionTypes.AUTH_CHECK_FAIL });
   }
+};
+
+export const logoutUser = () => async (dispatch) => {
+  localStorage.removeItem('movieTrackerAccessToken');
+  dispatch({
+    type: actionTypes.USER_LOGOUT_SUCCESS,
+  });
+  // const history = useHistory();
+  // history.push('/login');
 };

@@ -1,6 +1,5 @@
 import React, { Fragment, useEffect, useRef, useState } from 'react';
 import {
-  Overlay,
   Popover,
   OverlayTrigger,
   Dropdown,
@@ -54,7 +53,12 @@ const ListPopover = ({
         flip
         overlay={
           <Popover id={`popover-positioned-${item.id}-${itemType}`}>
-            <Popover.Title>Add to Lists</Popover.Title>
+            <Popover.Title className="d-flex flex-row align-items-center justify-content-between pr-3">
+              <span>Add to Lists</span>
+              <span>
+                <FontAwesomeIcon icon={faPlus} />
+              </span>
+            </Popover.Title>
             <Popover.Content className="d-flex flex-row py-1 align-items-center">
               <span style={{ fontSize: '1.2em' }}>Watchlist</span>
               <Button

@@ -102,10 +102,10 @@ const PersonCredits = ({ credits }) => {
   }, [credits]);
 
   return (
-    <div className="mt-3">
+    <div className="mt-3 pb-3">
       {contentByYear[selectedDept] !== undefined && (
         <div>
-          <h4>Credits</h4>
+          <h4 style={{ color: '#c3d1d9' }}>Credits</h4>
 
           <div className="d-flex flex-row flex-wrap pt-2 mb-2">
             {departments.map((item, index) => {
@@ -120,19 +120,22 @@ const PersonCredits = ({ credits }) => {
                   }}
                   onClick={() => changeDept(item)}
                 >
-                  <span className="px-1" style={{ cursor: 'pointer' }}>
+                  <span
+                    className="px-1"
+                    style={{ cursor: 'pointer', color: '#c3d1d9' }}
+                  >
                     {item}
                   </span>
                 </h5>
               );
             })}
           </div>
-          <Container>
+          <Container style={{ color: '#c3d1d9' }}>
             {Object.keys(contentByYear[selectedDept])
               .sort((a, b) => {
                 return b - a;
               })
-              .map((year) => {
+              .map((year, index) => {
                 return (
                   <div key={`person_credit_year_${year}`}>
                     <Row>
@@ -159,7 +162,7 @@ const PersonCredits = ({ credits }) => {
                                 }
                                 style={{
                                   textDecoration: 'none',
-                                  color: 'black',
+                                  color: '#c3d1d9',
                                 }}
                               >
                                 <strong className="mr-2">
@@ -182,7 +185,13 @@ const PersonCredits = ({ credits }) => {
                         })}
                       </Col>
                     </Row>
-                    <hr style={{ width: '90%' }} className="my-1" />
+                    {index + 1 !==
+                      Object.keys(contentByYear[selectedDept]).length && (
+                      <hr
+                        style={{ width: '90%', backgroundColor: '#c3d1d9' }}
+                        className="my-1"
+                      />
+                    )}
                   </div>
                 );
               })}

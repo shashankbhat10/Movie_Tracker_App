@@ -23,7 +23,11 @@ const PersonKnownFor = ({ credits }) => {
         .map((item) => {
           return (
             <Card
-              style={{ maxWidth: '150px' }}
+              style={{
+                maxWidth: '150px',
+                border: '#30363d 2px solid',
+                backgroundColor: '#16161d',
+              }}
               className="col-3 px-0"
               key={`person_credits_${item.movie_type}_${item.id}`}
             >
@@ -31,7 +35,7 @@ const PersonKnownFor = ({ credits }) => {
                 to={
                   (item.media_type === 'movie' ? '/movie/' : '/tv/') + item.id
                 }
-                style={{ textDecoration: 'none' }}
+                style={{ textDecoration: 'none', color: '#c3d1d9' }}
               >
                 <Card.Img
                   src={

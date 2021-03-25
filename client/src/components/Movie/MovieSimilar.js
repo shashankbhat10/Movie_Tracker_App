@@ -35,7 +35,7 @@ const MovieSimilar = ({ movies }) => {
                     loading="lazy"
                     src={`https://image.tmdb.org/t/p/w780${movie.backdrop_path}`}
                   />
-                  <Card.Text className="pl-1 pt-1" style={{ color: 'black' }}>
+                  <Card.Text className="pl-1 pt-1" style={{ color: '#c3d1d9' }}>
                     <strong>{movie.title}</strong>
                   </Card.Text>
                 </Link>

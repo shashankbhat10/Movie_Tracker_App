@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import alert from './alert';
 import movie from './movie';
 import search from './search';
-import dashboard from './dashboard';
+import homepage from './homepage';
 import tv from './tv';
 import person from './person';
 import auth from './auth';
@@ -12,7 +12,7 @@ export default combineReducers({
   alert,
   movie,
   search,
-  dashboard,
+  homepage,
   tv,
   person,
   auth,

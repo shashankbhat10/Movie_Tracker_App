@@ -11,6 +11,7 @@ html{
 body{
   margin: 0;
   padding: 0;
+  background-color: #090c12;
 }
 
 .App {
@@ -404,6 +405,14 @@ body{
 
 .slick-next:before {
   color: #c3d1d9;
+}
+
+.slick-dots li button::before{
+  color: white;
+}
+
+.slick-dots li.slick-active button::before{
+  color: white;
 }
 
 .credit-dept span:after {

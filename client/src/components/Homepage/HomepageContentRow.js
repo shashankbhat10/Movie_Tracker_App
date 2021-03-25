@@ -17,7 +17,7 @@ import noImage from '../../images/image-not-found.png';
 import ListPopover from '../Utility/ListPopover';
 import Rating from '../Utility/Rating';
 
-const DashboardContentRow = ({
+const HomepageContentRow = ({
   content,
   category,
   watched,
@@ -37,7 +37,6 @@ const DashboardContentRow = ({
   const refEl = useRef(null);
 
   useEffect(() => {
-    console.log('in other');
     setType(content.type);
     setContentList(content.list);
     if (content.type === 'movie') {
@@ -48,7 +47,6 @@ const DashboardContentRow = ({
   }, []);
 
   useEffect(() => {
-    console.log('IN watched');
     console.log('watched', watched);
     if (content.type === 'movie') {
       setWatchedContent(watched.movie);
@@ -100,6 +98,7 @@ const DashboardContentRow = ({
           item.type = type;
           addContentToWatched(item);
         }
+        console.log('1');
         addRating(item, type, rating);
         break;
       case 'update':
@@ -133,7 +132,7 @@ const DashboardContentRow = ({
                 addHoverClass(item.id);
               }}
               onMouseLeave={() => {
-                removeHoverClass(item.id);
+                removeHoverClass();
               }}
               id={`${item.id}_${type === 'movie' ? item.title : item.name}_${
                 category === 'genre'
@@ -183,7 +182,12 @@ const DashboardContentRow = ({
                         }`}
                         onClick={() => handleWatchedClick(type, item)}
                       >
-                        <FontAwesomeIcon icon={faCheck} />
+                        <FontAwesomeIcon
+                          icon={faCheck}
+                          color={
+                            watchedContent.includes(item.id) ? 'green' : ''
+                          }
+                        />
                       </div>
                     </OverlayTrigger>
                   </div>
@@ -220,7 +224,11 @@ const DashboardContentRow = ({
                 className="my-1 pl-1"
                 style={{ fontSize: '1em', color: '#c3d1d9' }}
               >
-                {item.title}
+                {type === 'tv'
+                  ? category === 'genre'
+                    ? item.name
+                    : item.title
+                  : item.title}
               </Card.Title>
             </Link>
           </Card>
@@ -242,4 +250,4 @@ export default connect(mapStateToProps, {
   addRating,
   updateRating,
   removeRating,
-})(DashboardContentRow);
+})(HomepageContentRow);
