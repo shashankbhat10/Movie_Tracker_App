@@ -25,9 +25,16 @@ const Navbar = ({ history, logoutUser, isAuthenticated }) => {
       {console.log('isAuthenticated', isAuthenticated)}
       {isAuthenticated && (
         <nav
-          className="navbar navbar-expand-sm navbar-dark"
+          className="navbar navbar-expand-sm navbar-dark w-100"
           // navbar-dark bg-dark
-          style={{ backgroundColor: '#16161d' }}
+          style={{
+            backgroundColor: '#16161d',
+            position: 'sticky',
+            top: '0',
+            left: '0',
+            height: '7vh',
+            zIndex: '100',
+          }}
         >
           <Link className="navbar-brand mr-auto" to="/homepage">
             Movie Tracker
@@ -88,8 +95,12 @@ const Navbar = ({ history, logoutUser, isAuthenticated }) => {
                   data-toggle="dropdown"
                   aria-labelledby="navbarDropdown"
                 >
-                  <a className="dropdown-item" href="#">
-                    Action
+                  <a
+                    className="dropdown-item"
+                    href="#"
+                    onClick={() => history.push({ pathname: '/dashboard' })}
+                  >
+                    Dashboard
                   </a>
                   <a className="dropdown-item" href="#">
                     Another action

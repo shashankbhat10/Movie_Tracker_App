@@ -1,10 +1,23 @@
 import React, { useRef, Fragment, useState, useEffect } from 'react';
 import { Popover, OverlayTrigger, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes, faStar } from '@fortawesome/free-solid-svg-icons';
+import {
+  faTimes,
+  faStar,
+  faEdit,
+  faTrash,
+} from '@fortawesome/free-solid-svg-icons';
 import { connect } from 'react-redux';
 
-const Rating = ({ item, itemType, open, close, ratings, handleRating }) => {
+const Rating = ({
+  item,
+  itemType,
+  open,
+  close,
+  ratings,
+  handleRating,
+  type,
+}) => {
   const target = useRef(null);
   const [show, setShow] = useState(false);
   const [hoverIndex, updateHoverIndex] = useState(-1);
@@ -12,7 +25,8 @@ const Rating = ({ item, itemType, open, close, ratings, handleRating }) => {
   const [isRated, updateRatingFlag] = useState(false);
 
   useEffect(() => {
-    if (ratings[itemType].map((item) => item.id).includes(item.id)) {
+    if (ratings[itemType].map((i) => i.id).includes(item.id)) {
+      console.log('in');
       updateRatingFlag(true);
       updateRating(ratings[itemType].filter((i) => i.id === item.id)[0].rating);
     }
@@ -31,24 +45,39 @@ const Rating = ({ item, itemType, open, close, ratings, handleRating }) => {
         key={`overylay_${item.id}_${itemType}`}
         placement="bottom"
         onExit={() => {
-          close(item.id);
+          if (type === undefined) close();
         }}
         onEnter={() => {
-          open(item.id);
+          if (type === undefined) open(item.id);
         }}
+        // show={item.id !== ''}
         flip
         overlay={
           <Popover id={`popover-positioned-${item.id}-${itemType}`}>
             <Popover.Title className="d-flex flex-row align-items-center justify-content-between py-1">
-              <span>Add Rating</span>
-              <Button size="sm" className="px-2 py-0" variant="danger">
-                <FontAwesomeIcon
-                  icon={faTimes}
-                  onClick={() => {
-                    handleRating(item, 'remove');
-                  }}
-                />
-              </Button>
+              <span>{type !== 'edit' ? 'Add' : 'Update'} Rating</span>
+              {type === undefined && (
+                <div>
+                  <Button size="sm" className="px-2 py-0" variant="danger">
+                    <FontAwesomeIcon
+                      icon={faTrash}
+                      onClick={() => {
+                        handleRating(item, 'remove');
+                      }}
+                    />
+                  </Button>
+                  {/* <Button
+                    size="sm"
+                    className="ml-2 px-2 py-0"
+                    variant="danger"
+                    onClick={() => {
+                      close();
+                    }}
+                  >
+                    <FontAwesomeIcon icon={faTimes} />
+                  </Button> */}
+                </div>
+              )}
             </Popover.Title>
             <Popover.Content className="d-flex flex-row py-1 align-items-center">
               <div className="d-flex flex-row py-1">
@@ -58,6 +87,7 @@ const Rating = ({ item, itemType, open, close, ratings, handleRating }) => {
                       className="px-1"
                       onMouseEnter={() => updateHoverIndex(index)}
                       onMouseLeave={() => updateHoverIndex(-1)}
+                      key={`rating_${index}`}
                     >
                       <FontAwesomeIcon
                         icon={faStar}
@@ -97,17 +127,20 @@ const Rating = ({ item, itemType, open, close, ratings, handleRating }) => {
         rootClose
       >
         <div className="align-items-center">
-          <FontAwesomeIcon
-            ref={target}
-            icon={faStar}
-            style={{
-              color: isRated && 'goldenrod',
-            }}
-            className="content-options"
-            onClick={() => {
-              setShow(!show);
-            }}
-          />
+          {type === undefined && (
+            <FontAwesomeIcon
+              ref={target}
+              icon={faStar}
+              style={{
+                color: isRated && 'goldenrod',
+              }}
+              className="content-options"
+              onClick={() => {
+                setShow(!show);
+              }}
+            />
+          )}
+          {type === 'edit' && <FontAwesomeIcon icon={faEdit} />}
         </div>
       </OverlayTrigger>
     </Fragment>

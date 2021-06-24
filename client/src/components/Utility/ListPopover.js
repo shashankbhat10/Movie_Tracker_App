@@ -14,6 +14,7 @@ import {
   faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 import { connect } from 'react-redux';
+import { addContentToList } from '../../actions/profile';
 
 const ListPopover = ({
   item,
@@ -22,10 +23,13 @@ const ListPopover = ({
   close,
   addToWatchlist,
   watchlist,
+  customLists,
+  addContentToList,
 }) => {
   const [watchlistContent, updateWatchlist] = useState([]);
   const [show, setShow] = useState(false);
   const target = useRef(null);
+  const [selectedList, updateSelectedList] = useState(null);
 
   useEffect(() => {
     if (itemType === 'movie') {
@@ -33,7 +37,18 @@ const ListPopover = ({
     } else {
       updateWatchlist(watchlist.tv);
     }
+    close(item.id);
   }, [watchlist]);
+
+  useEffect(() => {
+    if (customLists.length > 0) {
+      updateSelectedList(customLists[0]);
+    }
+  }, [customLists]);
+
+  const changeCustomList = (item) => {
+    updateSelectedList(item);
+  };
 
   return (
     <Fragment>
@@ -69,7 +84,7 @@ const ListPopover = ({
                 className="ml-auto"
                 onClick={() =>
                   addToWatchlist(
-                    watchlist.id,
+                    watchlist.listId,
                     item,
                     watchlistContent.includes(item.id) ? 'remove' : 'add'
                   )
@@ -81,24 +96,51 @@ const ListPopover = ({
               </Button>
             </Popover.Content>
             <hr className="my-1" />
-            <Popover.Content className="d-flex flex-row py-1">
-              <DropdownButton
-                // style={{ width: '85%' }}
+            <Popover.Content className="d-flex flex-row py-1 pb-2">
+              {customLists.length !== 0 && selectedList && (
+                <DropdownButton
+                  // style={{ width: '85%' }}
+                  size="sm"
+                  className="mr-3 px-0 w-auto"
+                  id="dropdown-basic-button"
+                  title={selectedList.name}
+                >
+                  {/* <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
+                  <Dropdown.Item href="#/action-2">
+                    Another action
+                  </Dropdown.Item>
+                  <Dropdown.Item href="#/action-3">
+                    Something else
+                  </Dropdown.Item> */}
+                  {customLists.map((list, index) => {
+                    return (
+                      <Dropdown.Item
+                        value={list.name}
+                        key={`list_dropdown_${list.id}`}
+                        onClick={() => changeCustomList(list)}
+                      >
+                        {list.name}
+                      </Dropdown.Item>
+                    );
+                  })}
+                </DropdownButton>
+              )}
+              {customLists.length === 0 && <span>No Custom Lists</span>}
+              <Button
                 size="sm"
-                className="mx-0 px-0 w-auto"
-                id="dropdown-basic-button"
-                title="Dropdown button"
+                className="ml-auto"
+                disabled={customLists.length === 0}
+                onClick={() =>
+                  addContentToList(
+                    selectedList.listId,
+                    selectedList.type,
+                    itemType,
+                    item
+                  )
+                }
               >
-                <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-              </DropdownButton>
-              <Button size="sm" className="ml-auto">
                 <FontAwesomeIcon icon={faPlus} />
               </Button>
-            </Popover.Content>
-            <Popover.Content>
-              <strong>Holy guacamole!</strong> Check this info.
             </Popover.Content>
           </Popover>
         }
@@ -126,6 +168,7 @@ const ListPopover = ({
 
 const mapStateToProps = (state) => ({
   watchlist: state.profile.watchlist,
+  customLists: state.profile.customLists,
 });
 
-export default connect(mapStateToProps)(ListPopover);
+export default connect(mapStateToProps, { addContentToList })(ListPopover);
