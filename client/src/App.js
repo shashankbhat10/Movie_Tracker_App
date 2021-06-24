@@ -2,9 +2,11 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { checkAuth } from './actions/auth';
+import { getGenres } from './actions/homepage';
 import { getProfileData } from './actions/profile';
 
 import './App.scss';
+import Dashboard from './components/Dashboard/Dashboard';
 import Homepage from './components/Homepage/Homepage';
 import Landing from './components/Landing/Landing';
 import Movie from './components/Movie/Movie';
@@ -19,6 +21,7 @@ import store from './store';
 
 store.dispatch(checkAuth());
 store.dispatch(getProfileData());
+store.dispatch(getGenres()); // Remove after adding for dashboard
 
 function App() {
   return (
@@ -42,6 +45,7 @@ function App() {
             path="/tv/:id/complete-credits"
             component={TVCompleteCredits}
           />
+          <Route exact path="/dashboard" component={Dashboard} />
         </Switch>
       </Router>
     </Provider>

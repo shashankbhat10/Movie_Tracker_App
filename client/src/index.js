@@ -7,6 +7,7 @@ import App from './App';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.js';
+import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 // import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(

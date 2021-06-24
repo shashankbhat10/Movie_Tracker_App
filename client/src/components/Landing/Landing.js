@@ -11,7 +11,7 @@ const Landing = ({ loading, errors, isAuthenticated }) => {
   console.log(isAuthenticated);
 
   return isAuthenticated ? (
-    <Redirect to="/hompage" />
+    <Redirect to="/homepage" />
   ) : (
     <Fragment>
       {isLoginForm ? (

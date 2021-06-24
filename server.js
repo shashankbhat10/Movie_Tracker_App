@@ -26,6 +26,7 @@ app.get('/', (req, res) => {
 db.connectDB((err) => {
   if (err) {
     console.log('Unable to connect to DB');
+    console.log(err);
     process.exit(1);
   } else {
     app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

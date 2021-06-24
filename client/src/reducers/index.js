@@ -7,6 +7,7 @@ import tv from './tv';
 import person from './person';
 import auth from './auth';
 import profile from './profile';
+import dashboard from './dashboard';
 
 export default combineReducers({
   alert,
@@ -17,4 +18,5 @@ export default combineReducers({
   person,
   auth,
   profile,
+  dashboard,
 });
