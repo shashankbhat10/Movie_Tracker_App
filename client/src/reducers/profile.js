@@ -6,6 +6,8 @@ const initialState = {
   reviews: { movie: [], tv: [] },
   ratings: { movie: [], tv: [] },
   watchlist: { movie: [], tv: [] },
+  customLists: [],
+  loading: true,
 };
 
 export default function (state = initialState, action) {
@@ -19,8 +21,8 @@ export default function (state = initialState, action) {
   switch (type) {
     case actionTypes.CONTENT_ADDED_TO_WATCH:
       const newWatched = { ...state.watched };
-      if (payload.type === 'movie') newWatched['movie'].push(payload.id);
-      else if (payload.type === 'tv') newWatched['tv'].push(payload.id);
+      if (payload.type === 'movie') newWatched['movie'].push(payload);
+      else if (payload.type === 'tv') newWatched['tv'].push(payload);
       return { ...state, watched: newWatched };
     case actionTypes.PROFILE_LOADED:
       return {
@@ -28,16 +30,8 @@ export default function (state = initialState, action) {
         name: payload.name,
         watched: {
           ...state.watched,
-          movie: [
-            ...payload.watched
-              .filter((item) => item.type === 'movie')
-              .map((item) => item.id),
-          ],
-          tv: [
-            ...payload.watched
-              .filter((item) => item.type === 'tv')
-              .map((item) => item.id),
-          ],
+          movie: [...payload.watched.filter((item) => item.type === 'movie')],
+          tv: [...payload.watched.filter((item) => item.type === 'tv')],
         },
         reviews: {
           ...state.reviews,
@@ -55,23 +49,22 @@ export default function (state = initialState, action) {
         ratings: {
           ...state.ratings,
           movie: [
-            ...payload.ratings
-              .filter((item) => item.type === 'movie')
-              .map((item) => {
-                return { id: item.id, rating: item.rating };
-              }),
+            ...payload.ratings.filter((item) => item.type === 'movie'),
+            // .map((item) => {
+            //   return { id: item.id, rating: item.rating };
+            // }),
           ],
           tv: [
-            ...payload.ratings
-              .filter((item) => item.type === 'tv')
-              .map((item) => {
-                return { id: item.id, rating: item.rating };
-              }),
+            ...payload.ratings.filter((item) => item.type === 'tv'),
+            // .map((item) => {
+            //   return { id: item.id, rating: item.rating };
+            // }),
           ],
         },
         watchlist: {
           ...state.watchlist,
-          id: payload.watchlist._id,
+          listId: payload.watchlist._id,
+          type: payload.watchlist.type,
           movie: [
             ...payload.watchlist.content
               .filter((item) => item.type === 'movie')
@@ -83,14 +76,19 @@ export default function (state = initialState, action) {
               .map((item) => item.id),
           ],
         },
+        customLists: payload.lists.length > 1 ? payload.lists.splice(1) : [],
+        loading: false,
       };
     case actionTypes.CONTENT_REMOVED_FROM_WATCH:
       list = { ...state.watched };
       if (payload.type === 'movie') contentType = 'movie';
       else contentType = 'tv';
-      list[contentType].splice(list[contentType].indexOf(payload.id), 1);
+      list[contentType].splice(
+        list[contentType].map((item) => item.id).indexOf(payload.id),
+        1
+      );
       return { ...state, watched: list };
-    case actionTypes.CONTENT_ADDED_TO_LIST:
+    case actionTypes.CONTENT_ADDED_TO_WATCHLIST:
       newList = { ...state.watchlist };
       if (payload.type === 'movie') newList['movie'].push(payload.id);
       else if (payload.type === 'tv') newList['tv'].push(payload.id);
@@ -99,7 +97,10 @@ export default function (state = initialState, action) {
       list = { ...state.watchlist };
       if (payload.type === 'movie') contentType = 'movie';
       else contentType = 'tv';
-      list[contentType].splice(list[contentType].indexOf(payload.id), 1);
+      list[contentType].splice(
+        list[contentType].map((item) => item.id).indexOf(payload.id),
+        1
+      );
       return { ...state, watchlist: list };
     case actionTypes.CONTENT_RATING_ADDED:
       rating = {
@@ -125,6 +126,11 @@ export default function (state = initialState, action) {
         1
       );
       return { ...state, ratings: list };
+    case actionTypes.CREATE_LIST:
+      console.log('in reducer');
+      newList = [...state.customLists];
+      newList.push(payload);
+      return { ...state, customLists: newList };
     default:
       return { ...state };
   }

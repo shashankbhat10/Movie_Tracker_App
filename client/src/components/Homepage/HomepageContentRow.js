@@ -40,18 +40,18 @@ const HomepageContentRow = ({
     setType(content.type);
     setContentList(content.list);
     if (content.type === 'movie') {
-      setWatchedContent(watched.movie);
+      setWatchedContent(watched.movie.map((item) => item.id));
     } else {
-      setWatchedContent(watched.tv);
+      setWatchedContent(watched.tv.map((item) => item.id));
     }
   }, []);
 
   useEffect(() => {
     console.log('watched', watched);
     if (content.type === 'movie') {
-      setWatchedContent(watched.movie);
+      setWatchedContent(watched.movie.map((item) => item.id));
     } else {
-      setWatchedContent(watched.tv);
+      setWatchedContent(watched.tv.map((item) => item.id));
     }
   }, [watched]);
 
@@ -78,14 +78,14 @@ const HomepageContentRow = ({
     updatePopoverId(id);
   };
 
-  const popoverClose = (id) => {
+  const popoverClose = () => {
     updatePopoverId('');
   };
 
   const addToWatchlist = (listId, item, action) => {
     console.log(action);
     if (action === 'add') {
-      addContentToList(listId, type, item);
+      addContentToList(listId, 'watchlist', type, item);
     } else {
       removeContentFromList(listId, type, item);
     }
@@ -98,7 +98,6 @@ const HomepageContentRow = ({
           item.type = type;
           addContentToWatched(item);
         }
-        console.log('1');
         addRating(item, type, rating);
         break;
       case 'update':

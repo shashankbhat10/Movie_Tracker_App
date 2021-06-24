@@ -1,12 +1,19 @@
 const express = require('express');
 const auth = require('../middleware/auth');
 const db = require('../config/db');
+// const dbo = db.getDB();
 const router = express.Router();
 const mongo = require('mongodb');
 const { check, validationResult } = require('express-validator/check');
 const { response } = require('express');
+const axios = require('axios');
+const config = require('config');
+const moviedbBaseURI = config.get('moviedbBaseURI');
+const moviedbAPIKey = config.get('moviedbAPIKey');
 const profileCollection = 'userProfile';
+// const pc = dbo.collection(profileCollection);
 const listCollection = 'lists';
+const statsCollection = 'contentStats';
 
 router.get('/me/watchlist', auth, async (req, res) => {
   console.log('Hello');
@@ -15,27 +22,54 @@ router.get('/me/watchlist', auth, async (req, res) => {
 router.post('/add-to-watched', auth, async (req, res) => {
   try {
     const content = req.body;
-    await db
-      .getDB()
-      .collection(profileCollection)
-      .updateOne(
-        { userId: mongo.ObjectID(req.user.id) },
-        { $addToSet: { watched: content } },
-        (err, response) => {
-          if (err) throw err;
-          if (response.modifiedCount !== 1) {
-            res
-              .status(400)
-              .json({ message: 'Content couldnt be added to Watched' });
-          } else {
-            res.json({
-              status: 200,
-              message: 'Content Added to Watched',
-              content: content,
-            });
-          }
-        }
+    const dbo = db.getDB();
+    const pc = dbo.collection(profileCollection);
+    const sc = dbo.collection(statsCollection);
+    const updateRes = await pc.updateOne(
+      {
+        userId: mongo.ObjectID(req.user.id),
+      },
+      {
+        $addToSet: { watched: content },
+      }
+    );
+
+    const details = await sc.findOne({
+      type: content.type,
+      contentId: content.id,
+    });
+    if (details === null) {
+      const details = await axios.get(
+        `${moviedbBaseURI}${content.type}/${content.id}${moviedbAPIKey}&append_to_response=credits`
       );
+      const payload = {
+        type: content.type,
+        contentId: content.id,
+        runtime:
+          content.type === 'movie'
+            ? details.data.runtime
+            : details.data.episode_run_time[0],
+        genres: details.data.genres,
+        credits: details.data.credits,
+        title:
+          content.type === 'movie' ? details.data.title : details.data.name,
+        tmdb_rating: details.data.vote_average,
+      };
+      const insertStatRes = await sc.insertOne(payload);
+    }
+    if (updateRes.modifiedCount === 1) {
+      res.json({
+        status: 200,
+        message: 'Content Added to Watched',
+        content: content,
+      });
+    } else {
+      res.json({
+        status: 400,
+        message: 'Content already added',
+        content: content,
+      });
+    }
   } catch (error) {
     console.log(error.message);
     res.status(500).send({ message: 'Server Error' });
@@ -128,6 +162,56 @@ router.get('/me', auth, async (req, res) => {
   }
 });
 
+router.post('/list', auth, async (req, res) => {
+  try {
+    const dbo = db.getDB();
+    const pc = dbo.collection(profileCollection);
+    const lc = dbo.collection(listCollection);
+
+    const lc_find_res = await lc.findOne({
+      userId: mongo.ObjectID(req.user.id),
+      type: 'custom',
+      name: req.body.name,
+    });
+    if (lc_find_res !== null) {
+      return res.status(400).json({ message: 'List already exists' });
+    }
+
+    const lc_payload = {
+      userId: mongo.ObjectID(req.user.id),
+      type: 'custom',
+      content: [],
+      name: req.body.name,
+    };
+    const lc_res = await lc.insertOne(lc_payload);
+
+    const list = {
+      listId: mongo.ObjectID(lc_res.insertedId),
+      name: req.body.name,
+      type: 'custom',
+    };
+    const pc_res = await pc.updateOne(
+      { userId: mongo.ObjectID(req.user.id) },
+      {
+        $push: {
+          lists: list,
+        },
+      }
+    );
+
+    if (lc_res.insertedCount === 1 && pc_res.modifiedCount === 1) {
+      return res.json({
+        message: 'Custom List Created',
+        list: list,
+      });
+    }
+    res.json({ message: 'Could not create custom list' });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+
 router.post('/list/add', auth, async (req, res) => {
   try {
     // const content = req.body;
@@ -140,29 +224,89 @@ router.post('/list/add', auth, async (req, res) => {
     //   backdrop: content.backdrop_path,
     // };
     const payload = req.body;
+    console.log(payload);
 
-    await db
-      .getDB()
-      .collection(listCollection)
-      .updateOne(
-        { _id: mongo.ObjectID(payload.listId) },
-        { $addToSet: { content: payload.content } },
-        (err, response) => {
-          if (err) {
-            console.log(err.message);
-            throw err;
-          } else if (response.modifiedCount === 0) {
-            return res
-              .status(400)
-              .json({ message: 'Content already present in Watchlist' });
-          } else {
-            res.json({
-              message: 'Content added to Watchlist',
-              content: payload.content,
-            });
-          }
-        }
+    // await db
+    //   .getDB()
+    //   .collection(listCollection)
+    //   .updateOne(
+    //     { _id: mongo.ObjectID(payload.listId) },
+    //     { $addToSet: { content: payload.content } },
+    //     (err, response) => {
+    //       if (err) {
+    //         console.log(err.message);
+    //         throw err;
+    //       } else if (response.modifiedCount === 0) {
+    //         return res
+    //           .status(400)
+    //           .json({ message: 'Content already present in Watchlist' });
+    //       } else {
+    //         res.json({
+    //           message: 'Content added to Watchlist',
+    //           content: payload.content,
+    //         });
+    //       }
+    //     }
+    //   );
+
+    // console.log(payload);
+    const dbo = db.getDB();
+    const lc = dbo.collection(listCollection);
+    const sc = dbo.collection(statsCollection);
+    const updateRes = await lc.updateOne(
+      {
+        _id: mongo.ObjectID(payload.listId),
+      },
+      {
+        $addToSet: { content: payload.content },
+      }
+      // (err) => {
+      //   if (err) {
+      //     console.log(err.message);
+      //     throw err;
+      //   }
+      // }
+    );
+    // console.log(updateRes);
+
+    const details = await sc.findOne({
+      type: payload.content.type,
+      contentId: payload.content.id,
+    });
+    if (details === null) {
+      const details = await axios.get(
+        `${moviedbBaseURI}${payload.content.type}/${payload.content.id}${moviedbAPIKey}&append_to_response=credits`
       );
+      const statsPayload = {
+        type: payload.content.type,
+        contentId: payload.content.id,
+        runtime:
+          content.type === 'movie'
+            ? details.data.runtime
+            : details.data.episode_run_time[0],
+        genres: details.data.genres,
+        credits: details.data.credits,
+        title:
+          payload.content.type === 'movie'
+            ? details.data.title
+            : details.data.name,
+        tmdb_rating: details.data.vote_average,
+      };
+      const insertStatRes = await sc.insertOne(statsPayload);
+    }
+    if (updateRes.modifiedCount === 1) {
+      res.json({
+        status: 200,
+        message: 'Content added to list',
+        content: payload.content,
+      });
+    } else {
+      res.json({
+        status: 400,
+        message: 'Content already present in list',
+        // content: content,
+      });
+    }
   } catch (error) {
     console.log('catch error', error);
     res.status(500).json({ message: 'Server Error' });
@@ -208,25 +352,79 @@ router.post('/list/remove', auth, async (req, res) => {
 router.post('/rating/add', auth, async (req, res) => {
   try {
     const content = req.body;
-    await db
-      .getDB()
-      .collection(profileCollection)
-      .updateOne(
-        { userId: mongo.ObjectID(req.user.id) },
-        { $addToSet: { ratings: content } },
-        (err, response) => {
-          if (err) throw err;
-          if (response.modifiedCount !== 1) {
-            res.status(400).json({ message: 'Could not add Rating' });
-          } else {
-            res.json({
-              status: 200,
-              message: 'Rating Added Succesfully',
-              content: content,
-            });
-          }
-        }
+    // await db
+    //   .getDB()
+    //   .collection(profileCollection)
+    //   .updateOne(
+    //     { userId: mongo.ObjectID(req.user.id) },
+    //     { $addToSet: { ratings: content } },
+    //     (err, response) => {
+    //       if (err) throw err;
+    //       if (response.modifiedCount !== 1) {
+    //         res.status(400).json({ message: 'Could not add Rating' });
+    //       } else {
+    //         res.json({
+    //           status: 200,
+    //           message: 'Rating Added Succesfully',
+    //           content: content,
+    //         });
+    //       }
+    //     }
+    //   );
+    const dbo = db.getDB();
+    const pc = dbo.collection(profileCollection);
+    const sc = dbo.collection(statsCollection);
+    const updateRes = await pc.updateOne(
+      {
+        userId: mongo.ObjectID(req.user.id),
+      },
+      {
+        $addToSet: { ratings: content },
+      }
+      // (err) => {
+      //   if (err) {
+      //     console.log(err.message);
+      //     throw err;
+      //   }
+      // }
+    );
+
+    const details = await sc.findOne({
+      type: content.type,
+      contentId: content.id,
+    });
+    if (details === null) {
+      const details = await axios.get(
+        `${moviedbBaseURI}${content.type}/${content.id}${moviedbAPIKey}&append_to_response=credits`
       );
+      const payload = {
+        type: content.type,
+        contentId: content.id,
+        runtime:
+          content.type === 'movie'
+            ? details.data.runtime
+            : details.data.episode_run_time[0],
+        genres: details.data.genres,
+        credits: details.data.credits,
+        title:
+          content.type === 'movie' ? details.data.title : details.data.name,
+        tmdb_rating: details.data.vote_average,
+      };
+      const insertStatRes = await sc.insertOne(payload);
+    }
+    if (updateRes.modifiedCount === 1) {
+      res.json({
+        status: 200,
+        message: 'Rating Added Succesfully',
+        content: content,
+      });
+    } else {
+      res.json({
+        status: 400,
+        message: 'Could not add Rating',
+        content: content,
+      });
+    }
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: 'Server Error' });
@@ -292,6 +490,128 @@ router.patch('/rating/update', auth, async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: 'Server Error' });
+  }
+});
+
+router.get('/list/:id', auth, async (req, res) => {
+  try {
+    const dbo = db.getDB();
+    const lc = dbo.collection(listCollection);
+    const list = await lc.findOne({ _id: mongo.ObjectID(req.params.id) });
+
+    if (list === null) {
+      return res.status(400).json({ message: 'List does not exist' });
+    }
+    res.json({ message: 'List data retrieved', list: list });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.get('/stats', auth, async (req, res) => {
+  try {
+    const dbo = db.getDB();
+    const sc = dbo.collection(statsCollection);
+    const pc = dbo.collection(profileCollection);
+    const lc = dbo.collection(listCollection);
+
+    const profile = await pc.findOne({ userId: mongo.ObjectID(req.user.id) });
+
+    const watched = profile.watched;
+    const lists = profile.lists;
+    const ratings = profile.ratings;
+    const reviews = profile.reviews;
+
+    let contentFilter = { movie: [], tv: [] };
+
+    watched.forEach((item) => {
+      if (!contentFilter[item.type].includes(item.id)) {
+        contentFilter[item.type].push(item.id);
+      }
+    });
+
+    ratings.forEach((item) => {
+      if (!contentFilter[item.type].includes(item.id)) {
+        contentFilter[item.type].push(item.id);
+      }
+    });
+
+    reviews.forEach((item) => {
+      if (!contentFilter[item.type].includes(item.id)) {
+        contentFilter[item.type].push(item.id);
+      }
+    });
+
+    let listsData = await lc
+      .find({
+        userId: mongo.ObjectID(req.user.id),
+      })
+      .toArray();
+
+    listsData = listsData
+      .filter((item) => item.content.length !== 0)
+      .map((item) => item.content);
+
+    listsData.forEach((item) => {
+      item.forEach((data) => {
+        if (!contentFilter[data.type].includes(data.id)) {
+          contentFilter[data.type].push(data.id);
+        }
+      });
+    });
+
+    // console.log(contentFilter.movie);
+    const movieData = await sc
+      .find({
+        type: 'movie',
+        contentId: { $in: contentFilter.movie },
+      })
+      .toArray();
+
+    const tvData = await sc
+      .find({
+        type: 'tv',
+        contentId: { $in: contentFilter.tv },
+      })
+      .toArray();
+
+    const payload = {
+      movie: movieData,
+      tv: tvData,
+    };
+    // listsData.forEach((item) => {
+    //   console.log(item);
+    // });
+    // console.log('1');
+    // // const list = [];
+    // const list = listsData.filter((item) => item.content.length !== 0);
+
+    // // list.map(item => {return })
+    // console.log('out');
+    // console.log(movieData.length);
+
+    res.json({
+      message: 'Data for stats retrieved succesfully',
+      data: payload,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+
+router.get('/customListsData', auth, async (req, res) => {
+  try {
+    const dbo = db.getDB();
+    const lc = dbo.collection(listCollection);
+    const lists = await lc
+      .find({ userId: mongo.ObjectID(req.user.id), type: 'custom' })
+      .project({ userId: 0, type: 0 })
+      .toArray();
+
+    res.json({ message: 'Custom list data retrieved', listData: lists });
+  } catch (error) {
+    console.log(error);
   }
 });
 

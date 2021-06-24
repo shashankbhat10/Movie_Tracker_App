@@ -4,6 +4,7 @@ import * as actionTypes from './types';
 export const addContentToWatched = (content) => async (dispatch) => {
   try {
     // ADD REDUCER FOR LOAD/WAIT ANIMATION
+    // console.log(content);
     const res = await axios.post('/api/profile/add-to-watched', content);
     console.log(res);
     dispatch({
@@ -31,7 +32,7 @@ export const getProfileData = () => async (dispatch) => {
 export const removeContentFromWatched = (content) => async (dispatch) => {
   try {
     // Add dispatch to handle button/icon loading/disable before sending request
-    console.log(content);
+    console.log('action remove content', content);
     const res = await axios.delete(
       `/api/profile/remove-watched/${content.type}/${content.id}`
     );
@@ -48,59 +49,68 @@ export const removeContentFromWatched = (content) => async (dispatch) => {
   }
 };
 
-export const addContentToList = (listId, type, content) => async (dispatch) => {
-  try {
-    let payload = {
-      listId: listId,
-      content: {
-        id: content.id,
-        title: content.title,
-        poster: content.poster_path,
-        backdrop: content.backdrop_path,
-        type: type,
-      },
-    };
-    const res = await axios.post('/api/profile/list/add', payload);
-    console.log(res);
-    dispatch({
-      type: actionTypes.CONTENT_ADDED_TO_LIST,
-      payload: { type: type, id: content.id },
-    });
-  } catch (error) {
-    if (error.response.status === 400) {
-      console.log(error.response.data.message);
-    } else {
-      console.log(error);
-    }
-  }
-};
+export const addContentToList =
+  (listId, listType, type, content) => async (dispatch) => {
+    try {
+      let payload = {
+        listId: listId,
+        listType: listType,
+        content: {
+          id: content.id,
+          title: content.title,
+          poster: content.poster_path,
+          backdrop: content.backdrop_path,
+          type: type,
+        },
+      };
+      const res = await axios.post('/api/profile/list/add', payload);
+      console.log(res);
 
-export const removeContentFromList = (listId, type, item) => async (
-  dispatch
-) => {
-  try {
-    const payload = {
-      listId: listId,
-      type: type,
-      contentId: item.id,
-    };
-
-    const res = await axios.post('/api/profile/list/remove', payload);
-    dispatch({
-      type: actionTypes.CONTENT_REMOVED_FROM_LIST,
-      payload: {
-        type: type,
-        id: item.id,
-      },
-    });
-  } catch (error) {
-    if (error.response.status === 400) {
-      console.log(error.response.data.message);
-    } else {
-      console.log(error);
+      if (listType === 'custom') {
+        dispatch({
+          type: actionTypes.CONTENT_ADDED_TO_LIST,
+          payload: { type: type, id: content.id },
+        });
+      } else {
+        dispatch({
+          type: actionTypes.CONTENT_ADDED_TO_WATCHLIST,
+          payload: { type: type, id: content.id },
+        });
+      }
+    } catch (error) {
+      if (error.response.status === 400) {
+        console.log(error.response.data.message);
+      } else {
+        console.log(error);
+      }
     }
-  }
-};
+  };
+
+export const removeContentFromList =
+  (listId, type, item) => async (dispatch) => {
+    try {
+      const payload = {
+        listId: listId,
+        type: type,
+        contentId: item.id,
+      };
+
+      const res = await axios.post('/api/profile/list/remove', payload);
+      dispatch({
+        type: actionTypes.CONTENT_REMOVED_FROM_LIST,
+        payload: {
+          type: type,
+          id: item.id,
+        },
+      });
+    } catch (error) {
+      if (error.response.status === 400) {
+        console.log(error.response.data.message);
+      } else {
+        console.log(error);
+      }
+    }
+  };
 
 export const addRating = (content, type, rating) => async (dispatch) => {
   try {
@@ -158,5 +168,36 @@ export const removeRating = (id, type) => async (dispatch) => {
     });
   } catch (error) {
     console.log(error.message);
+  }
+};
+
+export const createList = (name) => async (dispatch) => {
+  const payload = {
+    name: name,
+  };
+  console.log(name);
+
+  try {
+    const res = await axios.post('/api/profile/list', payload);
+    dispatch({
+      type: actionTypes.CREATE_LIST,
+      payload: res.data.list,
+    });
+    console.log(res.data);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const deleteList = (id) => async (dispatch) => {
+  try {
+    const res = await axios.delete(`/api/profile/delete/list/${id}`);
+
+    dispatch({
+      type: actionTypes.DELETE_LIST,
+      payload: id,
+    });
+  } catch (error) {
+    console.log(error);
   }
 };
