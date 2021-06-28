@@ -25,7 +25,7 @@ const TVHeader = ({ details }) => {
         <Card.Body className="col-md-8 pt-4">
           <Card.Title className="d-flex flex-row">
             <h2>
-              {details.name}
+              {details.title}
               {console.log(details.startDate)}
               {'  (' + details.startDate.slice(0, 4)})
             </h2>

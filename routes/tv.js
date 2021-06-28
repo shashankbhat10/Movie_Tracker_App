@@ -106,7 +106,7 @@ router.get('/:id', async (req, res) => {
 
     const show = {
       id: detailsRes.data.id,
-      name: detailsRes.data.name,
+      title: detailsRes.data.name,
       numberOfSeasons: detailsRes.data.number_of_seasons,
       overview: detailsRes.data.overview,
       backdrop_path: detailsRes.data.backdrop_path,

@@ -51,8 +51,12 @@ router.put('/contentByGenre', auth, async (req, res) => {
           id: tvGenre[index - genreTVstart].id,
           name: tvGenre[index - genreTVstart].name,
           type: 'tv',
-          list: output.data.results,
         };
+        output.data.results.forEach((item) => {
+          item['title'] = item.name;
+          delete item['name'];
+        });
+        show['list'] = output.data.results;
         tv.push(show);
       }
     });

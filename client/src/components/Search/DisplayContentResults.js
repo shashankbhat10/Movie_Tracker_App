@@ -96,9 +96,7 @@ const DisplayContentResults = ({ type, content, loadMoreResults }) => {
                           item.vote_average !== 0 ? 'col-9 px-0' : 'col-12 px-0'
                         }
                       >
-                        <Card.Title className="mb-2">
-                          {type === 'movie' ? item.title : item.name}
-                        </Card.Title>
+                        <Card.Title className="mb-2">{item.title}</Card.Title>
                       </Link>
                       {item.vote_average !== 0 && (
                         <span className="pl-3 col-3 text-center">

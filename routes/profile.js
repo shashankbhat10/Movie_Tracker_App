@@ -51,8 +51,7 @@ router.post('/add-to-watched', auth, async (req, res) => {
             : details.data.episode_run_time[0],
         genres: details.data.genres,
         credits: details.data.credits,
-        title:
-          content.type === 'movie' ? details.data.title : details.data.name,
+        title: details.data.title,
         tmdb_rating: details.data.vote_average,
       };
       const insertStatRes = await sc.insertOne(payload);
@@ -281,15 +280,12 @@ router.post('/list/add', auth, async (req, res) => {
         type: payload.content.type,
         contentId: payload.content.id,
         runtime:
-          content.type === 'movie'
+          payload.content.type === 'movie'
             ? details.data.runtime
             : details.data.episode_run_time[0],
         genres: details.data.genres,
         credits: details.data.credits,
-        title:
-          payload.content.type === 'movie'
-            ? details.data.title
-            : details.data.name,
+        title: details.data.title,
         tmdb_rating: details.data.vote_average,
       };
       const insertStatRes = await sc.insertOne(statsPayload);
@@ -406,8 +402,7 @@ router.post('/rating/add', auth, async (req, res) => {
             : details.data.episode_run_time[0],
         genres: details.data.genres,
         credits: details.data.credits,
-        title:
-          content.type === 'movie' ? details.data.title : details.data.name,
+        title: details.data.title,
         tmdb_rating: details.data.vote_average,
       };
       const insertStatRes = await sc.insertOne(payload);

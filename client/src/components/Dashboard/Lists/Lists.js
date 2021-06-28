@@ -230,11 +230,7 @@ const Lists = ({
                         className="my-1 pl-1"
                         style={{ fontSize: '1em', color: '#c3d1d9' }}
                       >
-                        {item.type === 'tv'
-                          ? item.title === undefined
-                            ? item.name
-                            : item.title
-                          : item.title}
+                        {item.title}
                       </Card.Title>
                     </Link>
                   </Card>
