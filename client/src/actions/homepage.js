@@ -114,44 +114,46 @@ export const getDashboardTopContent = () => async (dispatch) => {
   }
 };
 
-export const selectRandomGenres = (movieGenres, tvGenres) => async (
-  dispatch
-) => {
-  try {
-    let genres = movieGenres.map((genre) => {
-      return { ...genre, type: 'movie' };
-    });
-    tvGenres = tvGenres.map((genre) => {
-      return { ...genre, type: 'tv' };
-    });
-    Array.prototype.push.apply(genres, tvGenres);
+export const selectRandomGenres =
+  (movieGenres, tvGenres) => async (dispatch) => {
+    try {
+      let genres = movieGenres.map((genre) => {
+        return { ...genre, type: 'movie' };
+      });
+      tvGenres = tvGenres.map((genre) => {
+        return { ...genre, type: 'tv' };
+      });
+      Array.prototype.push.apply(genres, tvGenres);
 
-    const randomList = getRandom(genres, genres.length > 5 ? 5 : genres.length);
-    const genre = {
-      movie: randomList.filter((genre) => {
-        return genre.type === 'movie';
-      }),
-      tv: randomList.filter((genre) => {
-        return genre.type === 'tv';
-      }),
-    };
+      const randomList = getRandom(
+        genres,
+        genres.length > 5 ? 5 : genres.length
+      );
+      const genre = {
+        movie: randomList.filter((genre) => {
+          return genre.type === 'movie';
+        }),
+        tv: randomList.filter((genre) => {
+          return genre.type === 'tv';
+        }),
+      };
 
-    console.log('genre selected');
-    dispatch({
-      type: actionTypes.RANDOM_GENRES_SELECTED,
-      payload: genre,
-    });
-    console.log('genres set');
-    // const discoverGenresRes = await axios.put(
-    //   '/api/discover/contentByGenre',
-    //   genre
-    // );
-    // console.log(discoverGenresRes.data);
-    dispatch(getGenresContent(genre));
-  } catch (err) {
-    console.log(err);
-  }
-};
+      console.log('genre selected');
+      dispatch({
+        type: actionTypes.RANDOM_GENRES_SELECTED,
+        payload: genre,
+      });
+      console.log('genres set');
+      // const discoverGenresRes = await axios.put(
+      //   '/api/discover/contentByGenre',
+      //   genre
+      // );
+      // console.log(discoverGenresRes.data);
+      dispatch(getGenresContent(genre));
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
 export const getGenresContent = (genres) => async (dispatch) => {
   try {
@@ -165,6 +167,7 @@ export const getGenresContent = (genres) => async (dispatch) => {
     );
 
     const list = discoverGenresRes.data.content;
+
     list.forEach((item) => {
       item.category = 'genre';
     });

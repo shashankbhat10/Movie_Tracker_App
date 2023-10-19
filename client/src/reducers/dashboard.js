@@ -1,11 +1,12 @@
-import * as actionTypes from '../actions/types';
+import * as actionTypes from "../actions/types";
 
 const initialState = {
-  section: 'watched',
+  section: "watched",
   listContent: [],
   customListContent: [],
   stats: { movie: [], tv: [] },
   loading: true,
+  listDeleted: false,
 };
 
 export default function (state = initialState, action) {
@@ -21,12 +22,20 @@ export default function (state = initialState, action) {
         loading: false,
       };
     case actionTypes.CUSTOM_LIST_DATE_RECEIVED:
-      console.log('payload', payload);
+      console.log("payload", payload);
       console.log(typeof payload);
       return {
         ...state,
         customListContent: [...payload.listData],
       };
+    case actionTypes.CONTENT_CLEARED:
+      console.log("clear");
+      return { ...state, listContent: payload.content };
+    case actionTypes.DELETING_LIST:
+      // return{...state, }
+      return { ...state, listDeleted: true };
+    case actionTypes.LIST_DELETED:
+      return { ...state, listDeleted: false };
     default:
       return { ...state };
   }

@@ -79,7 +79,9 @@ const HomepageContentRow = ({
   };
 
   const popoverClose = () => {
+    console.log('POPOVER');
     updatePopoverId('');
+    updateActiveId('');
   };
 
   const addToWatchlist = (listId, item, action) => {
@@ -133,7 +135,7 @@ const HomepageContentRow = ({
               onMouseLeave={() => {
                 removeHoverClass();
               }}
-              id={`${item.id}_${type === 'movie' ? item.title : item.name}_${
+              id={`${item.id}_${item.title}_${
                 category === 'genre'
                   ? content.name.toLowerCase()
                   : content.category
@@ -223,11 +225,7 @@ const HomepageContentRow = ({
                 className="my-1 pl-1"
                 style={{ fontSize: '1em', color: '#c3d1d9' }}
               >
-                {type === 'tv'
-                  ? category === 'genre'
-                    ? item.name
-                    : item.title
-                  : item.title}
+                {item.title}
               </Card.Title>
             </Link>
           </Card>

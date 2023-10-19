@@ -37,7 +37,7 @@ const ListPopover = ({
     } else {
       updateWatchlist(watchlist.tv);
     }
-    close(item.id);
+    // close(item.id);
   }, [watchlist]);
 
   useEffect(() => {
@@ -82,13 +82,14 @@ const ListPopover = ({
                 }
                 size="sm"
                 className="ml-auto"
-                onClick={() =>
+                onClick={() => {
                   addToWatchlist(
                     watchlist.listId,
                     item,
                     watchlistContent.includes(item.id) ? 'remove' : 'add'
-                  )
-                }
+                  );
+                  close(item.id);
+                }}
               >
                 <FontAwesomeIcon
                   icon={watchlistContent.includes(item.id) ? faTimes : faCheck}
@@ -116,7 +117,7 @@ const ListPopover = ({
                     return (
                       <Dropdown.Item
                         value={list.name}
-                        key={`list_dropdown_${list.id}`}
+                        key={`list_dropdown_${list.listId}`}
                         onClick={() => changeCustomList(list)}
                       >
                         {list.name}
@@ -130,14 +131,15 @@ const ListPopover = ({
                 size="sm"
                 className="ml-auto"
                 disabled={customLists.length === 0}
-                onClick={() =>
+                onClick={() => {
                   addContentToList(
                     selectedList.listId,
                     selectedList.type,
                     itemType,
                     item
-                  )
-                }
+                  );
+                  close(item.id);
+                }}
               >
                 <FontAwesomeIcon icon={faPlus} />
               </Button>

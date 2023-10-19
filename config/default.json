@@ -2,7 +2,7 @@
   "moviedbBaseURI": "https://api.themoviedb.org/3/",
   "moviedbAPIKey": "?api_key=e6c17253017e432ac8ebc67dd2493a32",
   "jwtSecret": "secretJWTtoken",
-  "mongoURI": "mongodb+srv://dbUser:pass@123@cluster0.ac7n2.mongodb.net/movie-tracker?retryWrites=true&w=majority",
+  "mongoURI": "mongodb+srv://dbUser:pass@123@cluster0.ac7n2.mongodb.net/?retryWrites=true&w=majority",
   "accessTokenKey": "05ec184265bbedaba450d190d3db6646213caa95f667aac665c19e106a6bc26c11c011f715b5ccb4d0ae0eadef6fe6090c6ae44752800cef25c077b641a4d3b9",
   "refreshTokenKey": "dcc2089b68eae16f222f8307c1618971595034732d399530ed69a2e5a55dbb867cf93283b6a490c1a01ba64e52d135744e3182eb35a02a9f9964fefff0bf3a49"
 }

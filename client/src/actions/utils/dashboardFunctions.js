@@ -1,13 +1,6 @@
-import axios from 'axios';
+// import axios from 'axios';
 
-export const getGraphData = (
-  stats,
-  genres,
-  watched,
-  watchlist,
-  lists,
-  type
-) => {
+export const getGraphData = (stats, genres, watched, watchlist, lists, type) => {
   let graphData = [];
 
   const watchData = getWatchedGraphContent(stats, genres, watched, type);
@@ -34,15 +27,15 @@ export const getWatchedGraphContent = (stats, genres, content, type) => {
   const data = getGenreGraphCount(stats, genres, content, type);
 
   return {
-    label: 'Watched',
+    label: "Watched",
     data: data,
-    backgroundColor: 'rgb(255, 99, 132)',
+    backgroundColor: "rgb(255, 99, 132)",
   };
 };
 
 export const getListGraphData = (stats, genres, customLists, type) => {
   let graphData = [];
-  console.log('customLists', customLists);
+  console.log("customLists", customLists);
   customLists.forEach((item, index) => {
     const countArr = getGenreGraphCount(
       stats,
@@ -53,9 +46,7 @@ export const getListGraphData = (stats, genres, customLists, type) => {
     graphData.push({
       label: item.name,
       data: countArr,
-      backgroundColor: `rgb(255, ${0 + 20 * (index + 1)}, ${
-        0 + 20 * (index + 2)
-      })`,
+      backgroundColor: `rgb(255, ${0 + 20 * (index + 1)}, ${0 + 20 * (index + 2)})`,
     });
   });
 
@@ -90,12 +81,7 @@ const getGenreGraphCount = (stats, genres, content, type) => {
   return graphData;
 };
 
-export const getInteractedPeopleData = (
-  stats,
-  watched,
-  watchlist,
-  customLists
-) => {
+export const getInteractedPeopleData = (stats, watched, watchlist, customLists) => {
   let castLength = 0;
   let crewLength = 0;
   let statsContent = stats.movie;
@@ -115,23 +101,23 @@ export const getInteractedPeopleData = (
   const allContent = [];
 
   let watchedContent = watched.movie.map((item) => {
-    return { type: 'movie', id: item.id, category: 'watched' };
+    return { type: "movie", id: item.id, category: "watched" };
   });
   Array.prototype.push.apply(
     watchedContent,
     watched.tv.map((item) => {
-      return { type: 'tv', id: item.id, category: 'watched' };
+      return { type: "tv", id: item.id, category: "watched" };
     })
   );
   Array.prototype.push.apply(allContent, watchedContent);
 
   let watchlistContent = watchlist.movie.map((item) => {
-    return { type: 'movie', id: item, category: 'watchlist' };
+    return { type: "movie", id: item, category: "watchlist" };
   });
   Array.prototype.push.apply(
     watchlistContent,
     watchlist.tv.map((item) => {
-      return { type: 'tv', id: item, category: 'watchlist' };
+      return { type: "tv", id: item, category: "watchlist" };
     })
   );
   Array.prototype.push.apply(allContent, watchlistContent);
@@ -149,8 +135,7 @@ export const getInteractedPeopleData = (
   let finalData = statsContent
     .reduce((castCount, item) => {
       const interactedContent = allContent.filter(
-        (userContent) =>
-          userContent.type === item.type && userContent.id === item.contentId
+        (userContent) => userContent.type === item.type && userContent.id === item.contentId
       );
       interactedContent.forEach((content) => (content.title = item.title));
 
@@ -177,12 +162,7 @@ export const getInteractedPeopleData = (
   return finalData;
 };
 
-export const getInteractedDirectorData = (
-  stats,
-  watched,
-  watchlist,
-  customLists
-) => {
+export const getInteractedDirectorData = (stats, watched, watchlist, customLists) => {
   let castLength = 0;
   let crewLength = 0;
   let statsContent = stats.movie;
@@ -202,23 +182,23 @@ export const getInteractedDirectorData = (
   const allContent = [];
 
   let watchedContent = watched.movie.map((item) => {
-    return { type: 'movie', id: item.id, category: 'watched' };
+    return { type: "movie", id: item.id, category: "watched" };
   });
   Array.prototype.push.apply(
     watchedContent,
     watched.tv.map((item) => {
-      return { type: 'tv', id: item.id, category: 'watched' };
+      return { type: "tv", id: item.id, category: "watched" };
     })
   );
   Array.prototype.push.apply(allContent, watchedContent);
 
   let watchlistContent = watchlist.movie.map((item) => {
-    return { type: 'movie', id: item, category: 'watchlist' };
+    return { type: "movie", id: item, category: "watchlist" };
   });
   Array.prototype.push.apply(
     watchlistContent,
     watchlist.tv.map((item) => {
-      return { type: 'tv', id: item, category: 'watchlist' };
+      return { type: "tv", id: item, category: "watchlist" };
     })
   );
   Array.prototype.push.apply(allContent, watchlistContent);
@@ -236,14 +216,11 @@ export const getInteractedDirectorData = (
   let finalData = statsContent
     .reduce((castCount, item) => {
       const interactedContent = allContent.filter(
-        (userContent) =>
-          userContent.type === item.type && userContent.id === item.contentId
+        (userContent) => userContent.type === item.type && userContent.id === item.contentId
       );
       interactedContent.forEach((content) => (content.title = item.title));
 
-      const crew = item.credits.crew.filter(
-        (item) => item.department === 'Directing'
-      );
+      const crew = item.credits.crew.filter((item) => item.department === "Directing");
       crew.forEach((person) => {
         let personData = castCount[person.id] || {
           id: person.id,

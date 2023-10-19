@@ -1,11 +1,12 @@
-import axios from 'axios';
-import * as actionTypes from './types';
+import axios from "axios";
+import * as actionTypes from "./types";
+import { updateListContentAfterClear } from "./dashboard";
 
 export const addContentToWatched = (content) => async (dispatch) => {
   try {
     // ADD REDUCER FOR LOAD/WAIT ANIMATION
     // console.log(content);
-    const res = await axios.post('/api/profile/add-to-watched', content);
+    const res = await axios.post("/api/profile/add-to-watched", content);
     console.log(res);
     dispatch({
       type: actionTypes.CONTENT_ADDED_TO_WATCH,
@@ -15,9 +16,9 @@ export const addContentToWatched = (content) => async (dispatch) => {
 };
 
 export const getProfileData = () => async (dispatch) => {
-  if (localStorage.getItem('movieTrackerAccessToken')) {
+  if (localStorage.getItem("movieTrackerAccessToken")) {
     try {
-      const res = await axios.get('/api/profile/me');
+      const res = await axios.get("/api/profile/me");
       console.log(res.data);
       dispatch({
         type: actionTypes.PROFILE_LOADED,
@@ -32,11 +33,9 @@ export const getProfileData = () => async (dispatch) => {
 export const removeContentFromWatched = (content) => async (dispatch) => {
   try {
     // Add dispatch to handle button/icon loading/disable before sending request
-    console.log('action remove content', content);
-    const res = await axios.delete(
-      `/api/profile/remove-watched/${content.type}/${content.id}`
-    );
-    console.log('remove action', res.data);
+    console.log("action remove content", content);
+    const res = await axios.delete(`/api/profile/remove-watched/${content.type}/${content.id}`);
+    console.log("remove action", res.data);
     dispatch({
       type: actionTypes.CONTENT_REMOVED_FROM_WATCH,
       payload: content,
@@ -49,72 +48,77 @@ export const removeContentFromWatched = (content) => async (dispatch) => {
   }
 };
 
-export const addContentToList =
-  (listId, listType, type, content) => async (dispatch) => {
-    try {
-      let payload = {
-        listId: listId,
-        listType: listType,
-        content: {
-          id: content.id,
-          title: content.title,
-          poster: content.poster_path,
-          backdrop: content.backdrop_path,
-          type: type,
-        },
-      };
-      const res = await axios.post('/api/profile/list/add', payload);
-      console.log(res);
-
-      if (listType === 'custom') {
-        dispatch({
-          type: actionTypes.CONTENT_ADDED_TO_LIST,
-          payload: { type: type, id: content.id },
-        });
-      } else {
-        dispatch({
-          type: actionTypes.CONTENT_ADDED_TO_WATCHLIST,
-          payload: { type: type, id: content.id },
-        });
-      }
-    } catch (error) {
-      if (error.response.status === 400) {
-        console.log(error.response.data.message);
-      } else {
-        console.log(error);
-      }
-    }
-  };
-
-export const removeContentFromList =
-  (listId, type, item) => async (dispatch) => {
-    try {
-      const payload = {
-        listId: listId,
+export const addContentToList = (listId, listType, type, content) => async (dispatch) => {
+  try {
+    let payload = {
+      listId: listId,
+      listType: listType,
+      content: {
+        id: content.id,
+        title: content.title,
+        poster: content.poster_path,
+        backdrop: content.backdrop_path,
         type: type,
-        contentId: item.id,
-      };
+      },
+    };
+    const res = await axios.post("/api/profile/list/add", payload);
+    console.log(res);
 
-      const res = await axios.post('/api/profile/list/remove', payload);
+    if (listType === "custom") {
       dispatch({
-        type: actionTypes.CONTENT_REMOVED_FROM_LIST,
+        type: actionTypes.CONTENT_ADDED_TO_LIST,
         payload: {
           type: type,
-          id: item.id,
+          id: content.id,
         },
       });
-    } catch (error) {
-      if (error.response.status === 400) {
-        console.log(error.response.data.message);
-      } else {
-        console.log(error);
-      }
+    } else {
+      dispatch({
+        type: actionTypes.CONTENT_ADDED_TO_WATCHLIST,
+        payload: {
+          type: type,
+          id: content.id,
+        },
+      });
     }
-  };
+  } catch (error) {
+    if (error.response.status === 400) {
+      console.log(error.response.data.message);
+    } else {
+      console.log(error);
+    }
+  }
+};
+
+export const removeContentFromList = (listId, type, item) => async (dispatch) => {
+  try {
+    const payload = {
+      listId: listId,
+      type: type,
+      contentId: item.id,
+    };
+
+    // const res = await axios.post("/api/profile/list/remove", payload);
+    await axios.post("/api/profile/list/remove", payload);
+    dispatch({
+      type: actionTypes.CONTENT_REMOVED_FROM_LIST,
+      payload: {
+        type: type,
+        id: item.id,
+      },
+    });
+  } catch (error) {
+    if (error.response.status === 400) {
+      console.log(error.response.data.message);
+    } else {
+      console.log(error);
+    }
+  }
+};
 
 export const addRating = (content, type, rating) => async (dispatch) => {
   try {
-    console.log('addRating');
+    console.log("addRating");
     console.log(type);
     // console.log(content);
     // console.log(type);
@@ -127,7 +131,7 @@ export const addRating = (content, type, rating) => async (dispatch) => {
       backdrop: content.backdrop_path,
       type: type,
     };
-    const res = await axios.post('api/profile/rating/add', payload);
+    const res = await axios.post("api/profile/rating/add", payload);
     console.log(res.data);
     dispatch({
       type: actionTypes.CONTENT_RATING_ADDED,
@@ -147,7 +151,8 @@ export const updateRating = (id, type, rating) => async (dispatch) => {
       rating: rating,
     };
 
-    const res = await axios.patch('/api/profile/rating/update', payload);
+    // const res = await axios.patch("/api/profile/rating/update", payload);
+    await axios.patch("/api/profile/rating/update", payload);
 
     dispatch({
       type: actionTypes.CONTENT_RATING_UPDATED,
@@ -160,11 +165,15 @@ export const updateRating = (id, type, rating) => async (dispatch) => {
 
 export const removeRating = (id, type) => async (dispatch) => {
   try {
-    const res = await axios.delete(`api/profile/rating/remove/${type}/${id}`);
+    // const res = await axios.delete(`api/profile/rating/remove/${type}/${id}`);
+    await axios.delete(`api/profile/rating/remove/${type}/${id}`);
 
     dispatch({
       type: actionTypes.CONTENT_RATING_REMOVED,
-      payload: { id: id, type: type },
+      payload: {
+        id: id,
+        type: type,
+      },
     });
   } catch (error) {
     console.log(error.message);
@@ -178,7 +187,7 @@ export const createList = (name) => async (dispatch) => {
   console.log(name);
 
   try {
-    const res = await axios.post('/api/profile/list', payload);
+    const res = await axios.post("/api/profile/list", payload);
     dispatch({
       type: actionTypes.CREATE_LIST,
       payload: res.data.list,
@@ -191,12 +200,30 @@ export const createList = (name) => async (dispatch) => {
 
 export const deleteList = (id) => async (dispatch) => {
   try {
-    const res = await axios.delete(`/api/profile/delete/list/${id}`);
+    const res = await axios.delete(`/api/profile/list/${id}`);
 
     dispatch({
       type: actionTypes.DELETE_LIST,
-      payload: id,
+      payload: res.data,
     });
+  } catch (error) {
+    console.log(error.response.data.message);
+  }
+};
+
+export const clearContents = (listId, clearType) => async (dispatch) => {
+  try {
+    console.log("CLEAR");
+    let res = null;
+    if (clearType === "all") {
+      console.log("ALL");
+      res = await axios.delete(`/api/profile/clearAllListContent/${listId}`);
+    } else {
+      res = await axios.delete(`/api/profile/clearListContent/${listId}/${clearType}`);
+    }
+
+    console.log(res.data);
+    dispatch(updateListContentAfterClear(res.data.payload));
   } catch (error) {
     console.log(error);
   }

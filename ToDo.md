@@ -19,8 +19,8 @@ Todo for project:
 [ X ] - Feature to add/edit/delete rating
 [ X ] - Feature to create lists
 [ X ] - Add Watchlist feature
-[ ] - Add TMDB Recommendation
-[ ] - Add Custom Movie recommendation
+[ ] - Add TMDB Recommendation (cancel)
+[ ] - Add Custom Movie recommendation (cancel)
 [ ] - Add Separate Review Page
 [ X ] - Create Video Section in Movie/TV Media
 [ ] - Add Discover Section

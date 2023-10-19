@@ -1,5 +1,5 @@
-import axios from 'axios';
-import * as actionTypes from './types';
+import axios from "axios";
+import * as actionTypes from "./types";
 
 export const createList = (name) => async (dispatch) => {
   const payload = {
@@ -7,7 +7,7 @@ export const createList = (name) => async (dispatch) => {
   };
 
   try {
-    const res = await axios.post('/api/profile/list/create', payload);
+    const res = await axios.post("/api/profile/list/create", payload);
 
     dispatch({
       type: actionTypes.CREATE_LIST,
@@ -20,6 +20,7 @@ export const createList = (name) => async (dispatch) => {
 
 export const deleteList = (id) => async (dispatch) => {
   try {
+    // eslint-disable-next-line no-unused-vars
     const res = await axios.delete(`/api/profile/delete/list/${id}`);
 
     dispatch({
@@ -48,7 +49,7 @@ export const getListData = (id) => async (dispatch) => {
 
 export const getStatsContent = () => async (dispatch) => {
   try {
-    const res = await axios.get('/api/profile/stats');
+    const res = await axios.get("/api/profile/stats");
 
     console.log(res.data);
 
@@ -63,7 +64,7 @@ export const getStatsContent = () => async (dispatch) => {
 
 export const getCustomListsContent = () => async (dispatch) => {
   try {
-    const res = await axios.get('/api/profile/customListsData');
+    const res = await axios.get("/api/profile/customListsData");
 
     console.log(res.data);
 
@@ -73,5 +74,14 @@ export const getCustomListsContent = () => async (dispatch) => {
     });
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const updateListContentAfterClear = (payload) => async (dispatch) => {
+  try {
+    console.log("in dashboard actions");
+    dispatch({ type: actionTypes.CONTENT_CLEARED, payload: payload });
+  } catch (err) {
+    console.log(err);
   }
 };

@@ -29,7 +29,7 @@ router.get('/popular', (req, res) => {
       });
       res.json(movies);
     })
-    .catch((err) => console.log(err));
+    .catch((err) => console.log(err.message));
 });
 
 // @route   GET /trending

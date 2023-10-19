@@ -1,10 +1,10 @@
-const mongoose = require('mongoose');
-const config = require('config');
-const dbURI = config.get('mongoURI');
-const dbName = 'movie-tracker';
-const MongoClient = require('mongodb').MongoClient;
-const ObjectID = require('mongodb').ObjectID;
-
+const mongoose = require("mongoose");
+const config = require("config");
+const dbURI = config.get("mongoURI");
+const dbName = "movie-tracker";
+const MongoClient = require("mongodb").MongoClient;
+const ObjectID = require("mongodb").ObjectID;
+// "mongoURI": "mongodb+srv://dbUser:pass@123@cluster0.ac7n2.mongodb.net/movie-tracker?retryWrites=true&w=majority",
 const state = {
   db: null,
 };

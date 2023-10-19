@@ -1,25 +1,25 @@
-const express = require('express');
-const auth = require('../middleware/auth');
-const db = require('../config/db');
+const express = require("express");
+const auth = require("../middleware/auth");
+const db = require("../config/db");
 // const dbo = db.getDB();
 const router = express.Router();
-const mongo = require('mongodb');
-const { check, validationResult } = require('express-validator/check');
-const { response } = require('express');
-const axios = require('axios');
-const config = require('config');
-const moviedbBaseURI = config.get('moviedbBaseURI');
-const moviedbAPIKey = config.get('moviedbAPIKey');
-const profileCollection = 'userProfile';
+const mongo = require("mongodb");
+const { check, validationResult } = require("express-validator/check");
+const { response } = require("express");
+const axios = require("axios");
+const config = require("config");
+const moviedbBaseURI = config.get("moviedbBaseURI");
+const moviedbAPIKey = config.get("moviedbAPIKey");
+const profileCollection = "userProfile";
 // const pc = dbo.collection(profileCollection);
-const listCollection = 'lists';
-const statsCollection = 'contentStats';
+const listCollection = "lists";
+const statsCollection = "contentStats";
 
-router.get('/me/watchlist', auth, async (req, res) => {
-  console.log('Hello');
+router.get("/me/watchlist", auth, async (req, res) => {
+  console.log("Hello");
 });
 
-router.post('/add-to-watched', auth, async (req, res) => {
+router.post("/add-to-watched", auth, async (req, res) => {
   try {
     const content = req.body;
     const dbo = db.getDB();
@@ -46,7 +46,7 @@ router.post('/add-to-watched', auth, async (req, res) => {
         type: content.type,
         contentId: content.id,
         runtime:
-          content.type === 'movie'
+          content.type === "movie"
             ? details.data.runtime
             : details.data.episode_run_time[0],
         genres: details.data.genres,
@@ -59,23 +59,23 @@ router.post('/add-to-watched', auth, async (req, res) => {
     if (updateRes.modifiedCount === 1) {
       res.json({
         status: 200,
-        message: 'Content Added to Watched',
+        message: "Content Added to Watched",
         content: content,
       });
     } else {
       res.json({
         status: 400,
-        message: 'Content already added',
+        message: "Content already added",
         content: content,
       });
     }
   } catch (error) {
     console.log(error.message);
-    res.status(500).send({ message: 'Server Error' });
+    res.status(500).send({ message: "Server Error" });
   }
 });
 
-router.delete('/remove-watched/:type/:id', auth, async (req, res) => {
+router.delete("/remove-watched/:type/:id", auth, async (req, res) => {
   try {
     await db
       .getDB()
@@ -96,21 +96,21 @@ router.delete('/remove-watched/:type/:id', auth, async (req, res) => {
           } else if (response.modifiedCount !== 1) {
             return res
               .status(400)
-              .json({ message: 'Content not found in Watched' });
+              .json({ message: "Content not found in Watched" });
           } else {
             return res
               .status(200)
-              .json({ message: 'Content removed from Watched' });
+              .json({ message: "Content removed from Watched" });
           }
         }
       );
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ message: 'Server Error' });
+    res.status(500).json({ message: "Server Error" });
   }
 });
 
-router.get('/me', auth, async (req, res) => {
+router.get("/me", auth, async (req, res) => {
   try {
     await db
       .getDB()
@@ -119,7 +119,7 @@ router.get('/me', auth, async (req, res) => {
         { userId: mongo.ObjectID(req.user.id) },
         async (err, profile) => {
           if (err) {
-            console.log('Profile find Error', error);
+            console.log("Profile find Error", error);
             throw err;
           } else {
             await db
@@ -130,7 +130,7 @@ router.get('/me', auth, async (req, res) => {
                 (err, watchlist) => {
                   if (err) {
                     console.log(
-                      'Error finding watchlist of profile',
+                      "Error finding watchlist of profile",
                       err.message
                     );
                   } else {
@@ -156,12 +156,12 @@ router.get('/me', auth, async (req, res) => {
     console.log(profile);
     console.log(error.message);
     res.status(500).json({
-      message: 'Server Error',
+      message: "Server Error",
     });
   }
 });
 
-router.post('/list', auth, async (req, res) => {
+router.post("/list", auth, async (req, res) => {
   try {
     const dbo = db.getDB();
     const pc = dbo.collection(profileCollection);
@@ -169,16 +169,16 @@ router.post('/list', auth, async (req, res) => {
 
     const lc_find_res = await lc.findOne({
       userId: mongo.ObjectID(req.user.id),
-      type: 'custom',
+      type: "custom",
       name: req.body.name,
     });
     if (lc_find_res !== null) {
-      return res.status(400).json({ message: 'List already exists' });
+      return res.status(400).json({ message: "List already exists" });
     }
 
     const lc_payload = {
       userId: mongo.ObjectID(req.user.id),
-      type: 'custom',
+      type: "custom",
       content: [],
       name: req.body.name,
     };
@@ -187,7 +187,7 @@ router.post('/list', auth, async (req, res) => {
     const list = {
       listId: mongo.ObjectID(lc_res.insertedId),
       name: req.body.name,
-      type: 'custom',
+      type: "custom",
     };
     const pc_res = await pc.updateOne(
       { userId: mongo.ObjectID(req.user.id) },
@@ -200,18 +200,18 @@ router.post('/list', auth, async (req, res) => {
 
     if (lc_res.insertedCount === 1 && pc_res.modifiedCount === 1) {
       return res.json({
-        message: 'Custom List Created',
+        message: "Custom List Created",
         list: list,
       });
     }
-    res.json({ message: 'Could not create custom list' });
+    res.json({ message: "Could not create custom list" });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: 'Server Error' });
+    res.status(500).json({ message: "Server Error" });
   }
 });
 
-router.post('/list/add', auth, async (req, res) => {
+router.post("/list/add", auth, async (req, res) => {
   try {
     // const content = req.body;
     // let addContent = {
@@ -223,7 +223,6 @@ router.post('/list/add', auth, async (req, res) => {
     //   backdrop: content.backdrop_path,
     // };
     const payload = req.body;
-    console.log(payload);
 
     // await db
     //   .getDB()
@@ -280,7 +279,7 @@ router.post('/list/add', auth, async (req, res) => {
         type: payload.content.type,
         contentId: payload.content.id,
         runtime:
-          payload.content.type === 'movie'
+          payload.content.type === "movie"
             ? details.data.runtime
             : details.data.episode_run_time[0],
         genres: details.data.genres,
@@ -293,23 +292,23 @@ router.post('/list/add', auth, async (req, res) => {
     if (updateRes.modifiedCount === 1) {
       res.json({
         status: 200,
-        message: 'Content added to list',
+        message: "Content added to list",
         content: payload.content,
       });
     } else {
       res.json({
         status: 400,
-        message: 'Content already present in list',
+        message: "Content already present in list",
         // content: content,
       });
     }
   } catch (error) {
-    console.log('catch error', error);
-    res.status(500).json({ message: 'Server Error' });
+    console.log("catch error", error);
+    res.status(500).json({ message: "Server Error" });
   }
 });
 
-router.post('/list/remove', auth, async (req, res) => {
+router.post("/list/remove", auth, async (req, res) => {
   try {
     const payload = req.body;
     await db
@@ -333,19 +332,19 @@ router.post('/list/remove', auth, async (req, res) => {
           } else if (response.modifiedCount === 0) {
             return res
               .status(400)
-              .json({ message: 'Content not present in Watchlist' });
+              .json({ message: "Content not present in Watchlist" });
           } else {
-            res.json({ message: 'Content removed from Watchlist' });
+            res.json({ message: "Content removed from Watchlist" });
           }
         }
       );
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ message: 'Server Error' });
+    res.status(500).json({ message: "Server Error" });
   }
 });
 
-router.post('/rating/add', auth, async (req, res) => {
+router.post("/rating/add", auth, async (req, res) => {
   try {
     const content = req.body;
     // await db
@@ -397,7 +396,7 @@ router.post('/rating/add', auth, async (req, res) => {
         type: content.type,
         contentId: content.id,
         runtime:
-          content.type === 'movie'
+          content.type === "movie"
             ? details.data.runtime
             : details.data.episode_run_time[0],
         genres: details.data.genres,
@@ -410,23 +409,23 @@ router.post('/rating/add', auth, async (req, res) => {
     if (updateRes.modifiedCount === 1) {
       res.json({
         status: 200,
-        message: 'Rating Added Succesfully',
+        message: "Rating Added Succesfully",
         content: content,
       });
     } else {
       res.json({
         status: 400,
-        message: 'Could not add Rating',
+        message: "Could not add Rating",
         content: content,
       });
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: 'Server Error' });
+    res.status(500).json({ message: "Server Error" });
   }
 });
 
-router.delete('/rating/remove/:type/:id', auth, async (req, res) => {
+router.delete("/rating/remove/:type/:id", auth, async (req, res) => {
   try {
     await db
       .getDB()
@@ -443,9 +442,9 @@ router.delete('/rating/remove/:type/:id', auth, async (req, res) => {
           else if (response.modifiedCount !== 1) {
             return res
               .status(400)
-              .json({ message: 'Couldnt remove content rating' });
+              .json({ message: "Couldnt remove content rating" });
           } else {
-            return res.status(200).json({ message: 'Content rating deleted' });
+            return res.status(200).json({ message: "Content rating deleted" });
           }
         }
       );
@@ -454,7 +453,7 @@ router.delete('/rating/remove/:type/:id', auth, async (req, res) => {
   }
 });
 
-router.patch('/rating/update', auth, async (req, res) => {
+router.patch("/rating/update", auth, async (req, res) => {
   try {
     const content = req.body;
     await db
@@ -468,15 +467,15 @@ router.patch('/rating/update', auth, async (req, res) => {
           },
         },
         {
-          $set: { 'ratings.$.rating': content.rating },
+          $set: { "ratings.$.rating": content.rating },
         },
         (err, response) => {
           if (err) throw err;
           else if (response.modifiedCount === 0) {
-            res.status(400).json({ message: 'Could not update rating' });
+            res.status(400).json({ message: "Could not update rating" });
           } else {
             res.status(200).json({
-              message: 'Rating updated succesfully',
+              message: "Rating updated succesfully",
               content: content,
             });
           }
@@ -484,26 +483,26 @@ router.patch('/rating/update', auth, async (req, res) => {
       );
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: 'Server Error' });
+    res.status(500).json({ message: "Server Error" });
   }
 });
 
-router.get('/list/:id', auth, async (req, res) => {
+router.get("/list/:id", auth, async (req, res) => {
   try {
     const dbo = db.getDB();
     const lc = dbo.collection(listCollection);
     const list = await lc.findOne({ _id: mongo.ObjectID(req.params.id) });
 
     if (list === null) {
-      return res.status(400).json({ message: 'List does not exist' });
+      return res.status(400).json({ message: "List does not exist" });
     }
-    res.json({ message: 'List data retrieved', list: list });
+    res.json({ message: "List data retrieved", list: list });
   } catch (error) {
     console.log(error);
   }
 });
 
-router.get('/stats', auth, async (req, res) => {
+router.get("/stats", auth, async (req, res) => {
   try {
     const dbo = db.getDB();
     const sc = dbo.collection(statsCollection);
@@ -558,14 +557,14 @@ router.get('/stats', auth, async (req, res) => {
     // console.log(contentFilter.movie);
     const movieData = await sc
       .find({
-        type: 'movie',
+        type: "movie",
         contentId: { $in: contentFilter.movie },
       })
       .toArray();
 
     const tvData = await sc
       .find({
-        type: 'tv',
+        type: "tv",
         contentId: { $in: contentFilter.tv },
       })
       .toArray();
@@ -586,27 +585,113 @@ router.get('/stats', auth, async (req, res) => {
     // console.log(movieData.length);
 
     res.json({
-      message: 'Data for stats retrieved succesfully',
+      message: "Data for stats retrieved succesfully",
       data: payload,
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: 'Server Error' });
+    res.status(500).json({ message: "Server Error" });
   }
 });
 
-router.get('/customListsData', auth, async (req, res) => {
+router.get("/customListsData", auth, async (req, res) => {
   try {
     const dbo = db.getDB();
     const lc = dbo.collection(listCollection);
     const lists = await lc
-      .find({ userId: mongo.ObjectID(req.user.id), type: 'custom' })
+      .find({ userId: mongo.ObjectID(req.user.id), type: "custom" })
       .project({ userId: 0, type: 0 })
       .toArray();
 
-    res.json({ message: 'Custom list data retrieved', listData: lists });
+    res.json({ message: "Custom list data retrieved", listData: lists });
   } catch (error) {
     console.log(error);
+  }
+});
+
+router.delete("/clearListContent/:listId/:type", auth, async (req, res) => {
+  try {
+    const dbo = db.getDB();
+    const lc = dbo.collection(listCollection);
+    let response = null;
+    // console.log(req.params.type);
+    response = await lc.findOneAndUpdate(
+      { _id: mongo.ObjectID(req.params.listId) },
+      { $pull: { content: { type: req.params.type } } },
+      { returnOriginal: false },
+      (err, updatedDoc) => {
+        if (err) throw err;
+        res.json({
+          message: `All ${
+            req.params.type === "movie" ? "Movies" : "TV Shows"
+          } cleared`,
+          payload: updatedDoc.value,
+        });
+      }
+    );
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error while clearing contents" });
+  }
+});
+
+router.delete("/clearAllListContent/:listId", auth, async (req, res) => {
+  try {
+    const dbo = db.getDB();
+    const lc = dbo.collection(listCollection);
+    let response = null;
+    await lc
+      .findOneAndUpdate(
+        { _id: mongo.ObjectID(req.params.listId) },
+        { $set: { content: [] } },
+        { returnOriginal: false }
+      )
+      .then((updatedDoc) => {
+        res.json({ message: "All Content cleared", payload: updatedDoc.value });
+      })
+      .catch((err) => {
+        throw err;
+      });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error while clearing contents" });
+  }
+});
+
+router.delete("/list/:listId", auth, async (req, res) => {
+  try {
+    const dbo = db.getDB();
+    const lc = dbo.collection(listCollection);
+    const pc = dbo.collection(profileCollection);
+
+    // let payload = null;
+    // throw err;
+    await pc.findOneAndUpdate(
+      { userId: mongo.ObjectID(req.user.id) },
+      { $pull: { lists: mongo.ObjectID(req.params.listId) } },
+      async (err, updatedDoc) => {
+        if (err) throw err;
+        if (updatedDoc.modifiedCount === 0) {
+          res.status(400).json({ message: "List not found" });
+        } else {
+          // payload['customLists'] = updatedDoc.value;
+          await lc.deleteOne(
+            { _id: mongo.ObjectID(req.params.listId) },
+            (err, result) => {
+              if (err) throw err;
+              console.log(result);
+              res.json({
+                message: "List Deleted Succesfully",
+                payload: updatedDoc.value,
+              });
+            }
+          );
+        }
+      }
+    );
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Error while deleting list" });
   }
 });
 

@@ -1,19 +1,11 @@
-import React, { Fragment, useState, useEffect, useRef } from 'react';
-import { connect } from 'react-redux';
-import GenericStats from './GenericStats';
-import Spinner from '../../Utility/Spinner';
-import GenreGraph from './GenreGraph';
-import PeopleStats from './PeopleStats';
+import React, { Fragment, useState, useEffect, useRef } from "react";
+import { connect } from "react-redux";
+import GenericStats from "./GenericStats";
+import Spinner from "../../Utility/Spinner";
+import GenreGraph from "./GenreGraph";
+import PeopleStats from "./PeopleStats";
 
-const Stats = ({
-  watched,
-  ratings,
-  genres,
-  stats,
-  watchlist,
-  customListContent,
-  loading,
-}) => {
+const Stats = ({ watched, ratings, genres, stats, watchlist, customListContent, loading }) => {
   const [watchedCount, updateWatchedCount] = useState({ movie: 0, tv: 0 });
   const [ratingsCount, updateRatingsCount] = useState({ movie: 0, tv: 0 });
 
@@ -93,24 +85,20 @@ const Stats = ({
       {!loading && (
         <div>
           <div
-            className="d-flex flex-row flex-wrap align-items-center py-2 px-0"
+            className='d-flex flex-row flex-wrap align-items-center py-2 px-0'
             style={{
-              position: 'sticky',
-              top: '7vh',
-              zIndex: '50',
-              borderBottom: '2px solid #30363d',
-              background: 'black',
-            }}
-          >
-            <h3 className="px-3 mb-0" style={{ color: '#c3d1d9' }}>
+              position: "sticky",
+              top: "7vh",
+              zIndex: "50",
+              borderBottom: "2px solid #30363d",
+              background: "black",
+            }}>
+            <h3 className='px-3 mb-0' style={{ color: "#c3d1d9" }}>
               Stats
             </h3>
           </div>
-          <div className="stats-container pt-2">
-            <GenericStats
-              watchedCount={watchedCount}
-              ratingsCount={ratingsCount}
-            />
+          <div className='stats-container pt-2 pb-3'>
+            <GenericStats watchedCount={watchedCount} ratingsCount={ratingsCount} />
             <GenreGraph
               stats={stats}
               genres={genres}
@@ -118,12 +106,7 @@ const Stats = ({
               watchlist={watchlist}
               customListContent={customListContent}
             />
-            <PeopleStats
-              watched={watched}
-              stats={stats}
-              watchlist={watchlist}
-              customLists={customListContent}
-            />
+            <PeopleStats watched={watched} stats={stats} watchlist={watchlist} customLists={customListContent} />
           </div>
         </div>
       )}
@@ -138,6 +121,7 @@ const mapStateToProps = (state) => ({
   stats: state.dashboard.stats,
   watchlist: state.profile.watchlist,
   customListContent: state.dashboard.customListContent,
+  // customListContent: state.profile.customListContent,
   loading: state.dashboard.loading,
 });
 
