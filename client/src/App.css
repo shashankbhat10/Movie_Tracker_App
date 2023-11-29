@@ -256,8 +256,8 @@ body {
 */
 
 .search-result {
-  width: 80%;
-  background-color: aqua;
+  /* width: 80%; */
+  background-color: #090c12;
 }
 
 .search-poster {
