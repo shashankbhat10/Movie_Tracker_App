@@ -1,10 +1,10 @@
-import React, { useRef, useCallback, useState, useEffect } from "react";
+import React, { useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { Card } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import noImage from "../../images/download.png";
-import { connect } from "react-redux";
+// import { connect } from "react-redux";
 
 const DisplayContentResults = ({ type, content, loadMoreResults }) => {
   // const [list, updateList] = useState(null);
@@ -52,6 +52,7 @@ const DisplayContentResults = ({ type, content, loadMoreResults }) => {
         observer.current.observe(result);
       }
     },
+    // eslint-disable-next-line
     [content]
   );
 
@@ -67,7 +68,6 @@ const DisplayContentResults = ({ type, content, loadMoreResults }) => {
                   className='d-flex flex-row mb-3'
                   style={{
                     maxHeight: "300px",
-                    border: "0px",
                     backgroundColor: "#16161d",
                     color: "white",
                     border: "#30363d 2px solid",

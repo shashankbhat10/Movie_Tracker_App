@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect, useRef } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { connect } from "react-redux";
 import GenericStats from "./GenericStats";
 import Spinner from "../../Utility/Spinner";
@@ -77,6 +77,8 @@ const Stats = ({ watched, ratings, genres, stats, watchlist, customListContent, 
     // };
 
     // updateDate(graphData);
+
+    // eslint-disable-next-line
   }, []);
 
   return (

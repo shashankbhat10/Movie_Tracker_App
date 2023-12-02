@@ -1,31 +1,25 @@
-import React from 'react';
-import { Card } from 'react-bootstrap';
+import React from "react";
+import { Card } from "react-bootstrap";
 
 const PersonInfo = ({ details }) => {
   return (
     <div>
       <Card
         style={{
-          maxWidth: '350px',
+          maxWidth: "350px",
           // boxShadow: '5px 5px 20px gray',
           // border: '0px',
-          border: '#30363d 2px solid',
-          backgroundColor: '#16161d',
+          border: "#30363d 2px solid",
+          backgroundColor: "#16161d",
         }}
-        className="pr-0 mx-0 d-flex flex-row d-md-block"
-      >
-        <Card.Img
-          className="col-5 col-md-12 px-0"
-          src={`https://image.tmdb.org/t/p/h632${details.profile_path}`}
-        />
-        <Card.Body style={{ color: '#c3d1d9' }}>
-          <Card.Subtitle className="text-muted">Personal Info</Card.Subtitle>
+        className='pr-0 mx-0 d-flex flex-row d-md-block'>
+        <Card.Img className='col-5 col-md-12 px-0' src={`https://image.tmdb.org/t/p/h632${details.profile_path}`} />
+        <Card.Body style={{ color: "#c3d1d9" }}>
+          <Card.Subtitle className='text-muted'>Personal Info</Card.Subtitle>
           <Card.Text>Born: {details.birthday}</Card.Text>
-          {details.deathday !== null && (
-            <Card.Text>Died: {details.deathday}</Card.Text>
-          )}
+          {details.deathday !== null && <Card.Text>Died: {details.deathday}</Card.Text>}
           <Card.Text>Known for: {details.known_for_department}</Card.Text>
-          <div className="d-flex flex-column">
+          <div className='d-flex flex-column'>
             <span>Birthplace</span>
             <span>{details.place_of_birth}</span>
           </div>
@@ -37,6 +31,7 @@ const PersonInfo = ({ details }) => {
 
 export default PersonInfo;
 
+// eslint-disable-next-line
 {
   /* <div className="social-links pt-1">
   {links.homepage !== null && (

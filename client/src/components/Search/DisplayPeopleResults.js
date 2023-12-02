@@ -1,8 +1,8 @@
 import React, { useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { Card } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar } from "@fortawesome/free-solid-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faStar } from "@fortawesome/free-solid-svg-icons";
 import noImage from "../../images/download.png";
 
 const DisplayPeopleResults = ({ people, loadMoreResults }) => {
@@ -25,6 +25,7 @@ const DisplayPeopleResults = ({ people, loadMoreResults }) => {
       }
       console.log("Reached End");
     },
+    // eslint-disable-next-line
     [people]
   );
 

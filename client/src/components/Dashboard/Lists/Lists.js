@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useRef, useEffect } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
 import { connect } from "react-redux";
 import { createList } from "../../../actions/profile";
@@ -37,11 +37,12 @@ const Lists = ({ createList, watchlist, customLists, getListData, listContent, l
     updateLists(list);
     updateSelectedList(list[0]);
     getListData(list[0].listId);
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
     updateContent(listContent.filter((item) => item.type === selectedCategory));
-  }, [listContent]);
+  }, [listContent, selectedCategory]);
 
   useEffect(() => {
     let list = [{ listId: watchlist.listId, type: watchlist.type, name: "Watchlist" }];
@@ -49,7 +50,7 @@ const Lists = ({ createList, watchlist, customLists, getListData, listContent, l
       Array.prototype.push.apply(list, customLists);
     }
     updateLists(list);
-  }, [customLists]);
+  }, [customLists, watchlist]);
 
   // useEffect(() => {
   //   if (listDeleted === false) {

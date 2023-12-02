@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { connect } from 'react-redux';
-import { Card, OverlayTrigger, Tooltip } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck, faList } from '@fortawesome/free-solid-svg-icons';
+import React, { useState, useEffect, useRef } from "react";
+import { connect } from "react-redux";
+import { Card, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import {
   addContentToList,
   addContentToWatched,
@@ -12,10 +12,10 @@ import {
   addRating,
   updateRating,
   removeRating,
-} from '../../actions/profile';
-import noImage from '../../images/image-not-found.png';
-import ListPopover from '../Utility/ListPopover';
-import Rating from '../Utility/Rating';
+} from "../../actions/profile";
+import noImage from "../../images/image-not-found.png";
+import ListPopover from "../Utility/ListPopover";
+import Rating from "../Utility/Rating";
 
 const HomepageContentRow = ({
   content,
@@ -29,36 +29,38 @@ const HomepageContentRow = ({
   updateRating,
   removeRating,
 }) => {
-  const [type, setType] = useState('movie');
+  const [type, setType] = useState("movie");
   const [contentList, setContentList] = useState([]);
   const [watchedContent, setWatchedContent] = useState([]);
-  const [activeId, updateActiveId] = useState('');
-  const [popoverId, updatePopoverId] = useState('');
+  const [activeId, updateActiveId] = useState("");
+  const [popoverId, updatePopoverId] = useState("");
   const refEl = useRef(null);
 
   useEffect(() => {
     setType(content.type);
     setContentList(content.list);
-    if (content.type === 'movie') {
+    if (content.type === "movie") {
       setWatchedContent(watched.movie.map((item) => item.id));
     } else {
       setWatchedContent(watched.tv.map((item) => item.id));
     }
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    console.log('watched', watched);
-    if (content.type === 'movie') {
+    // console.log("watched", watched);
+    if (content.type === "movie") {
       setWatchedContent(watched.movie.map((item) => item.id));
     } else {
       setWatchedContent(watched.tv.map((item) => item.id));
     }
+    // eslint-disable-next-line
   }, [watched]);
 
   const handleWatchedClick = (type, item) => {
     item.type = type;
     if (watchedContent.includes(item.id)) {
-      console.log('in remove');
+      // console.log("in remove");
       removeContentFromWatched(item);
     } else {
       addContentToWatched(item);
@@ -70,8 +72,8 @@ const HomepageContentRow = ({
   };
 
   const removeHoverClass = () => {
-    updateActiveId('');
-    console.log('remove hover');
+    updateActiveId("");
+    // console.log("remove hover");
   };
 
   const popoverOpen = (id) => {
@@ -79,15 +81,15 @@ const HomepageContentRow = ({
   };
 
   const popoverClose = () => {
-    console.log('POPOVER');
-    updatePopoverId('');
-    updateActiveId('');
+    // console.log("POPOVER");
+    updatePopoverId("");
+    updateActiveId("");
   };
 
   const addToWatchlist = (listId, item, action) => {
-    console.log(action);
-    if (action === 'add') {
-      addContentToList(listId, 'watchlist', type, item);
+    // console.log(action);
+    if (action === "add") {
+      addContentToList(listId, "watchlist", type, item);
     } else {
       removeContentFromList(listId, type, item);
     }
@@ -95,18 +97,18 @@ const HomepageContentRow = ({
 
   const handleRating = (item, action, rating = 0) => {
     switch (action) {
-      case 'add':
+      case "add":
         if (!watchedContent.includes(item.id)) {
           item.type = type;
           addContentToWatched(item);
         }
         addRating(item, type, rating);
         break;
-      case 'update':
+      case "update":
         updateRating(item.id, type, rating);
         break;
-      case 'remove':
-        console.log('remove');
+      case "remove":
+        // console.log("remove");
         removeRating(item.id, type);
         break;
       default:
@@ -115,86 +117,58 @@ const HomepageContentRow = ({
   };
 
   return (
-    <div className="d-flex flex-row flex-nowrap" style={{ overflowX: 'auto' }}>
+    <div className='d-flex flex-row flex-nowrap' style={{ overflowX: "auto" }}>
       {contentList.map((item, index) => {
         return (
           <Card
             key={`dashboard_genre_${content.name}_${item.id}`}
-            className="bg-transparent col-4 px-0"
+            className='bg-transparent col-4 px-0'
             style={{
-              minWidth: '250px',
-              maxWidth: '350px',
-              border: '0px',
-            }}
-          >
+              minWidth: "250px",
+              maxWidth: "350px",
+              border: "0px",
+            }}>
             <div
-              className="dashboard-content"
+              className='dashboard-content'
               onMouseOver={() => {
                 addHoverClass(item.id);
               }}
               onMouseLeave={() => {
                 removeHoverClass();
               }}
-              id={`${item.id}_${item.title}_${
-                category === 'genre'
-                  ? content.name.toLowerCase()
-                  : content.category
-              }`}
-            >
-              <Link
-                to={type === 'movie' ? `/movie/${item.id}` : `/tv/${item.id}`}
-                style={{ textDecoration: 'none' }}
-              >
+              id={`${item.id}_${item.title}_${category === "genre" ? content.name.toLowerCase() : content.category}`}>
+              <Link to={type === "movie" ? `/movie/${item.id}` : `/tv/${item.id}`} style={{ textDecoration: "none" }}>
                 <Card.Img
-                  src={
-                    item.backdrop_path === null
-                      ? noImage
-                      : `https://image.tmdb.org/t/p/w780${item.backdrop_path}`
-                  }
-                  style={{ border: '2px solid #30363d' }}
+                  src={item.backdrop_path === null ? noImage : `https://image.tmdb.org/t/p/w780${item.backdrop_path}`}
+                  style={{ border: "2px solid #30363d" }}
                 />
               </Link>
               <div
-                className="d-flex flex-row dashboard-options px-4 py-2 justify-content-between align-items-center bg-dark"
+                className='d-flex flex-row dashboard-options px-4 py-2 justify-content-between align-items-center bg-dark'
                 ref={refEl}
                 style={{
-                  transform:
-                    activeId === item.id || popoverId === item.id
-                      ? 'translateY(0%)'
-                      : 'translateY(100%)',
-                }}
-              >
+                  transform: activeId === item.id || popoverId === item.id ? "translateY(0%)" : "translateY(100%)",
+                }}>
                 {(activeId === item.id || popoverId === item.id) && (
                   <div>
                     <OverlayTrigger
                       key={`tooltip_dashboard_content_options_${item.id}_watchlist`}
-                      placement="bottom"
+                      placement='bottom'
                       overlay={
                         <Tooltip id={`content_${item.id}_${index}_watchlist`}>
-                          {watchedContent.includes(item.id)
-                            ? 'Movie Watched'
-                            : 'Add to Watched'}
+                          {watchedContent.includes(item.id) ? "Movie Watched" : "Add to Watched"}
                         </Tooltip>
-                      }
-                    >
+                      }>
                       <div
-                        className={`dashboard-icons ${
-                          watchedContent.includes(item.id) && 'icon-border'
-                        }`}
-                        onClick={() => handleWatchedClick(type, item)}
-                      >
-                        <FontAwesomeIcon
-                          icon={faCheck}
-                          color={
-                            watchedContent.includes(item.id) ? 'green' : ''
-                          }
-                        />
+                        className={`dashboard-icons ${watchedContent.includes(item.id) && "icon-border"}`}
+                        onClick={() => handleWatchedClick(type, item)}>
+                        <FontAwesomeIcon icon={faCheck} color={watchedContent.includes(item.id) ? "green" : ""} />
                       </div>
                     </OverlayTrigger>
                   </div>
                 )}
                 {(activeId === item.id || popoverId === item.id) && (
-                  <div className="dashboard-icons">
+                  <div className='dashboard-icons'>
                     <Rating
                       item={item}
                       itemType={type}
@@ -205,7 +179,7 @@ const HomepageContentRow = ({
                   </div>
                 )}
                 {(activeId === item.id || popoverId === item.id) && (
-                  <div className="dashboard-icons">
+                  <div className='dashboard-icons'>
                     <ListPopover
                       item={item}
                       itemType={type}
@@ -217,14 +191,8 @@ const HomepageContentRow = ({
                 )}
               </div>
             </div>
-            <Link
-              to={type === 'movie' ? `/movie/${item.id}` : `/tv/${item.id}`}
-              style={{ textDecoration: 'none' }}
-            >
-              <Card.Title
-                className="my-1 pl-1"
-                style={{ fontSize: '1em', color: '#c3d1d9' }}
-              >
+            <Link to={type === "movie" ? `/movie/${item.id}` : `/tv/${item.id}`} style={{ textDecoration: "none" }}>
+              <Card.Title className='my-1 pl-1' style={{ fontSize: "1em", color: "#c3d1d9" }}>
                 {item.title}
               </Card.Title>
             </Link>

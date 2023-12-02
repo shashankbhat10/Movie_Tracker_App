@@ -1,23 +1,10 @@
 import React, { useRef, Fragment, useState, useEffect } from "react";
 import { Popover, OverlayTrigger, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faTimes,
-  faStar,
-  faEdit,
-  faTrash,
-} from "@fortawesome/free-solid-svg-icons";
+import { faStar, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { connect } from "react-redux";
 
-const Rating = ({
-  item,
-  itemType,
-  open,
-  close,
-  ratings,
-  handleRating,
-  type,
-}) => {
+const Rating = ({ item, itemType, open, close, ratings, handleRating, type }) => {
   const target = useRef(null);
   const [show, setShow] = useState(false);
   const [hoverIndex, updateHoverIndex] = useState(-1);
@@ -35,6 +22,7 @@ const Rating = ({
       updateRatingFlag(false);
       updateRating(0);
     }
+    // eslint-disable-next-line
   }, [ratings]);
 
   return (
@@ -99,8 +87,7 @@ const Rating = ({
                                   ? "red"
                                   : index <= contentRating - 1 && "goldenrod"
                                 : hoverIndex > contentRating - 1
-                                ? index > contentRating - 1 &&
-                                  index <= hoverIndex
+                                ? index > contentRating - 1 && index <= hoverIndex
                                   ? "green"
                                   : index <= contentRating - 1 && "goldenrod"
                                 : index <= hoverIndex && "goldenrod"
@@ -108,13 +95,7 @@ const Rating = ({
                             : index <= hoverIndex && "goldenrod",
                           transition: "color 0.3s ease-in-out",
                         }}
-                        onClick={() =>
-                          handleRating(
-                            item,
-                            isRated ? "update" : "add",
-                            index + 1
-                          )
-                        }
+                        onClick={() => handleRating(item, isRated ? "update" : "add", index + 1)}
                       />
                     </span>
                   );

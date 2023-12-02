@@ -1,14 +1,8 @@
-import React, { useRef, useCallback, useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import HomepageContentRow from './HomepageContentRow';
+import React, { useRef, useCallback } from "react";
+import { connect } from "react-redux";
+import HomepageContentRow from "./HomepageContentRow";
 
-const DisplayHomepageContent = ({
-  loadMoreGenres,
-  loading,
-  remainingGenres,
-  renderedGenres,
-  content,
-}) => {
+const DisplayHomepageContent = ({ loadMoreGenres, loading, remainingGenres, renderedGenres, content }) => {
   const observer = useRef();
   const lastDisplayed = useCallback(
     (result) => {
@@ -24,31 +18,27 @@ const DisplayHomepageContent = ({
         observer.current.observe(result);
       }
     },
+    // eslint-disable-next-line
     [content]
   );
 
   return (
-    <div style={{ backgroundColor: '#090c12' }}>
+    <div style={{ backgroundColor: "#090c12", paddingTop: "5px" }}>
       {!loading &&
         content.map((singleContent, index) => {
           return (
             <div
-              className="mb-3 mx-auto px-3"
-              style={{ width: '95%' }}
+              className='mb-3 mx-auto px-3'
+              style={{ width: "95%" }}
               key={`${singleContent.type}_${singleContent.category}_${index}`}
-              ref={renderedGenres + 4 === index + 1 ? lastDisplayed : null}
-            >
-              <h5 style={{ color: '#c3d1d9' }} className="pl-2">
-                {singleContent.category === 'genre'
+              ref={renderedGenres + 4 === index + 1 ? lastDisplayed : null}>
+              <h5 style={{ color: "#c3d1d9" }} className='pl-2'>
+                {singleContent.category === "genre"
                   ? singleContent.name
-                  : singleContent.category[0].toUpperCase() +
-                    singleContent.category.slice(1)}{' '}
-                {singleContent.type === 'movie' ? 'Movies' : 'TV Shows'}
+                  : singleContent.category[0].toUpperCase() + singleContent.category.slice(1)}{" "}
+                {singleContent.type === "movie" ? "Movies" : "TV Shows"}
               </h5>
-              <HomepageContentRow
-                content={singleContent}
-                category={singleContent.category}
-              />
+              <HomepageContentRow content={singleContent} category={singleContent.category} />
             </div>
           );
         })}

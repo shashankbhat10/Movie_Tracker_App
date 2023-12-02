@@ -12,6 +12,7 @@ const initialState = {
   loading: true,
 };
 
+// eslint-disable-next-line
 export default function (state = initialState, action) {
   const { type, payload } = action;
 
@@ -37,16 +38,8 @@ export default function (state = initialState, action) {
         },
         reviews: {
           ...state.reviews,
-          movie: [
-            ...payload.reviews
-              .filter((item) => item.type === "movie")
-              .map((item) => item.id),
-          ],
-          tv: [
-            ...payload.reviews
-              .filter((item) => item.type === "tv")
-              .map((item) => item.id),
-          ],
+          movie: [...payload.reviews.filter((item) => item.type === "movie").map((item) => item.id)],
+          tv: [...payload.reviews.filter((item) => item.type === "tv").map((item) => item.id)],
         },
         ratings: {
           ...state.ratings,
@@ -67,16 +60,8 @@ export default function (state = initialState, action) {
           ...state.watchlist,
           listId: payload.watchlist._id,
           type: payload.watchlist.type,
-          movie: [
-            ...payload.watchlist.content
-              .filter((item) => item.type === "movie")
-              .map((item) => item.id),
-          ],
-          tv: [
-            ...payload.watchlist.content
-              .filter((item) => item.type === "tv")
-              .map((item) => item.id),
-          ],
+          movie: [...payload.watchlist.content.filter((item) => item.type === "movie").map((item) => item.id)],
+          tv: [...payload.watchlist.content.filter((item) => item.type === "tv").map((item) => item.id)],
         },
         customLists: payload.lists.length > 1 ? payload.lists.splice(1) : [],
         loading: false,
@@ -85,10 +70,7 @@ export default function (state = initialState, action) {
       list = { ...state.watched };
       if (payload.type === "movie") contentType = "movie";
       else contentType = "tv";
-      list[contentType].splice(
-        list[contentType].map((item) => item.id).indexOf(payload.id),
-        1
-      );
+      list[contentType].splice(list[contentType].map((item) => item.id).indexOf(payload.id), 1);
       return { ...state, watched: list };
     case actionTypes.CONTENT_ADDED_TO_WATCHLIST:
       newList = { ...state.watchlist };
@@ -99,10 +81,7 @@ export default function (state = initialState, action) {
       list = { ...state.watchlist };
       if (payload.type === "movie") contentType = "movie";
       else contentType = "tv";
-      list[contentType].splice(
-        list[contentType].map((item) => item.id).indexOf(payload.id),
-        1
-      );
+      list[contentType].splice(list[contentType].map((item) => item.id).indexOf(payload.id), 1);
       return { ...state, watchlist: list };
     case actionTypes.CONTENT_RATING_ADDED:
       rating = {
@@ -118,8 +97,7 @@ export default function (state = initialState, action) {
         rating: payload.rating,
       };
       list = { ...state.ratings };
-      list[payload.type].filter((item) => item.id === payload.id)[0].rating =
-        payload.rating;
+      list[payload.type].filter((item) => item.id === payload.id)[0].rating = payload.rating;
       return { ...state, ratings: list };
     case actionTypes.CONTENT_RATING_REMOVED:
       list = { ...state.ratings };

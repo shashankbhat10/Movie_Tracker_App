@@ -1,19 +1,14 @@
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-import { loadNextPage } from '../../actions/search';
-import DisplayPeopleResults from './DisplayPeopleResults';
-import DisplayCompanyResults from './DisplayCompanyResults';
-import PropTypes from 'prop-types';
-import DisplayContentResults from './DisplayContentResults';
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import { loadNextPage } from "../../actions/search";
+import DisplayPeopleResults from "./DisplayPeopleResults";
+import DisplayCompanyResults from "./DisplayCompanyResults";
+// import PropTypes from 'prop-types';
+import DisplayContentResults from "./DisplayContentResults";
 
-const SearchResults = ({
-  searchedResults,
-  loadNextPage,
-  queryString,
-  currentFilter,
-}) => {
+const SearchResults = ({ searchedResults, loadNextPage, queryString, currentFilter }) => {
   const loadMoreResults = (pageNumber) => {
-    console.log('SEARCH RESULTS : ' + pageNumber);
+    console.log("SEARCH RESULTS : " + pageNumber);
     loadNextPage(pageNumber, currentFilter, queryString);
   };
 
@@ -21,37 +16,31 @@ const SearchResults = ({
     window.scrollTo({
       top: 0,
       left: 0,
-      behavior: 'smooth',
+      behavior: "smooth",
     });
   }, [currentFilter]);
 
   return (
-    <div className="col-md-9 px-0">
-      {currentFilter === 'movie' && (
+    <div className='col-md-9 px-0'>
+      {currentFilter === "movie" && (
         <DisplayContentResults
           type={currentFilter}
           content={searchedResults[currentFilter]}
           loadMoreResults={loadMoreResults}
         />
       )}
-      {currentFilter === 'tv' && (
+      {currentFilter === "tv" && (
         <DisplayContentResults
           type={currentFilter}
           content={searchedResults[currentFilter]}
           loadMoreResults={loadMoreResults}
         />
       )}
-      {currentFilter === 'person' && (
-        <DisplayPeopleResults
-          people={searchedResults.person}
-          loadMoreResults={loadMoreResults}
-        />
+      {currentFilter === "person" && (
+        <DisplayPeopleResults people={searchedResults.person} loadMoreResults={loadMoreResults} />
       )}
-      {currentFilter === 'company' && (
-        <DisplayCompanyResults
-          company={searchedResults.company}
-          loadMoreResults={loadMoreResults}
-        />
+      {currentFilter === "company" && (
+        <DisplayCompanyResults company={searchedResults.company} loadMoreResults={loadMoreResults} />
       )}
     </div>
   );

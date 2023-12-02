@@ -18,6 +18,7 @@ const PeopleStats = ({ watched, stats, watchlist, customLists }) => {
     const directorData = getInteractedDirectorData(stats, watched, watchlist, customLists);
     console.log("director Data", directorData);
     updateDirectorData(directorData);
+    // eslint-disable-next-line
   }, []);
 
   const handleModalClick = (person) => {

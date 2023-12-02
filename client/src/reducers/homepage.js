@@ -1,4 +1,4 @@
-import * as actionTypes from '../actions/types';
+import * as actionTypes from "../actions/types";
 
 const initialState = {
   movies: [],
@@ -15,6 +15,7 @@ const initialState = {
   discoverLoading: true,
 };
 
+// eslint-disable-next-line
 export default function (state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
@@ -47,24 +48,16 @@ export default function (state = initialState, action) {
         },
       };
     case actionTypes.RANDOM_GENRES_SELECTED:
-      let renderedMovieCopy =
-        state.genres.movie.rendered === undefined
-          ? []
-          : [...state.genres.movie.rendered];
+      let renderedMovieCopy = state.genres.movie.rendered === undefined ? [] : [...state.genres.movie.rendered];
       renderedMovieCopy.push(...payload.movie);
 
-      let remainingMovieCopy = [...state.genres.movie.remaining].filter(
-        (genre) => {
-          return !payload.movie.find((movieGenre) => {
-            return movieGenre.id === genre.id;
-          });
-        }
-      );
+      let remainingMovieCopy = [...state.genres.movie.remaining].filter((genre) => {
+        return !payload.movie.find((movieGenre) => {
+          return movieGenre.id === genre.id;
+        });
+      });
 
-      let renderedTVCopy =
-        state.genres.tv.rendered === undefined
-          ? []
-          : [...state.genres.tv.rendered];
+      let renderedTVCopy = state.genres.tv.rendered === undefined ? [] : [...state.genres.tv.rendered];
       renderedTVCopy.push(...payload.tv);
 
       let remainingTVCopy = [...state.genres.tv.remaining].filter((genre) => {

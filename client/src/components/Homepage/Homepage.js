@@ -1,22 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { Fragment } from 'react';
-import { connect } from 'react-redux';
-import { getGenres, getDashboardTopContent } from '../../actions/homepage';
-import { Redirect } from 'react-router-dom';
-import DisplayHomepageContent from './DisplayHomepageContent';
-import Spinner from '../Utility/Spinner';
-import { selectRandomGenres } from '../../actions/homepage';
+import React, { useEffect } from "react";
+import { Fragment } from "react";
+import { connect } from "react-redux";
+import { getGenres, getDashboardTopContent } from "../../actions/homepage";
+import { Redirect } from "react-router-dom";
+import DisplayHomepageContent from "./DisplayHomepageContent";
+import Spinner from "../Utility/Spinner";
+import { selectRandomGenres } from "../../actions/homepage";
 
-const Homepage = ({
-  isAuthenticated,
-  getDashboardTopContent,
-  loading,
-  movieGenre,
-  tvGenre,
-  selectRandomGenres,
-}) => {
+const Homepage = ({ isAuthenticated, getDashboardTopContent, loading, movieGenre, tvGenre, selectRandomGenres }) => {
   const loadMoreGenres = () => {
-    console.log('in genre');
+    // console.log("in genre");
     selectRandomGenres(movieGenre.remaining, tvGenre.remaining);
   };
 
@@ -24,27 +17,24 @@ const Homepage = ({
     if (isAuthenticated) {
       getDashboardTopContent();
     }
+    // eslint-disable-next-line
   }, []);
 
   return (
     <Fragment>
       {!isAuthenticated ? (
-        <Redirect to="/" />
+        <Redirect to='/' />
       ) : (
         <div>
           {loading ? (
-            <div className="poster-spinner">
+            <div className='poster-spinner'>
               <Spinner />
             </div>
           ) : (
             <DisplayHomepageContent
               loadMoreGenres={loadMoreGenres}
-              remainingGenres={
-                movieGenre.remaining.length + tvGenre.remaining.length
-              }
-              renderedGenres={
-                movieGenre.rendered.length + tvGenre.rendered.length
-              }
+              remainingGenres={movieGenre.remaining.length + tvGenre.remaining.length}
+              renderedGenres={movieGenre.rendered.length + tvGenre.rendered.length}
             />
           )}
         </div>

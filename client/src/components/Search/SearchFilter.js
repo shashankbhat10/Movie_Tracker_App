@@ -22,6 +22,7 @@ const SearchFilter = ({ resultType, updateFilter, searchedResults }) => {
 
     updateType(types);
     console.log("types", types);
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -49,7 +50,7 @@ const SearchFilter = ({ resultType, updateFilter, searchedResults }) => {
               <Row
                 // className="px-2"
                 key={`filter_${index}`}
-                style={{ cursor: "pointer", margin: "auto", marginBottom: index == type.length - 1 && "10px" }}
+                style={{ cursor: "pointer", margin: "auto", marginBottom: index === type.length - 1 && "10px" }}
                 onClick={() => {
                   console.log("Hellowww");
                   updateFilter(item.filter);
@@ -64,7 +65,9 @@ const SearchFilter = ({ resultType, updateFilter, searchedResults }) => {
                   }}>
                   {searchedResults[item.filter].totalResults}
                 </Col>
-                {index != type.length - 1 && <hr className='my-2' style={{ width: "95%", backgroundColor: "white" }} />}
+                {index !== type.length - 1 && (
+                  <hr className='my-2' style={{ width: "95%", backgroundColor: "white" }} />
+                )}
               </Row>
               // </div>
             );

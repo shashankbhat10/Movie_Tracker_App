@@ -1,4 +1,4 @@
-import * as actionTypes from '../actions/types';
+import * as actionTypes from "../actions/types";
 
 const initialState = {
   details: {},
@@ -15,6 +15,7 @@ const initialState = {
   loadTrailer: false,
 };
 
+// eslint-disable-next-line
 export default function (state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
@@ -40,7 +41,7 @@ export default function (state = initialState, action) {
         additionalDetails: {},
         links: {},
         images: {},
-        description: '',
+        description: "",
         credits: {},
         reviews: {},
         watchlinks: {},

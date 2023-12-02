@@ -1,5 +1,5 @@
-import React, { useRef, useCallback } from 'react';
-import PropTypes from 'prop-types';
+import React, { useRef, useCallback } from "react";
+// import PropTypes from 'prop-types';
 
 const DisplayCompanyResults = ({ company, loadMoreResults }) => {
   const observer = useRef();
@@ -9,11 +9,8 @@ const DisplayCompanyResults = ({ company, loadMoreResults }) => {
         observer.current.disconnect();
       }
       observer.current = new IntersectionObserver((entries) => {
-        if (
-          entries[0].isIntersecting &&
-          company.currentPage < company.totalPages
-        ) {
-          console.log('COMPANY INTERSECTION');
+        if (entries[0].isIntersecting && company.currentPage < company.totalPages) {
+          console.log("COMPANY INTERSECTION");
           const nextPage = company.currentPage + 1;
           loadMoreResults(nextPage);
         }
@@ -21,8 +18,9 @@ const DisplayCompanyResults = ({ company, loadMoreResults }) => {
       if (result) {
         observer.current.observe(result);
       }
-      console.log('Reached End');
+      console.log("Reached End");
     },
+    // eslint-disable-next-line
     [company]
   );
 
@@ -32,17 +30,13 @@ const DisplayCompanyResults = ({ company, loadMoreResults }) => {
         {company.data.map((item, index) => {
           if (company.data.length === index + 1) {
             return (
-              <li
-                ref={lastSearchedResult}
-                key={`movie_${item.id}`}
-                className="py-5"
-              >
+              <li ref={lastSearchedResult} key={`movie_${item.id}`} className='py-5'>
                 {item.name}
               </li>
             );
           } else {
             return (
-              <li key={`searchedResult_${item.id}`} className="py-5">
+              <li key={`searchedResult_${item.id}`} className='py-5'>
                 {item.name}
               </li>
             );

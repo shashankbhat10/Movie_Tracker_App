@@ -1,18 +1,19 @@
-import React, { Fragment, useEffect, useState } from 'react';
-import { Card, Tabs, Tab } from 'react-bootstrap';
-import { connect } from 'react-redux';
-import { getMovieCredits } from '../../../actions/movie';
-import DisplayCompleteCredits from './DisplayCompleteCredits';
-import noImage from '../../../images/download.png';
+import React, { Fragment, useEffect, useState } from "react";
+import { Tabs, Tab } from "react-bootstrap";
+import { connect } from "react-redux";
+import { getMovieCredits } from "../../../actions/movie";
+import DisplayCompleteCredits from "./DisplayCompleteCredits";
+// import noImage from '../../../images/download.png';
 
 const MovieCompleteCast = ({ loading, credits, getMovieCredits, match }) => {
   useEffect(() => {
     if (Object.keys(credits).length === 0) {
       getMovieCredits(match.params.id);
     }
+    // eslint-disable-next-line
   }, []);
 
-  const [key, updateKey] = useState('cast');
+  const [key, updateKey] = useState("cast");
 
   const handleTabChange = (selectedKey) => {
     updateKey(selectedKey);
@@ -22,29 +23,27 @@ const MovieCompleteCast = ({ loading, credits, getMovieCredits, match }) => {
     <Fragment>
       {!loading && (
         <div
-          className="px-2"
+          className='px-2'
           style={{
-            overflow: 'hidden',
-            flexGrow: '1',
-            position: 'relative',
-            backgroundColor: '#090c12',
-            height: '93vh',
-          }}
-        >
-          <h5 className="mt-2 pl-3" style={{ color: '#c3d1d9' }}>
+            overflow: "hidden",
+            flexGrow: "1",
+            position: "relative",
+            backgroundColor: "#090c12",
+            height: "93vh",
+          }}>
+          <h5 className='mt-2 pl-3' style={{ color: "#c3d1d9" }}>
             Cast and Crew
           </h5>
           <Tabs
-            defaultActiveKey="poster"
+            defaultActiveKey='poster'
             activeKey={key}
             onSelect={(k) => {
               handleTabChange(k);
-            }}
-          >
-            <Tab eventKey="cast" title={`Cast (${credits.cast.length})`}>
+            }}>
+            <Tab eventKey='cast' title={`Cast (${credits.cast.length})`}>
               <DisplayCompleteCredits type={key} list={credits.cast} />
             </Tab>
-            <Tab eventKey="crew" title={`Crew (${credits.crew.length})`}>
+            <Tab eventKey='crew' title={`Crew (${credits.crew.length})`}>
               <DisplayCompleteCredits type={key} list={credits.crew} />
             </Tab>
           </Tabs>

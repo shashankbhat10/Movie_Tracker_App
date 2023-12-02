@@ -1,10 +1,4 @@
-import {
-  LOADING_MORE,
-  LOADING_SEARCH,
-  NEXT_PAGE_LOADED,
-  SEARCH_FINISHED,
-  UPDATE_FILTER,
-} from '../actions/types';
+import { LOADING_MORE, LOADING_SEARCH, NEXT_PAGE_LOADED, SEARCH_FINISHED, UPDATE_FILTER } from "../actions/types";
 
 const initialState = {
   movie: {},
@@ -13,9 +7,10 @@ const initialState = {
   // company: {},
   loading: true,
   loading_more: false,
-  currentFilter: 'movie',
+  currentFilter: "movie",
 };
 
+// eslint-disable-next-line
 export default function (state = initialState, action) {
   const { type, payload } = action;
   // console.log(payload);
@@ -23,16 +18,9 @@ export default function (state = initialState, action) {
     case SEARCH_FINISHED:
       return {
         ...state,
-        movie:
-          payload.movies !== null || payload.movies.data.length > 0
-            ? payload.movies
-            : null,
-        tv:
-          payload.tv !== null || payload.tv.data.length > 0 ? payload.tv : null,
-        person:
-          payload.people !== null || payload.people.data.length > 0
-            ? payload.people
-            : null,
+        movie: payload.movies !== null || payload.movies.data.length > 0 ? payload.movies : null,
+        tv: payload.tv !== null || payload.tv.data.length > 0 ? payload.tv : null,
+        person: payload.people !== null || payload.people.data.length > 0 ? payload.people : null,
         // company:
         //   payload.company !== null || payload.copmany.data.length > 0
         //     ? payload.company
@@ -45,7 +33,7 @@ export default function (state = initialState, action) {
       let set = new Set();
       let result;
       switch (state.currentFilter) {
-        case 'movie':
+        case "movie":
           result = [...state.movie.data];
 
           result.forEach((item) => {
@@ -68,7 +56,7 @@ export default function (state = initialState, action) {
             },
             loading_more: false,
           };
-        case 'tv':
+        case "tv":
           result = [...state.tv.data];
 
           result.forEach((item) => {
@@ -91,7 +79,7 @@ export default function (state = initialState, action) {
             },
             loading_more: false,
           };
-        case 'person':
+        case "person":
           result = [...state.person.data];
 
           result.forEach((item) => {
@@ -144,7 +132,7 @@ export default function (state = initialState, action) {
     case LOADING_MORE:
       return { ...state, loading_more: true };
     case UPDATE_FILTER:
-      console.log('reducer filter', payload);
+      console.log("reducer filter", payload);
       return { ...state, currentFilter: payload };
     default:
       return { ...state };
