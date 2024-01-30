@@ -10,7 +10,7 @@ const MovieHeader = ({ details, poster, crew }) => {
   return (
     <Fragment>
       <Card
-        className='d-flex flex-row mx-auto'
+        className='d-flex flex-col flex-md-row mx-auto'
         style={{
           width: "95%",
           maxWidth: "1000px",
@@ -20,7 +20,7 @@ const MovieHeader = ({ details, poster, crew }) => {
           border: "#30363d 2px solid",
           color: "#c3d1d9",
         }}>
-        <Card.Img src={`https://image.tmdb.org/t/p/w342${poster}`} className='col-md-4 pl-0' />
+        <Card.Img src={`https://image.tmdb.org/t/p/w342${poster}`} className='mx-auto col-5 col-md-4 pl-0 pr-0' />
         <Card.Body className='col-md-8 pt-4'>
           <Card.Title className='d-flex flex-row'>
             <h2>
