@@ -20,10 +20,10 @@ const Person = ({ match, getPersonDetails, details, credits, loading }) => {
         </div>
       ) : (
         <div className='d-md-flex flex-row pt-2 px-2' style={{ backgroundColor: "#090c12" }}>
-          <div className='person-details col-md-4 col-lg-3 mx-0 px-0'>
+          <div className='person-details col-12 col-md-4 col-lg-3 mx-0 px-0 mb-3 mb-md-0'>
             <PersonInfo details={details} />
           </div>
-          <div className='col-md-8 col-lg-9'>
+          <div className='col-12 col-md-8 col-lg-9'>
             <PersonDetails details={details} credits={credits} />
           </div>
         </div>

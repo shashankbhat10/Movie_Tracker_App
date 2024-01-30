@@ -6,13 +6,13 @@ const PersonInfo = ({ details }) => {
     <div>
       <Card
         style={{
-          maxWidth: "350px",
+          // maxWidth: "350px",
           // boxShadow: '5px 5px 20px gray',
           // border: '0px',
           border: "#30363d 2px solid",
           backgroundColor: "#16161d",
         }}
-        className='pr-0 mx-0 d-flex flex-row d-md-block'>
+        className='pr-0 mx-md-0 mx-3 d-flex flex-row d-md-block'>
         <Card.Img className='col-5 col-md-12 px-0' src={`https://image.tmdb.org/t/p/h632${details.profile_path}`} />
         <Card.Body style={{ color: "#c3d1d9" }}>
           <Card.Subtitle className='text-muted'>Personal Info</Card.Subtitle>
