@@ -16,7 +16,7 @@ import Person from "./components/People/Person";
 import Search from "./components/Search/SearchMovie";
 import TV from "./components/TV/TV";
 import TVCompleteCredits from "./components/TV/TVCompleteCredits/TVCompleteCredits";
-import Navbar from "./components/Utility/Navbar";
+import NavbarComp from "./components/Utility/NavbarComp";
 
 import store from "./store";
 
@@ -28,7 +28,7 @@ function App() {
   return (
     <Provider store={store}>
       <Router>
-        <Navbar />
+        <NavbarComp />
         <Route exact path='/' component={Landing} />
         <Switch>
           <Route exact path='/homepage' component={Homepage} />

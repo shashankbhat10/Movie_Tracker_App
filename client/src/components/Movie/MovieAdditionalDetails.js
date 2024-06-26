@@ -30,16 +30,16 @@ const MovieAdditionalDetails = ({ details, links }) => {
           )}
         </span>
       </div>
-      <div className='show-info d-md-flex flex-md-row d-grid justify-content-between px-3 row'>
-        <span className='d-flex flex-column align-items-center col-6'>
+      <div className='show-info d-md-flex flex-md-row d-grid justify-content-between px-3 xs-row'>
+        <span className='d-flex flex-column align-items-center xs-col-6'>
           <strong>Status</strong>
           <span className='text-muted'>{details.status}</span>
         </span>
-        <span className='d-flex flex-column align-items-center col-6'>
+        <span className='d-flex flex-column align-items-center xs-col-6'>
           <strong>Original Language</strong>
           <span className='text-muted'>{details.originalLanguage}</span>
         </span>
-        <span className='d-flex flex-column align-items-center col-6'>
+        <span className='d-flex flex-column align-items-center xs-col-6'>
           <strong>Budget</strong>
           <span className='text-muted'>
             {Intl.NumberFormat("en-US", {
@@ -48,7 +48,7 @@ const MovieAdditionalDetails = ({ details, links }) => {
             }).format(details.budget)}
           </span>
         </span>
-        <span className='d-flex flex-column align-items-center col-6'>
+        <span className='d-flex flex-column align-items-center xs-col-6'>
           <strong>Revenue</strong>
           <span className='text-muted'>
             {Intl.NumberFormat("en-US", {
@@ -57,7 +57,7 @@ const MovieAdditionalDetails = ({ details, links }) => {
             }).format(details.revenue)}
           </span>
         </span>
-        <span className='d-flex flex-column align-items-center col-12'>
+        <span className='d-flex flex-column align-items-center xs-col-12'>
           <strong>Release Date</strong>
           <span className='text-muted'>{details.releaseDate === null ? "-" : details.releaseDate}</span>
         </span>
